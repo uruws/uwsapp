@@ -12,6 +12,8 @@ ENV HOME /root
 RUN /root/bin/apt-install.sh python3 uwsgi-plugin-python3 \
 	sqlite3 python3-django
 
+RUN /usr/bin/python3 -m django --version
+
 RUN install -v -d -o uws -g uwsops -m 0750 /opt/uws
 
 USER uwsops:uwsops
