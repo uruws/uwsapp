@@ -3,7 +3,7 @@ default: build
 
 .PHONY: build
 build:
-	@./docker/build.sh
+	@./docker/base/build.sh
 
 .PHONY: prune
 prune:
