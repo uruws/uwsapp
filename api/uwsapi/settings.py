@@ -13,6 +13,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from os import getenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +28,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-u=foo+$#=@5m4r!ov(7v-x0k*%hc!$q#@w%jiza@!xw_b%sq81'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# FIXME! get it from env var?
+DEBUG = getenv('UWSAPP_DEBUG', 'off') == 'on'
 
 # FIXME! get it from env var?
 ALLOWED_HOSTS = []

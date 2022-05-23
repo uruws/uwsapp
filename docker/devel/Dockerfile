@@ -15,6 +15,7 @@ USER uws:uws
 
 ENV USER uws
 ENV HOME /home/uws
+ENV UWSAPP_DEBUG on
 
 WORKDIR ${UWSAPP_HOME}
 ENTRYPOINT /usr/local/bin/uws-login.sh
