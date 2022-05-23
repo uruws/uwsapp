@@ -10,7 +10,7 @@ ENV USER root
 ENV HOME /root
 
 RUN /root/bin/apt-install.sh python3 uwsgi-plugin-python3 \
-	sqlite3 python3-django
+	pwgen sqlite3 python3-django
 
 RUN /usr/bin/python3 -m django --version
 
