@@ -34,9 +34,9 @@ SECRET_KEY = __secret
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv('UWSAPP_DEBUG', 'off') == 'on'
 
-# FIXME! get it from env var?
 ALLOWED_HOSTS = []
-
+if not DEBUG:
+	ALLOWED_HOSTS = [getenv('UWSAPP_HOST', 'localhost')]
 
 # Application definition
 
