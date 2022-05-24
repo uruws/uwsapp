@@ -9,8 +9,8 @@ rm -f .coverage
 python3-coverage erase
 python3-coverage run --omit "${omit}" "./${app}/manage.py" test -p '*_test.py' "${@}"
 
-install -vd -m 0750 /opt/uws/tmp/htmlcov
-covd="/opt/uws/tmp/htmlcov/${app}"
+covd="/opt/uwsapp/tmp/htmlcov/${app}"
+install -vd -m 0750 "$(dirname ${covd})"
 rm -rf "${covd}"
 
 python3-coverage report
