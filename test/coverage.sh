@@ -2,7 +2,7 @@
 set -eu
 
 app="${1:?'app?'}"
-omit='/usr/lib/*,_skel/*,./*/manage.py'
+omit='/usr/lib/*,_skel/*,./*/manage.py,./*/*/settings.py'
 
 rm -f .coverage
 
