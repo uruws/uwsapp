@@ -8,6 +8,6 @@ echo '*** ./test/typecheck.sh'
 ./test/typecheck.sh
 
 echo '*** ./test/coverage.sh api'
-./test/coverage.sh api --no-color
+./test/coverage.sh api -v2 --no-color
 
 exit 0
