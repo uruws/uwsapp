@@ -4,8 +4,9 @@
 """uwsauth URLs"""
 
 from django.urls import path
-from uwsauth     import views
+
+from . import views
 
 urlpatterns = [
-	path('', views.index, name='auth'),
+	path('', views.index, name='index'),
 ]

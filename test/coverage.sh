@@ -7,7 +7,7 @@ omit='/usr/lib/*,_skel/*,./*/manage.py,./*/*/settings.py'
 rm -f .coverage
 
 python3-coverage erase
-python3-coverage run --omit "${omit}" "./${app}/manage.py" test "${@}"
+python3-coverage run --omit "${omit}" "./${app}/manage.py" test -p '*_test.py' "${@}"
 
 install -vd -m 0750 /opt/uws/tmp/htmlcov
 covd="/opt/uws/tmp/htmlcov/${app}"
