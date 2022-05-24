@@ -9,7 +9,8 @@ WORKDIR /root
 ENV USER root
 ENV HOME /root
 
-RUN /root/bin/apt-install.sh less shellcheck python3-doc
+RUN /root/bin/apt-install.sh less shellcheck python3-doc \
+	python3-coverage mypy
 
 USER uws:uws
 
