@@ -1,8 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.http import HttpRequest
-from django.http import HttpResponse
+from django.http import JsonResponse
 
-def index(req: HttpRequest):
-	return HttpResponse('index')
+def index(req):
+	return JsonResponse(dict(testing = 'test0'))
