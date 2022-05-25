@@ -5,6 +5,8 @@ from os         import getenv
 from pathlib    import Path
 from subprocess import getoutput
 
+APPNAME = 'app'
+
 __unset = '__UNSET__'
 
 __secret_key = getenv('UWSAPP_SECRET', __unset)
@@ -31,4 +33,4 @@ def DBDIR() -> Path:
 	return Path(_getenv('UWSAPP_DATADIR', '/var/opt/uwsapp'))
 
 def DBNAME() -> str:
-	return _getenv('UWSAPP_DBNAME',  'api.db')
+	return _getenv('UWSAPP_DBNAME',  '%s.db' % APPNAME)

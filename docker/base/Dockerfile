@@ -24,6 +24,7 @@ ENV HOME /home/uwsops
 ENV UWSAPP_HOME /opt/uwsapp
 ENV UWSAPP_PORT 3000
 ENV UWSAPP_WORKERS 3
+ENV PYTHONPATH /opt/uwsapp/core
 
 USER uws:uws
 
@@ -33,6 +34,7 @@ ENV HOME /home/uws
 ENV UWSAPP_HOME /opt/uwsapp
 ENV UWSAPP_PORT 3000
 ENV UWSAPP_WORKERS 3
+ENV PYTHONPATH /opt/uwsapp/core
 
 COPY --chown=uws:uwsops ./bin/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod -v 0750  /usr/local/bin/entrypoint.sh
