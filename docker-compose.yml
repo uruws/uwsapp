@@ -15,11 +15,11 @@ services:
       - ./data:/var/opt/uwsapp
     entrypoint: /opt/uwsapp/run.sh web
     environment:
-      - UWSAPP_PORT=3000
+      - UWSAPP_PORT=5100
     read_only: true
     restart: "no"
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:5100:5100"
     networks:
       - uwsapp
 

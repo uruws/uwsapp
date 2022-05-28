@@ -8,4 +8,5 @@ exec docker run -it --rm --name uwsapp-devel \
 	-v ${PWD}:/opt/uwsapp \
 	-v ${PWD}/tmp:/opt/uwsapp/tmp \
 	-v ${PWD}/data:/var/opt/uwsapp \
+	-p 127.0.0.1:3000:3000 \
 	uwsapp/devel
