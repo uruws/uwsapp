@@ -13,7 +13,7 @@ services:
       - ./:/opt/uwsapp
       - ./tmp:/opt/uwsapp/tmp
       - ./data:/var/opt/uwsapp
-    entrypoint: /opt/uwsapp/run.sh web
+    entrypoint: /opt/uwsapp/run.sh api
     environment:
       - UWSAPP_PORT=5100
     read_only: true
