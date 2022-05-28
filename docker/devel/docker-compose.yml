@@ -5,14 +5,13 @@ services:
 
   uwsapi:
     image: uwsapp/devel
-    build: ./docker/devel
     container_name: uwsapi-devel
     hostname: uwsapi
     user: uws
     volumes:
-      - ./:/opt/uwsapp
-      - ./tmp:/opt/uwsapp/tmp
-      - ./data:/var/opt/uwsapp
+      - ../../:/opt/uwsapp
+      - ../../tmp:/opt/uwsapp/tmp
+      - ../../data:/var/opt/uwsapp
     entrypoint: /opt/uwsapp/run.sh api
     environment:
       - UWSAPP_PORT=5100
@@ -29,9 +28,9 @@ services:
     hostname: uwsweb
     user: uws
     volumes:
-      - ./:/opt/uwsapp
-      - ./tmp:/opt/uwsapp/tmp
-      - ./data:/var/opt/uwsapp
+      - ../../:/opt/uwsapp
+      - ../../tmp:/opt/uwsapp/tmp
+      - ../../data:/var/opt/uwsapp
     entrypoint: /opt/uwsapp/run.sh web
     environment:
       - UWSAPP_PORT=5000
