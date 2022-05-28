@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-def index(req):
-	return render(req, 'uwsweb/index.html')
+class Index(TemplateView):
+	template_name = 'uwsweb/index.html'
