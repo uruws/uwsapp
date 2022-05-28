@@ -1,0 +1,44 @@
+# https://docs.docker.com/compose/compose-file/
+# https://github.com/compose-spec/compose-spec/blob/master/spec.md#services-top-level-element
+
+services:
+
+  uwsapi:
+    image: uwsapp/devel
+    build: ./docker/devel
+    container_name: uwsapi-devel
+    hostname: uwsapi
+    user: uws
+    volumes:
+      - ./:/opt/uwsapp
+      - ./tmp:/opt/uwsapp/tmp
+      - ./data:/var/opt/uwsapp
+    entrypoint: /opt/uwsapp/run.sh web
+    read_only: true
+    restart: 'no'
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks:
+      - uwsapp
+
+  uwsweb:
+    image: uwsapp/devel
+    container_name: uwsweb-devel
+    hostname: uwsweb
+    user: uws
+    volumes:
+      - ./:/opt/uwsapp
+      - ./tmp:/opt/uwsapp/tmp
+      - ./data:/var/opt/uwsapp
+    entrypoint: /opt/uwsapp/run.sh web
+    read_only: true
+    restart: 'no'
+    ports:
+      - "127.0.0.1:5000:5000"
+    networks:
+      - uwsapp
+    depends_on:
+      - uwsapi
+
+networks:
+  uwsapp: {}
