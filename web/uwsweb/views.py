@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def index(req):
-	return HttpResponse('index')
+	return render(req, 'uwsweb/index.html')
