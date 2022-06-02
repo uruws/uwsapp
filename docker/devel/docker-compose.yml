@@ -3,6 +3,27 @@
 
 services:
 
+  nginx:
+    image: uwsapp/nginx
+    container_name: uwsapp-nginx
+    hostname: nginx
+    user: root
+    volumes:
+      - ../../tmp:/opt/uwsapp/tmp
+      - ../../data:/var/opt/uwsapp
+      - type: tmpfs
+        target: /var/log/nginx
+      - type: tmpfs
+        target: /var/tmp/nginx
+      - type: tmpfs
+        target: /run
+    read_only: true
+    restart: "no"
+    ports:
+      - "127.0.0.1:8443:443"
+    networks:
+      - uwsapp
+
   uwsapi:
     image: uwsapp/devel
     container_name: uwsapi-devel
@@ -21,6 +42,8 @@ services:
       - "127.0.0.1:5100:5100"
     networks:
       - uwsapp
+    depends_on:
+      - nginx
 
   uwsweb:
     image: uwsapp/devel
