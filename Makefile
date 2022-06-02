@@ -9,8 +9,12 @@ build:
 	@./docker/base/build.sh
 
 .PHONY: devel
-devel:
+devel: nginx
 	@./docker/devel/build.sh
+
+.PHONY: nginx
+nginx:
+	@./docker/nginx/build.sh
 
 .PHONY: prune
 prune:
