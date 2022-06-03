@@ -14,9 +14,6 @@ RUN /root/bin/apt-install.sh less ssl-cert nginx
 RUN rm -vf /etc/nginx/sites-enabled/default
 COPY --chown=root:root ./etc/devel.conf /etc/nginx/sites-enabled/default
 
-COPY --chown=root:root ./bin/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod -v 0555 /usr/local/bin/entrypoint.sh
-
 RUN install -v -d -m 0755 -o root -g root /var/tmp/nginx
 
 ENV CAROOT /usr/local/etc/ca
@@ -38,7 +35,10 @@ RUN touch /usr/local/etc/ca/index.txt.attr
 RUN HOME=/usr/local/etc /usr/local/bin/ca-client.sh devel@uwsapp.local
 RUN HOME=/usr/local/etc /usr/local/bin/ca-cert.sh uwsapp.local
 
+COPY --chown=root:root ./etc/uwscache.conf /etc/nginx/snippets/uwscache.conf
 COPY --chown=root:root ./etc/devel-ssl.conf /etc/nginx/sites-enabled/default-ssl
 
-RUN /usr/sbin/nginx -t
+COPY --chown=root:root ./bin/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod -v 0555 /usr/local/bin/entrypoint.sh
+
 ENTRYPOINT /usr/local/bin/entrypoint.sh

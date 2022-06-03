@@ -9,6 +9,7 @@ exec docker run -it --rm --name uwsapp-nginx \
 	-v ${PWD}/data:/var/opt/uwsapp \
 	--tmpfs /var/log/nginx \
 	--tmpfs /var/tmp/nginx \
+	--tmpfs /var/lib/nginx \
 	--tmpfs /run \
 	-p 127.0.0.1:8443:443 \
 	--entrypoint /bin/bash \
