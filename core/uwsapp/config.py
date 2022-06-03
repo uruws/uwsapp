@@ -1,9 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from os         import getenv
-from pathlib    import Path
-from subprocess import getoutput
+from os           import getenv
+from pathlib      import Path
+from subprocess   import getoutput
+from urllib.parse import urljoin
 
 APPNAME = 'app'
 
@@ -34,3 +35,10 @@ def DBDIR() -> Path:
 
 def DBNAME() -> str:
 	return _getenv('UWSAPP_DBNAME',  '%s.db' % APPNAME)
+
+__url_base = _getenv('UWSAPP_URL', '')
+
+def URL(path: str = '') -> str:
+	if __url_base == '':
+		return path
+	return urljoin(__url_base, path)

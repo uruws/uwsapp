@@ -21,10 +21,12 @@ from django.contrib import admin
 from django.urls    import include
 from django.urls    import path
 
+from uwsapp.config import URL
+
 from . import views
 
 urlpatterns = [
-	path('auth/', include('uwsauth.urls')),
-	path('admin/', admin.site.urls),
-	path('', views.index, name='index'),
+	path(URL('auth/'), include('uwsauth.urls')),
+	path(URL('admin/'), admin.site.urls),
+	path(URL(''), views.index, name='index'),
 ]
