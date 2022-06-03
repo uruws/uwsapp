@@ -26,7 +26,7 @@ from uwsapp.config import URL
 from . import views
 
 urlpatterns = [
-	path(URL('auth/'), include('uwsauth.urls')),
-	path(URL('admin/'), admin.site.urls),
-	path(URL(''), views.index, name='index'),
+	path(URL('auth/'), include('uwsauth.urls'), name = 'auth'),
+	path(URL('admin/'), admin.site.urls, name = 'admin'),
+	path(URL(''), views.index, name = 'index'),
 ]
