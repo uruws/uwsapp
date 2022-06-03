@@ -13,8 +13,13 @@ def index(req):
 	return resp
 
 def _debug(req):
-	d = dict()
+	d = dict(
+		environ = dict(),
+		headers = dict(),
+	)
 	for k in sorted(environ.keys()):
-		d[k] = environ.get(k)
+		d['environ'][k] = environ.get(k)
+	for k in sorted(req.headers.keys()):
+		d['headers'][k] = req.headers.get(k)
 	resp = JsonResponse(d)
 	return resp
