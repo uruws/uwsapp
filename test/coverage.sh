@@ -4,6 +4,8 @@ set -eu
 app="${1:?'app?'}"
 omit='/usr/lib/*,_skel/*,./*/manage.py,./*/*/settings.py,core/uwsapp/*'
 
+export UWSAPP_DEBUG='off'
+
 rm -f .coverage
 
 python3-coverage erase
