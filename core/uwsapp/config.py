@@ -18,7 +18,7 @@ def SECRET_KEY() -> str:
 	return __secret_key
 
 def _getenv(name: str, default) -> str:
-	val = getenv(name, default)
+	val = getenv(name, __unset)
 	if val is __unset:
 		val = str(default)
 	return val
@@ -36,9 +36,9 @@ def DBDIR() -> Path:
 def DBNAME() -> str:
 	return _getenv('UWSAPP_DBNAME',  '%s.db' % APPNAME)
 
-__url_base = _getenv('UWSAPP_URL', '')
+_url_base = _getenv('UWSAPP_URL', '')
 
 def URL(path: str = '') -> str:
-	if __url_base == '':
+	if _url_base == '':
 		return path
-	return urljoin(__url_base, path)
+	return urljoin(_url_base, path)

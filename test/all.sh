@@ -7,6 +7,9 @@ echo '*** ./test/shellcheck.sh'
 echo '*** ./test/typecheck.sh'
 ./test/typecheck.sh
 
+echo '*** ./core/coverage.sh'
+./core/coverage.sh
+
 echo '*** ./test/coverage.sh api'
 ./test/coverage.sh api
 
