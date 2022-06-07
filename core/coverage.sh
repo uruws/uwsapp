@@ -4,9 +4,11 @@ set -eu
 export UWSAPP_DEBUG='off'
 
 rm -f .coverage
-
 python3-coverage erase
-python3-coverage run ./core/*/*_test.py
+
+for fn in ./core/*/*_test.py; do
+	python3-coverage run --append "${fn}"
+done
 
 covd=/opt/uwsapp/tmp/htmlcov/core
 install -vd -m 0750 "$(dirname ${covd})"
