@@ -106,6 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
 	},
 ]
 
+# Auth backends
+# https://docs.djangoproject.com/en/3.2/ref/settings/#std-setting-AUTHENTICATION_BACKENDS
+AUTHENTICATION_BACKENDS = [
+	'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
