@@ -9,6 +9,6 @@ class AuthViewsTests(TestCase):
 
 	def test_login(t):
 		resp = t.client.get('/auth/login')
-		t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.assertEqual(resp.status_code, HTTPStatus.BAD_REQUEST)
 		respdata = resp.json()
 		t.assertEqual(len(respdata), 0)
