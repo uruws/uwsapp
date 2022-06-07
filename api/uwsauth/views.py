@@ -3,5 +3,5 @@
 
 from django.http import JsonResponse
 
-def index(req):
-	return JsonResponse(dict(testing = 'test0'))
+def login(req):
+	return JsonResponse(dict())

@@ -4,12 +4,14 @@
 from django.http import JsonResponse
 from os          import environ
 
+from http import HTTPStatus
+
 from uwsapp import config
 
 def index(req):
 	if config.DEBUG(): return _debug(req)
 	resp = JsonResponse(dict())
-	resp.status_code = 404
+	resp.status_code = HTTPStatus.NOT_FOUND
 	return resp
 
 def _debug(req):
