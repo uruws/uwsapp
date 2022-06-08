@@ -19,3 +19,7 @@ nginx:
 .PHONY: prune
 prune:
 	@docker system prune -f
+
+.PHONY: check
+check:
+	@./docker/devel/check.sh
