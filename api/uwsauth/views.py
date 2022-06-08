@@ -4,6 +4,8 @@
 from django.contrib.auth import authenticate
 from django.http         import JsonResponse
 
+from django.contrib.sessions.backends.db import SessionStore
+
 from http import HTTPStatus
 
 def login(req):
@@ -20,8 +22,11 @@ def login(req):
 			resp.status_code = HTTPStatus.UNAUTHORIZED
 			return resp
 		else:
+			sess = SessionStore()
+			sess['username'] = username
+			sess.create()
 			resp = JsonResponse(dict(
-				username = username,
+				session = sess.session_key,
 			))
 			return resp
 	resp = JsonResponse(dict())
