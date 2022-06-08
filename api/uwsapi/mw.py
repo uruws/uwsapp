@@ -32,6 +32,8 @@ class ApiMiddleware:
 	def __call__(mw, req):
 		if req.path == settings.LOGIN_URL:
 			resp = mw.get_resp(req)
+		elif req.path.startswith('/admin/'):
+			resp = mw.get_resp(req)
 		else:
 			resp = mw.__auth(req)
 		resp.headers['Server'] = 'uwsapi'
