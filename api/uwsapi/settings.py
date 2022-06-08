@@ -109,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = [
 	'django.contrib.auth.backends.ModelBackend',
 	'uwsapp.auth.AuthBackend',
+	'uwsauth.backend.AuthBackend',
 ]
 
 LOGIN_URL = "/%s" % config.URL('auth/login')
