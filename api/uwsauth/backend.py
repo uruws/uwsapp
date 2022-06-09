@@ -3,8 +3,9 @@
 
 from django.contrib.auth.backends import BaseBackend
 
-from uuid import NAMESPACE_DNS
-from uuid import uuid5
+from pathlib import Path
+from uuid    import NAMESPACE_DNS
+from uuid    import uuid5
 
 from uwsapp import log
 
@@ -23,6 +24,18 @@ class AuthBackend(BaseBackend):
 			return None
 		uid = _user_uuid(username)
 		log.debug('uid:', uid)
+		return b.__load_user(uid, username, password)
+
+	def __load_user(b, uid: str, username: str, password: str):
+		fn = Path('/run/uwscli/auth/%s/meta.json' % uid)
+		pwfn = Path('/run/uwscli/auth/%s/password' % uid)
+		if fn.is_file() and not fn.is_symlink():
+			if pwfn.is_file() and not pwfn.is_symlink():
+				pass
+			else:
+				log.error('%s: file not found or is a symlink' % pwfn)
+		else:
+			log.error('%s: file not found or is a symlink' % fn)
 		return None
 
 	def get_user(b, user_id: str):
