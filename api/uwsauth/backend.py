@@ -1,7 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+import json
+
 from django.contrib.auth.backends import BaseBackend
+from django.contrib.auth.models   import User
 
 from hashlib import pbkdf2_hmac
 from pathlib import Path
@@ -30,38 +33,45 @@ class AuthBackend(BaseBackend):
 			return None
 		uid = _user_uuid(username)
 		log.debug('uid:', uid)
-		return b.__load_user(uid, username, password)
+		return b.__check_credentials(uid, username, password)
 
-	def __load_user(b, uid: str, username: str, password: str):
+	def __check_credentials(b, uid: str, username: str, password: str):
 		fn = Path('/run/uwscli/auth/%s/meta.json' % uid)
 		pwfn = Path('/run/uwscli/auth/%s/password' % uid)
 		if fn.is_file() and not fn.is_symlink():
 			if pwfn.is_file() and not pwfn.is_symlink():
 				try:
-					if b.__check_password(pwfn, password):
-						pass
+					if b.__check_password(uid, pwfn, password):
+						return b.__load_user(uid, fn, username)
 					else:
-						log.error('%s: invalid password' % username)
+						log.error('%s: invalid password' % uid)
 				except Exception as err:
-					log.error('could not read password file:', err)
+					log.error('check user credentials:', err)
 			else:
 				log.error('%s: file not found or is a symlink' % pwfn)
 		else:
 			log.error('%s: file not found or is a symlink' % fn)
 		return None
 
-	def __check_password(b, fn: Path, password: str) -> bool:
+	def __check_password(b, uid: str, fn: Path, password: str) -> bool:
 		pw = fn.read_text().strip()
-		log.debug('auth password:', pw)
 		upw = _user_password(password)
-		log.debug('user password:', upw)
 		if pw == upw:
 			return True
+		log.debug(uid, 'auth password:', pw)
+		log.debug(uid, 'user password:', upw)
 		return False
 
-	def get_user(b, user_id: str):
-		log.debug('user_id:', user_id)
-		user_id = user_id.strip()
-		if user_id == '':
+	def __load_user(b, uid: str, fn: Path, username: str):
+		u = None
+		with open(fn, 'r') as fh:
+			u = json.load(fh)
+		try:
+			if u['username'] != username:
+				log.error('%s: auth info mismatch' % uid)
+				return None
+		except KeyError:
+			log.error('%s: invalid auth info' % uid)
 			return None
-		return None
+		log.print('auth:', uid)
+		return User(username = username)
