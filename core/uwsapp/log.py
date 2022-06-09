@@ -31,10 +31,6 @@ def print(*args: Union[list[Any], Any], sep: str = ' '):
 	if _log:
 		_print(*args, sep = sep, fh = _outfh)
 
-def info(*args: Union[list[Any], Any]):
-	"""print log messages to stdout (even if log is 'off')"""
-	_print(*args, fh = _outfh)
-
 def debug(*args: Union[list[Any], Any]):
 	"""print debug messages to stdout"""
 	if _debug:
@@ -42,4 +38,4 @@ def debug(*args: Union[list[Any], Any]):
 
 def error(*args: Union[list[Any], Any]):
 	"""print log messages to stderr"""
-	_print(*args, fh = _errfh)
+	_print('[ERROR]', *args, fh = _errfh)
