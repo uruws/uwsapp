@@ -1,14 +1,13 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from datetime import datetime
-
 from django.contrib.auth import authenticate
 from django.http         import JsonResponse
 
 from django.contrib.sessions.backends.db import SessionStore
 
 from http import HTTPStatus
+from time import time
 
 def login(req):
 	if req.method == 'POST':
@@ -27,7 +26,7 @@ def login(req):
 			sess = SessionStore()
 			sess.create()
 			sess['username'] = username
-			sess['last_login'] = datetime.now()
+			sess['last_seen'] = time()
 			sess.set_expiry(3600) # after one hour of inactivity
 			sess.save()
 			return JsonResponse({'session': sess.session_key})

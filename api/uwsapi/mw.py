@@ -1,14 +1,13 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from datetime import datetime
-
 from django.conf import settings
 from django.http import JsonResponse
 
 from django.contrib.sessions.backends.db import SessionStore
 
 from http import HTTPStatus
+from time import time
 
 from uwsapp import log
 
@@ -44,8 +43,16 @@ class ApiMiddleware:
 			return _unauth()
 		req.session = sess
 		log.debug('req.session:', req.session.session_key)
+		try:
+			last_seen = req.session['last_seen']
+		except KeyError:
+			log.debug('corrupted session:', sess_id)
+			log.debug('delete corrupted session:', sess_id)
+			req.session.delete()
+			return _unauth()
+		log.debug(sess_id, 'last seen:', last_seen)
 		# TODO: check the user from the session['username'] still exists
-		req.session['last_seen'] = datetime.now()
+		req.session['last_seen'] = time()
 		req.session.save()
 		return mw.get_resp(req)
 
