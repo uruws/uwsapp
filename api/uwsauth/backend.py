@@ -75,3 +75,10 @@ class AuthBackend(BaseBackend):
 		uid = _user_uuid(username)
 		log.debug('uid:', uid)
 		return _check_credentials(uid, username, password)
+
+	def get_user(b, user_id):
+		log.debug('user_id:', user_id)
+		try:
+			return User.objects.get(pk = user_id)
+		except User.DoesNotExist:
+			return None

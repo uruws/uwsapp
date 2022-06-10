@@ -1,8 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.contrib.auth import authenticate
-from django.http         import JsonResponse
+from django.contrib.auth          import authenticate
+from django.contrib.auth.models   import User
+from django.http                  import JsonResponse
 
 from django.contrib.sessions.backends.db import SessionStore
 
@@ -23,6 +24,11 @@ def login(req):
 			resp.status_code = HTTPStatus.UNAUTHORIZED
 			return resp
 		else:
+			try:
+				u = User.objects.get(username = username)
+			except User.DoesNotExist:
+				u = User(username = username)
+				user.save()
 			sess = SessionStore()
 			sess.create()
 			sess['username'] = username

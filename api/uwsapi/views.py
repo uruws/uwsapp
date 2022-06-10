@@ -10,6 +10,7 @@ from uwsapp import config
 from uwsapp import log
 
 def index(req):
+	log.debug('username:', req.user)
 	if config.DEBUG(): return _debug(req)
 	resp = JsonResponse(dict())
 	resp.status_code = HTTPStatus.NOT_FOUND

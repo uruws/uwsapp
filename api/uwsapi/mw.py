@@ -4,6 +4,7 @@
 from django.conf import settings
 from django.http import JsonResponse
 
+from django.contrib.auth.models          import User
 from django.contrib.sessions.backends.db import SessionStore
 
 from http import HTTPStatus
@@ -52,6 +53,23 @@ class ApiMiddleware:
 			return _unauth()
 		log.debug(sess_id, 'last seen:', last_seen)
 		# TODO: check the user from the session['username'] still exists
+		try:
+			username = req.session['username']
+		except KeyError:
+			log.debug('invalid session:', sess_id, 'no username')
+			log.debug('delete invalid session:', sess_id)
+			req.session.delete()
+			return _unauth()
+		log.debug(sess_id, 'load username:', username)
+		log.debug(sess_id, 'req.user:', req.user)
+		try:
+			u = User.objects.get(username = username)
+		except User.DoesNotExist:
+			u = User(username = username)
+			user.save()
+		req.user = u
+		log.debug(sess_id, 'req.user:', req.user)
+		log.debug('save session:', sess_id)
 		req.session['last_seen'] = time()
 		req.session.save()
 		return mw.get_resp(req)
