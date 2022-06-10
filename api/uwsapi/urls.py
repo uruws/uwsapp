@@ -27,6 +27,7 @@ from . import views
 
 urlpatterns = [
 	path(URL('auth/'), include('uwsauth.urls'), name = 'auth'),
+	path(URL('help/'), include('uwshelp.urls'), name = 'auth'),
 	path(URL('admin/'), admin.site.urls, name = 'admin'),
 	path(URL(''), views.index, name = 'index'),
 ]
