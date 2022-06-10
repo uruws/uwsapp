@@ -10,6 +10,7 @@ class AuthBackend(BaseBackend):
 	def authenticate(b, request, username = None, password = None):
 		log.debug('req:', request)
 		log.debug('username:', username)
+		log.debug('session:', request.session.session_key)
 		return None
 
 	def get_user(b, user_id):

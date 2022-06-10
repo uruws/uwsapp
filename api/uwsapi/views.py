@@ -7,6 +7,7 @@ from os          import environ
 from http import HTTPStatus
 
 from uwsapp import config
+from uwsapp import log
 
 def index(req):
 	if config.DEBUG(): return _debug(req)

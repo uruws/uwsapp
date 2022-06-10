@@ -23,11 +23,21 @@ class ApiMiddleware:
 		log.debug('session:', sess_id)
 		if sess_id == '':
 			return _unauth()
-		sess = SessionStore(session_key = sess_id)
-		log.debug('empty session:', sess.is_empty())
-		if sess.is_empty():
+		log.debug('req.session:', req.session.session_key)
+		log.debug('clear expired sessions')
+		req.session.clear_expired()
+		if not req.session.exists(sess_id):
+			log.debug('session not found:', sess_id)
 			return _unauth()
-		return mw.get_resp(req, sess = sess)
+		sess = SessionStore(session_key = sess_id)
+		if sess.is_empty():
+			log.debug('empty session:', sess_id)
+			log.debug('delete empty session:', sess_id)
+			sess.delete()
+			return _unauth()
+		req.session = sess
+		log.debug('req.session:', req.session.session_key)
+		return mw.get_resp(req)
 
 	def __call__(mw, req):
 		if req.path == settings.LOGIN_URL:
