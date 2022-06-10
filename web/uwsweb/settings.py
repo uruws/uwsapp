@@ -61,7 +61,7 @@ TEMPLATES = [
 	{
 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
 		'DIRS': [
-			BASE_DIR / 'templates',
+			BASE_DIR.parent / 'core' / 'templates',
 		],
 		'APP_DIRS': True,
 		'OPTIONS': {
@@ -131,7 +131,7 @@ USE_TZ    = True
 
 STATIC_URL = '/%s' % config.URL('static/')
 STATICFILES_DIRS = [
-	BASE_DIR / 'static',
+	BASE_DIR.parent / 'core' / 'static',
 ]
 
 # Default primary key field type
