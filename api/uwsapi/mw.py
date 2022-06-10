@@ -10,6 +10,7 @@ from django.contrib.sessions.backends.db import SessionStore
 from http import HTTPStatus
 from time import time
 
+from uwsapp import config
 from uwsapp import log
 
 class ApiMiddleware:
@@ -79,7 +80,7 @@ class ApiMiddleware:
 		if req.path == settings.LOGIN_URL:
 			resp = mw.get_resp(req)
 		# ignore admin urls
-		elif req.path.startswith('/%s' % config.URL('admin/')):
+		elif req.path.startswith("/%s" % config.URL('admin/')):
 			resp = mw.get_resp(req)
 		# auth the rest
 		else:

@@ -112,6 +112,8 @@ AUTHENTICATION_BACKENDS = [
 	'django.contrib.auth.backends.ModelBackend',
 ]
 
+LOGIN_URL = "/%s" % config.URL('auth/login')
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Internationalization
