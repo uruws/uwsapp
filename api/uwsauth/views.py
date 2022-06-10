@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from datetime import datetime
+
 from django.contrib.auth import authenticate
 from django.http         import JsonResponse
 
@@ -18,17 +20,16 @@ def login(req):
 			password = None
 		user = authenticate(req, username = username, password = password)
 		if user is None:
-			resp = JsonResponse(dict())
+			resp = JsonResponse({})
 			resp.status_code = HTTPStatus.UNAUTHORIZED
 			return resp
 		else:
 			sess = SessionStore()
-			sess['username'] = username
 			sess.create()
-			resp = JsonResponse(dict(
-				session = sess.session_key,
-			))
-			return resp
-	resp = JsonResponse(dict())
+			sess['username'] = username
+			sess['last_login'] = datetime.now()
+			sess.save()
+			return JsonResponse({'session': sess.session_key})
+	resp = JsonResponse({})
 	resp.status_code = HTTPStatus.BAD_REQUEST
 	return resp
