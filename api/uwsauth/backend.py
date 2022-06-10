@@ -50,9 +50,12 @@ def _load_user(uid: str, fn: Path, username: str) -> Optional[User]:
 		log.debug(uid, 'create username:', username)
 		user = User(username = username)
 		user.save()
+	if not user.is_active:
+		log.error('%s: inactive user' % uid, username)
+		return None
 	return user
 
-def _check_credentials(uid: str, username: str, password: str):
+def _check_credentials(uid: str, username: str, password: str) -> Optional[User]:
 	fn = Path('/run/uwscli/auth/%s/meta.json' % uid)
 	pwfn = Path('/run/uwscli/auth/%s/password' % uid)
 	if fn.is_file() and not fn.is_symlink():
@@ -72,7 +75,7 @@ def _check_credentials(uid: str, username: str, password: str):
 
 class AuthBackend(BaseBackend):
 
-	def authenticate(b, request, username: str = None, password: str = None):
+	def authenticate(b, request, username: str = None, password: str = None) -> Optional[User]:
 		log.debug('username:', username)
 		if username is None or password is None:
 			return None
@@ -84,9 +87,14 @@ class AuthBackend(BaseBackend):
 		log.debug('uid:', uid)
 		return _check_credentials(uid, username, password)
 
-	def get_user(b, user_id):
+	def get_user(b, user_id) -> Optional[User]:
 		log.debug('user_id:', user_id)
+		user = None
 		try:
-			return User.objects.get(pk = user_id)
+			user = User.objects.get(pk = user_id)
 		except User.DoesNotExist:
 			return None
+		if not user.is_active:
+			log.error('inactive user:', user)
+			return None
+		return user

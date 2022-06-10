@@ -14,7 +14,7 @@ def _check_credentials(username: str, password: str) -> Optional[User]:
 
 class AuthBackend(BaseBackend):
 
-	def authenticate(b, request, username: str = None, password: str = None):
+	def authenticate(b, request, username: str = None, password: str = None) -> Optional[User]:
 		log.debug('username:', username)
 		if username is None or password is None:
 			return None
@@ -22,11 +22,16 @@ class AuthBackend(BaseBackend):
 		password = password.strip()
 		if username == '' or password == '':
 			return None
-		return _check_credentials(uid, username, password)
+		return _check_credentials(username, password)
 
-	def get_user(b, user_id):
+	def get_user(b, user_id) -> Optional[User]:
 		log.debug('user_id:', user_id)
+		user = None
 		try:
-			return User.objects.get(pk = user_id)
+			user = User.objects.get(pk = user_id)
 		except User.DoesNotExist:
 			return None
+		if not user.is_active:
+			log.error('inactive user:', user)
+			return None
+		return user
