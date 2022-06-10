@@ -45,6 +45,7 @@ class ApiMiddleware:
 			return _unauth()
 		req.session = sess
 		log.debug('req.session:', req.session.session_key)
+		# check for corrupted session (if settings.SECRET changed or similar)
 		try:
 			last_seen = req.session['last_seen']
 		except KeyError:
@@ -54,6 +55,7 @@ class ApiMiddleware:
 			return _unauth()
 		log.debug(sess_id, 'last seen:', last_seen)
 		# TODO: check the user from the session['username'] still exists
+		# set request user
 		try:
 			username = req.session['username']
 		except KeyError:
@@ -70,11 +72,18 @@ class ApiMiddleware:
 			log.debug('delete invalid session:', sess_id)
 			req.session.delete()
 			return _unauth()
+		if not u.is_active:
+			log.error('invalid session:', sess_id, 'inactive user:', u)
+			log.debug('delete invalid session:', sess_id)
+			req.session.delete()
+			return _unauth()
 		req.user = u
 		log.debug(sess_id, 'req.user:', req.user)
+		# save session
 		log.debug('save session:', sess_id)
 		req.session['last_seen'] = time()
 		req.session.save()
+		# process request
 		return mw.get_resp(req)
 
 	def __call__(mw, req):
