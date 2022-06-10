@@ -73,6 +73,20 @@ def _check_credentials(uid: str, username: str, password: str) -> Optional[User]
 		log.error('%s: file not found or is a symlink' % fn)
 	return None
 
+def check_user(username: str) -> str:
+	uid = _user_uuid(username)
+	fn = Path('/run/uwscli/auth/%s/meta.json' % uid)
+	pwfn = Path('/run/uwscli/auth/%s/password' % uid)
+	if fn.is_file() and not fn.is_symlink():
+		if pwfn.is_file() and not pwfn.is_symlink():
+			if _load_user(uid, fn, username) is not None:
+				return uid
+		else:
+			log.error('%s: file not found or is a symlink' % pwfn)
+	else:
+		log.error('%s: file not found or is a symlink' % fn)
+	return ''
+
 class AuthBackend(BaseBackend):
 
 	def authenticate(b, request, username: str = None, password: str = None) -> Optional[User]:

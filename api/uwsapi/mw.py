@@ -13,6 +13,8 @@ from time import time
 from uwsapp import config
 from uwsapp import log
 
+from uwsauth import backend
+
 class ApiMiddleware:
 
 	def __init__(mw, get_resp):
@@ -54,7 +56,6 @@ class ApiMiddleware:
 			req.session.delete()
 			return _unauth()
 		log.debug(sess_id, 'last seen:', last_seen)
-		# TODO: check the user from the session['username'] still exists
 		# set request user
 		try:
 			username = req.session['username']
@@ -63,6 +64,7 @@ class ApiMiddleware:
 			log.debug('delete invalid session:', sess_id)
 			req.session.delete()
 			return _unauth()
+		# load user from DB
 		log.debug(sess_id, 'load username:', username)
 		log.debug(sess_id, 'req.user:', req.user)
 		try:
@@ -72,10 +74,18 @@ class ApiMiddleware:
 			log.debug('delete invalid session:', sess_id)
 			req.session.delete()
 			return _unauth()
+		# check it is an actived user
 		if not u.is_active:
 			log.error('invalid session:', sess_id, 'inactive user:', u)
 			log.debug('delete invalid session:', sess_id)
 			req.session.delete()
+			return _unauth()
+		# check user still exists
+		if backend.check_user(username) == '':
+			log.error('invalid session:', sess_id, 'user does not exist anymore:', u)
+			log.print('deactivate user:', u)
+			u.is_active = False
+			u.save()
 			return _unauth()
 		req.user = u
 		log.debug(sess_id, 'req.user:', req.user)
