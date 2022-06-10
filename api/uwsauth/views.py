@@ -28,6 +28,7 @@ def login(req):
 			sess.create()
 			sess['username'] = username
 			sess['last_login'] = datetime.now()
+			sess.set_expiry(3600) # after one hour of inactivity
 			sess.save()
 			return JsonResponse({'session': sess.session_key})
 	resp = JsonResponse({})
