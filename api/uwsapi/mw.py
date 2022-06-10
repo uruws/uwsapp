@@ -66,8 +66,10 @@ class ApiMiddleware:
 		try:
 			u = User.objects.get(username = username)
 		except User.DoesNotExist:
-			u = User(username = username)
-			user.save()
+			log.error('invalid session:', sess_id, 'username not found:', username)
+			log.debug('delete invalid session:', sess_id)
+			req.session.delete()
+			return _unauth()
 		req.user = u
 		log.debug(sess_id, 'req.user:', req.user)
 		log.debug('save session:', sess_id)
@@ -85,6 +87,7 @@ class ApiMiddleware:
 		# auth the rest
 		else:
 			resp = mw.__auth(req)
+		# post
 		resp.headers['Server'] = 'uwsapi'
 		return resp
 

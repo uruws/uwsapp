@@ -3,6 +3,8 @@
 
 import json
 
+from typing import Optional
+
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.models   import User
 
@@ -30,7 +32,7 @@ def _check_password(uid: str, fn: Path, password: str) -> bool:
 	log.debug(uid, 'user password:', upw)
 	return False
 
-def _load_user(uid: str, fn: Path, username: str):
+def _load_user(uid: str, fn: Path, username: str) -> Optional[User]:
 	u = None
 	with open(fn, 'r') as fh:
 		u = json.load(fh)
@@ -42,7 +44,13 @@ def _load_user(uid: str, fn: Path, username: str):
 		log.error('%s: invalid auth info' % uid)
 		return None
 	log.print('auth:', uid)
-	return User(username = username)
+	try:
+		user = User.objects.get(username = username)
+	except User.DoesNotExist:
+		log.debug(uid, 'create username:', username)
+		user = User(username = username)
+		user.save()
+	return user
 
 def _check_credentials(uid: str, username: str, password: str):
 	fn = Path('/run/uwscli/auth/%s/meta.json' % uid)

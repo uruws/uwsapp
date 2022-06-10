@@ -24,11 +24,6 @@ def login(req):
 			resp.status_code = HTTPStatus.UNAUTHORIZED
 			return resp
 		else:
-			try:
-				u = User.objects.get(username = username)
-			except User.DoesNotExist:
-				u = User(username = username)
-				user.save()
 			sess = SessionStore()
 			sess.create()
 			sess['username'] = username
