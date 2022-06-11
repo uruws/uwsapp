@@ -1,9 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.contrib.auth          import authenticate
-from django.contrib.auth.models   import User
-from django.http                  import JsonResponse
+from django.contrib.auth        import authenticate
+from django.contrib.auth.models import User
+from django.http                import JsonResponse
 
 from django.contrib.sessions.backends.db import SessionStore
 

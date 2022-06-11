@@ -10,5 +10,6 @@ from uwsapp.config import URL
 from . import views
 
 urlpatterns = [
-	path(URL(''), views.Index.as_view(), name = 'index'),
+	path(URL('<path:path>'), views.Help.as_view(), name = 'help'),
+	path(URL(''), views.Index.as_view(), name = 'help-index'),
 ]
