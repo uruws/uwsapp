@@ -1,27 +1,27 @@
-## Request
+# Request
 
-POST /auth/login
+## POST /auth/login
 
-Content-Type: application/x-www-form-urlencoded
+Content-Type: *application/x-www-form-urlencoded*
 
 Args:
 
     username: string (user@example.com)
     password: string (not123456)
 
-## Response
+# Response
 
-### Status: 400 Bad Request
+## Status: 400 Bad Request
 
-Reason: bad or missing arguments, wrong request method
+Reason: invalid or missing arguments, wrong request method
 
-Content-Type: application/json
+Content-Type: *application/json*
 
 Content: `{}`
 
-### Status: 200 OK
+## Status: 200 OK
 
-Content-Type: application/json
+Content-Type: *application/json*
 
 Content:
 
