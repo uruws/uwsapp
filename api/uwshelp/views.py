@@ -3,6 +3,10 @@
 
 from django.views.generic import TemplateView
 
+from markdown2 import markdown_path
+
+from uwsapp import log
+
 class Index(TemplateView):
 	template_name = 'uwshelp/index.html'
 	http_method_names = ['get', 'head']
@@ -24,4 +28,14 @@ class Help(TemplateView):
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
 		d['title'] = v.__path
+		d['doc'] = _markdown(v.__path)
 		return d
+
+def _markdown(path: str) -> str:
+	doc = 'EMPTY'
+	try:
+		doc = markdown_path(path)
+	except Exception as err:
+		log.error(err)
+		doc = '<pre class="w3-container w3-red">ERROR: %s</pre>' % str(err)
+	return doc
