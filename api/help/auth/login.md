@@ -1,13 +1,30 @@
-* Request
-	* Method: POST
-	* Args:
-		* username: string
-		* password: string
+## Request
 
-* Response
-	* Status: 400 Bad Request
-		* Reason: bad or missing arguments, wrong request method
-		* Content: `{}`
+POST /auth/login
 
-	* Status: 200 OK
-		* Content: `{}`
+Content-Type: application/x-www-form-urlencoded
+
+Args:
+
+    username: string (user@example.com)
+    password: string (not123456)
+
+## Response
+
+### Status: 400 Bad Request
+
+Reason: bad or missing arguments, wrong request method
+
+Content-Type: application/json
+
+Content: `{}`
+
+### Status: 200 OK
+
+Content-Type: application/json
+
+Content:
+
+    {
+        "session": "9em9sz2ekm8h1hq01g8ga3prh7qehn0a",
+    }
