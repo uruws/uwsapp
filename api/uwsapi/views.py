@@ -31,6 +31,14 @@ def _debug(req: HttpRequest) -> JsonResponse:
 	resp = JsonResponse(d)
 	return resp
 
+def error404(req: HttpRequest, err: Exception) -> JsonResponse:
+	log.debug('error 404:', req)
+	log.error(err)
+	resp = JsonResponse(dict())
+	resp.status_code = HTTPStatus.NOT_FOUND
+	return resp
+
 def cmd(req: HttpRequest, name: str) -> JsonResponse:
+	log.debug('action:', name)
 	resp = JsonResponse(dict())
 	return resp

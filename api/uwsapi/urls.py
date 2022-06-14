@@ -32,3 +32,5 @@ urlpatterns = [
 	path(URL('admin/'), admin.site.urls),
 	path(URL(''), views.index, name = 'index'),
 ]
+
+handler404 = 'uwsapi.views.error404'
