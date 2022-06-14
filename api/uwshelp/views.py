@@ -4,7 +4,7 @@
 from django.conf          import settings
 from django.views.generic import TemplateView
 
-from markdown2 import markdown_path
+from markdown2 import markdown_path # type: ignore
 
 from uwsapp import log
 
