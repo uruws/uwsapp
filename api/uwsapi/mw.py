@@ -68,7 +68,7 @@ class ApiMiddleware:
 		log.debug(sess_id, 'load username:', username)
 		log.debug(sess_id, 'req.user:', req.user)
 		try:
-			u = User.objects.get(username = username)
+			u = User.objects.get(email = username)
 		except User.DoesNotExist:
 			log.error('invalid session:', sess_id, 'username not found:', username)
 			log.debug('delete invalid session:', sess_id)

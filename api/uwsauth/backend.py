@@ -37,18 +37,21 @@ def _load_user(uid: str, fn: Path, username: str) -> Optional[User]:
 	with open(fn, 'r') as fh:
 		u = json.load(fh)
 	try:
+		if u['name'] == '':
+			log.error('%s: auth info no user name' % uid)
+			return None
 		if u['username'] != username:
 			log.error('%s: auth info mismatch' % uid)
 			return None
-	except KeyError:
-		log.error('%s: invalid auth info' % uid)
+	except KeyError as err:
+		log.error('%s: invalid auth info:' % uid, err)
 		return None
 	log.print('auth:', uid)
 	try:
-		user = User.objects.get(username = username)
+		user = User.objects.get(email = username)
 	except User.DoesNotExist:
 		log.debug(uid, 'create username:', username)
-		user = User(username = username)
+		user = User(username = u['name'], email = username)
 		user.save()
 	if not user.is_active:
 		log.error('%s: inactive user' % uid, username)
