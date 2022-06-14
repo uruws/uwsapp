@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from django.conf          import settings
 from django.views.generic import TemplateView
 
 from markdown2 import markdown_path
@@ -27,14 +28,15 @@ class Help(TemplateView):
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
-		d['title'] = v.__path
+		d['title'] = '/%s' % v.__path
 		d['doc'] = _markdown(v.__path)
 		return d
 
 def _markdown(path: str) -> str:
 	doc = 'EMPTY'
+	fn = settings.BASE_DIR / 'help' / str('%s.md' % path)
 	try:
-		doc = markdown_path(path)
+		doc = markdown_path(fn)
 	except Exception as err:
 		log.error(err)
 		doc = '<pre class="w3-container w3-red">ERROR: %s</pre>' % str(err)
