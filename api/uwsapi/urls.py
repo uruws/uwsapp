@@ -26,6 +26,7 @@ from uwsapp.config import URL
 from . import views
 
 urlpatterns = [
+	path(URL('exec/<slug:name>'), views.cmd, name = 'exec'),
 	path(URL('auth/'), include('uwsauth.urls')),
 	path(URL('help/'), include('uwshelp.urls')),
 	path(URL('admin/'), admin.site.urls),
