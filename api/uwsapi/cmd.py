@@ -26,10 +26,18 @@ def view(req: HttpRequest, name: str) -> JsonResponse:
 		resp.status_code = HTTPStatus.BAD_REQUEST
 	return resp
 
-def _setenv(user: str):
-	e = {}
-	for n in ['HOME', 'HOSTNAME', 'PATH', 'USER']:
-		e[n] = environ.get(n, '')
+__env: dict[str, str] = {
+	'HOME':         environ.get('HOME', ''),
+	'HOSTNAME':     environ.get('HOSTNAME', ''),
+	'PATH':         environ.get('PATH', ''),
+	'USER':         environ.get('USER', ''),
+	'UWSAPP_DEBUG': environ.get('UWSAPP_DEBUG', ''),
+	'UWSAPP_HOME':  environ.get('UWSAPP_HOME', ''),
+	'UWSAPP_LOG':   environ.get('UWSAPP_LOG', ''),
+}
+
+def _setenv(user: str) -> dict[str, str]:
+	e = __env.copy()
 	e['NQDIR'] = '/run/uwsapp/nq/%s' % user
 	return e
 
