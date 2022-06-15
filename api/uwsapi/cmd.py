@@ -14,15 +14,17 @@ from uwsapp import log
 def view(req: HttpRequest, name: str) -> JsonResponse:
 	log.debug('username:', req.user)
 	log.debug('action:', name)
+	resp = None
 	if req.method == 'POST':
 		try:
 			app = req.POST['app']
+			resp = _exec(req, name, app)
 		except KeyError as err:
 			log.error(err)
-			resp = JsonResponse({})
-			resp.status_code = HTTPStatus.BAD_REQUEST
-			return resp
-	return _exec(req, name, app)
+	if resp is None:
+		resp = JsonResponse({})
+		resp.status_code = HTTPStatus.BAD_REQUEST
+	return resp
 
 def _setenv(user: str):
 	e = {}
