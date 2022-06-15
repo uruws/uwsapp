@@ -6,4 +6,5 @@ db.sqlite3
 .coverage
 
 /data
+/run
 /tmp
