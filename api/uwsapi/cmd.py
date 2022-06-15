@@ -27,9 +27,9 @@ def view(req: HttpRequest, name: str) -> JsonResponse:
 	return resp
 
 __env: dict[str, str] = {
+	'PATH':         '/usr/local/bin:/usr/bin:/bin',
 	'HOME':         environ.get('HOME', ''),
 	'HOSTNAME':     environ.get('HOSTNAME', ''),
-	'PATH':         environ.get('PATH', ''),
 	'USER':         environ.get('USER', ''),
 	'UWSAPP_DEBUG': environ.get('UWSAPP_DEBUG', ''),
 	'UWSAPP_HOME':  environ.get('UWSAPP_HOME', ''),
@@ -52,7 +52,7 @@ def _nq(user: str, cmd: str) -> str:
 def _exec(req: HttpRequest, name: str, app: str) -> JsonResponse:
 	user = req.user.username
 	log.debug('user:', user)
-	cmd = f"/usr/local/bin/apicmd.sh {user} {name} {app}"
+	cmd = f"apicmd.sh {user} {name} {app}"
 	log.debug(cmd)
 	try:
 		rundir = Path('/run/uwsapp/nq/%s' % user)
