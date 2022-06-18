@@ -9,6 +9,7 @@ build:
 	@./docker/base/build.sh
 	@./core/build.sh
 	@./api/build.sh
+	@./web/build.sh
 
 .PHONY: devel
 devel:
