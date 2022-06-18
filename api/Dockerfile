@@ -21,5 +21,7 @@ ENV HOME /home/uws
 RUN python3 --version \
 	&& python3 -m compileall /opt/uwsapp/api
 
+ENV UWSAPP_NAME api
+
 WORKDIR /opt/uwsapp
 ENTRYPOINT /usr/local/bin/entrypoint.sh
