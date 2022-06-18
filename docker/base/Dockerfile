@@ -43,4 +43,4 @@ COPY --chown=uws:uwsops ./bin/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod -v 0750  /usr/local/bin/entrypoint.sh
 
 WORKDIR /opt/uwsapp
-ENTRYPOINT /usr/local/bin/entrypoint.sh
+ENTRYPOINT /usr/sbin/nologin
