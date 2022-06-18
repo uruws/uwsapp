@@ -1,12 +1,10 @@
 .PHONY: default
 default: build
 
-.PHONY: all
-all: build devel
-
 .PHONY: build
 build:
 	@./docker/base/build.sh
+	@./docker/devel/build.sh
 	@./core/build.sh
 	@./api/build.sh
 	@./web/build.sh
@@ -14,11 +12,8 @@ build:
 .PHONY: devel
 devel:
 	@./docker/base/build.sh
-	@./docker/devel/build.sh
-
-.PHONY: nginx
-nginx:
 	@./docker/nginx/build.sh
+	@./docker/devel/build.sh
 
 .PHONY: clean
 clean:
