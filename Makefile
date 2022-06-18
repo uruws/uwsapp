@@ -7,9 +7,11 @@ all: build devel
 .PHONY: build
 build:
 	@./docker/base/build.sh
+	@./core/build.sh
 
 .PHONY: devel
-devel: nginx
+devel:
+	@./docker/base/build.sh
 	@./docker/devel/build.sh
 
 .PHONY: nginx
