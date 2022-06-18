@@ -16,6 +16,15 @@ devel: nginx
 nginx:
 	@./docker/nginx/build.sh
 
+.PHONY: clean
+clean:
+	@find . -type d -name __pycache__ | xargs rm -fr
+	@rm -f .coverage
+
+.PHONY: distclean
+distclean: clean
+	@rm -rf ./data ./run ./tmp
+
 .PHONY: prune
 prune:
 	@docker system prune -f
