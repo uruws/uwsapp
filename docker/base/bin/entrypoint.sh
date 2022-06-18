@@ -19,6 +19,8 @@ exec uwsgi \
 	--no-orphans \
 	--reload-on-exception \
 	--vacuum \
+	--enable-threads \
+	--thunder-lock \
 	--need-plugin			python3 \
 	--stats					127.0.0.1:9191 \
 	--max-apps				1 \
