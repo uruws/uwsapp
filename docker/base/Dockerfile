@@ -15,9 +15,6 @@ RUN /root/bin/apt-install.sh python3 uwsgi-plugin-python3 \
 RUN /usr/bin/python3 -m django --version
 
 RUN install -v -d -o uws -g uwsops -m 0750 /opt/uwsapp
-RUN install -v -d -o uws -g uwsops -m 0750 /opt/uwsapp/core
-RUN install -v -d -o uws -g uwsops -m 0750 /opt/uwsapp/api
-RUN install -v -d -o uws -g uwsops -m 0750 /opt/uwsapp/web
 
 USER uwsops:uwsops
 

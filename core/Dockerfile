@@ -9,6 +9,7 @@ WORKDIR /root
 ENV USER root
 ENV HOME /root
 
+RUN install -v -d -o uws -g uwsops -m 0750 /opt/uwsapp/core
 COPY --chown=uws:uwsops ./ /opt/uwsapp/core/
 RUN rm -vf /opt/uwsapp/core/Dockerfile /opt/uwsapp/core/.dockerignore
 
