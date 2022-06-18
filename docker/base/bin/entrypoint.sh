@@ -34,5 +34,3 @@ exec uwsgi \
 	--workers				"${UWSAPP_WORKERS}" \
 	--http11-socket			"0.0.0.0:${UWSAPP_PORT}" \
 	--chdir					"${UWSAPP_HOME}/${UWSAPP_NAME}"
-
-	#~ --threads				1 \
