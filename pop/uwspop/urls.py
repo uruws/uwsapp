@@ -25,6 +25,7 @@ from uwsapp.config import URL
 from . import views
 
 urlpatterns = [
+	path(URL('list/<slug:username>'), views.mbox_list, name = 'list'),
 	path(URL('admin/'), admin.site.urls, name = 'admin'),
 	path(URL(''), views.index, name = 'index'),
 ]
