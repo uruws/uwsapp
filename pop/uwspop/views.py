@@ -12,7 +12,7 @@ from uwsapp import log
 
 _hostname: str = 'NOHOSTNAME'
 _port:     int = -1
-_timeout:  int = -1
+_timeout:  int = 0
 
 def _loadenv():
 	global _hostname
