@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-"""CHANGEME URLs"""
+"""SKEL URLs"""
 
 from django.urls import path
 
