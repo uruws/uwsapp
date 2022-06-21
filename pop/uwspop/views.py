@@ -94,7 +94,7 @@ def _msg_content(msg):
 	log.debug('parse json')
 	return json.loads(s)
 
-def _mlist(username: str, pop: POP3_SSL, l: list[int], lmax: int = 0) -> JsonResponse:
+def _mlist(username: str, pop: POP3_SSL, l: list[int], lmax: int = 0, indent: int = 0) -> JsonResponse:
 	n = 0
 	_max = _lmax
 	if lmax > 0:
@@ -119,20 +119,30 @@ def _mlist(username: str, pop: POP3_SSL, l: list[int], lmax: int = 0) -> JsonRes
 		log.error(username, 'mbox_list:', err)
 		return _syserror()
 	log.debug('MLIST:', len(d), [i for i in d.keys()])
-	return JsonResponse(d)
+	params = None
+	if indent > 0:
+		params = {'indent': indent}
+	log.debug('json params:', params)
+	return JsonResponse(d, json_dumps_params = params)
 
 def mbox_list(req: HttpRequest, username: str) -> JsonResponse:
 	"""return list of messages"""
 	log.debug('username:', username)
 	mlist = []
-	lmax = int(req.POST.get('lmax', _lmax))
+	try:
+		lmax = int(req.POST.get('lmax', _lmax))
+		indent = int(req.POST.get('indent', 0))
+	except ValueError as err:
+		log.debug(username, err)
+		lmax = _lmax
+		indent = 0
 	try:
 		password = req.POST['password']
 		with _connect(username, password) as pop:
 			s, bl, __ = pop.list()
 			log.debug('STAT:', s.decode())
 			mlist = [int(m.split()[0]) for m in bl]
-			return _mlist(username, pop, mlist, lmax = lmax)
+			return _mlist(username, pop, mlist, lmax = lmax, indent = indent)
 	except ValueError as err:
 		log.error(username, 'mbox_list:', err)
 		return _unauth()
