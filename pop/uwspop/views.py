@@ -9,6 +9,7 @@ from http       import HTTPStatus
 from os         import getenv
 from poplib     import POP3_SSL
 
+from uwsapp import config
 from uwsapp import log
 
 _hostname: str = 'NOHOSTNAME'
@@ -27,6 +28,7 @@ def _loadenv():
 		raise RuntimeError(f"UWSPOP_PORT: invalid setting:", err)
 
 _loadenv()
+_debug = config.DEBUG()
 
 @contextmanager
 def _connect(username: str, password: str) -> POP3_SSL:
@@ -35,9 +37,11 @@ def _connect(username: str, password: str) -> POP3_SSL:
 	p = None
 	try:
 		p = POP3_SSL(_hostname, port = _port, timeout = _timeout)
+		# ~ if _debug: p.set_debuglevel(1)
 		p.user(username)
 		auth = p.pass_(password)
-		log.debug('auth:', username, auth.decode())
+		log.print('auth:', username, auth.decode())
+		if _debug: log.debug('stat:', p.stat())
 		yield p
 	finally:
 		if p is not None:
