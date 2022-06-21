@@ -94,10 +94,12 @@ def _msg_content(msg):
 	log.debug('parse json')
 	return json.loads(s)
 
-def _mlist(username: str, pop: POP3_SSL, l: list[int]) -> JsonResponse:
+def _mlist(username: str, pop: POP3_SSL, l: list[int], lmax: int = 0) -> JsonResponse:
 	n = 0
+	_max = _lmax
+	if lmax > 0:
+		_max = lmax
 	d: dict[str, dict[str, str]] = {}
-	d = {}
 	try:
 		for idx in l:
 			m_stat, m_lines, m_size = pop.retr(idx)
@@ -110,7 +112,7 @@ def _mlist(username: str, pop: POP3_SSL, l: list[int]) -> JsonResponse:
 				"content": _msg_content(m),
 			}
 			n += 1
-			if n >= _lmax:
+			if n >= _max:
 				log.print('pop messages list max limit reached:', n)
 				break
 	except ValueError as err:
@@ -123,13 +125,14 @@ def mbox_list(req: HttpRequest, username: str) -> JsonResponse:
 	"""return list of messages"""
 	log.debug('username:', username)
 	mlist = []
+	lmax = int(req.POST.get('lmax', _lmax))
 	try:
 		password = req.POST['password']
 		with _connect(username, password) as pop:
 			s, bl, __ = pop.list()
 			log.debug('STAT:', s.decode())
 			mlist = [int(m.split()[0]) for m in bl]
-			return _mlist(username, pop, mlist)
+			return _mlist(username, pop, mlist, lmax = lmax)
 	except ValueError as err:
 		log.error(username, 'mbox_list:', err)
 		return _unauth()
