@@ -4,10 +4,14 @@
 from django.http import HttpRequest
 from django.http import JsonResponse
 
-from contextlib import contextmanager
-from http       import HTTPStatus
-from os         import getenv
-from poplib     import POP3_SSL
+from contextlib    import contextmanager
+from email.message import Message
+from email.parser  import BytesParser
+from http          import HTTPStatus
+from io            import BytesIO
+from os            import getenv
+from os            import linesep
+from poplib        import POP3_SSL
 
 from uwsapp import config
 from uwsapp import log
@@ -35,7 +39,7 @@ _loadenv()
 _debug = config.DEBUG()
 
 @contextmanager
-def _connect(username: str, password: str) -> POP3_SSL:
+def _connect(username: str, password: str):
 	"""connect to pop3 SSL server and authenticate"""
 	log.debug('username:', username)
 	log.debug('hostname:', _hostname, '- port:', _port, '- timeout:', _timeout)
@@ -73,21 +77,41 @@ def index(req: HttpRequest) -> JsonResponse:
 	resp.status_code = HTTPStatus.NOT_FOUND
 	return resp
 
-def _mlist(pop: POP3_SSL, l: list[int]) -> JsonResponse:
+def _msg(m: list[bytes]) -> Message:
+	blob = BytesIO()
+	for l in m:
+		blob.write(l)
+		blob.write(linesep.encode())
+	blob.seek(0, 0)
+	p = BytesParser()
+	return p.parse(blob)
+
+def _msg_content(msg):
+	c = msg.get_payload(decode = False)
+	return str(c)
+
+def _mlist(username: str, pop: POP3_SSL, l: list[int]) -> JsonResponse:
 	n = 0
+	d: dict[str, dict[str, str]] = {}
 	d = {}
-	d2 = {}
 	try:
 		for idx in l:
-			d2[str(idx)] = pop.retr(idx)
+			m_stat, m_lines, m_size = pop.retr(idx)
+			log.debug(m_stat.decode(), len(m_lines), m_size)
+			m = _msg(m_lines)
+			d[str(idx)] = {
+				"date": m['Date'],
+				"from": m['From'],
+				"content": _msg_content(m),
+			}
 			n += 1
 			if n >= _lmax:
 				log.print('pop messages list max limit reached:', n)
 				break
-	except Exception as err:
+	except ValueError as err:
 		log.error(username, 'mbox_list:', err)
 		return _syserror()
-	log.debug('MLIST:', len(d2), [i for i in d2.keys()])
+	log.debug('MLIST:', len(d), [i for i in d.keys()])
 	return JsonResponse(d)
 
 def mbox_list(req: HttpRequest, username: str) -> JsonResponse:
@@ -100,8 +124,8 @@ def mbox_list(req: HttpRequest, username: str) -> JsonResponse:
 			s, bl, __ = pop.list()
 			log.debug('STAT:', s.decode())
 			mlist = [int(m.split()[0]) for m in bl]
-			return _mlist(pop, mlist)
-	except Exception as err:
+			return _mlist(username, pop, mlist)
+	except ValueError as err:
 		log.error(username, 'mbox_list:', err)
 		return _unauth()
 	return _badreq()
