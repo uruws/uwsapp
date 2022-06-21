@@ -17,6 +17,7 @@ _port:     int = -1
 _timeout:  int = 0
 
 def _loadenv():
+	"""load config from OS env vars"""
 	global _hostname
 	global _port
 	global _timeout
@@ -32,6 +33,7 @@ _debug = config.DEBUG()
 
 @contextmanager
 def _connect(username: str, password: str) -> POP3_SSL:
+	"""connect to pop3 SSL server and authenticate"""
 	log.debug('username:', username)
 	log.debug('hostname:', _hostname, '- port:', _port, '- timeout:', _timeout)
 	p = None
@@ -82,6 +84,7 @@ def _mlist(pop: POP3_SSL, l: list[int]) -> JsonResponse:
 
 
 def mbox_list(req: HttpRequest, username: str) -> JsonResponse:
+	"""return list of messages"""
 	log.debug('username:', username)
 	mlist = []
 	try:
