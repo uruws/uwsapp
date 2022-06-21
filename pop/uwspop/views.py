@@ -106,6 +106,7 @@ def _mlist(username: str, pop: POP3_SSL, l: list[int]) -> JsonResponse:
 			d[str(idx)] = {
 				"date": m['Date'],
 				"from": m['From'],
+				"subject": m['Subject'],
 				"content": _msg_content(m),
 			}
 			n += 1
