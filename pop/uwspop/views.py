@@ -47,6 +47,11 @@ def _connect(username: str, password: str) -> POP3_SSL:
 		if p is not None:
 			p.quit()
 
+def _syserror() -> JsonResponse:
+	resp = JsonResponse(dict())
+	resp.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+	return resp
+
 def _badreq() -> JsonResponse:
 	resp = JsonResponse(dict())
 	resp.status_code = HTTPStatus.BAD_REQUEST
@@ -63,12 +68,29 @@ def index(req: HttpRequest) -> JsonResponse:
 	resp.status_code = HTTPStatus.NOT_FOUND
 	return resp
 
+def _mlist(pop: POP3_SSL, l: list[int]) -> JsonResponse:
+	d = {}
+	d2 = {}
+	try:
+		for idx in l:
+			d2[str(idx)] = pop.retr(idx)
+	except Exception as err:
+		log.error(username, 'mbox_list:', err)
+		return _syserror()
+	log.debug('MLIST:', d2)
+	return JsonResponse(d)
+
+
 def mbox_list(req: HttpRequest, username: str) -> JsonResponse:
 	log.debug('username:', username)
+	mlist = []
 	try:
 		password = req.POST['password']
 		with _connect(username, password) as pop:
-			pass
+			s, bl, __ = pop.list()
+			log.debug('STAT:', s.decode())
+			mlist = [int(m.split()[0]) for m in bl]
+			return _mlist(pop, mlist)
 	except Exception as err:
 		log.error(username, 'mbox_list:', err)
 		return _unauth()
