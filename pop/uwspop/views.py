@@ -12,21 +12,24 @@ from poplib     import POP3_SSL
 from uwsapp import config
 from uwsapp import log
 
-_hostname: str = 'NOHOSTNAME'
-_port:     int = -1
-_timeout:  int = 0
+_hostname: str = 'localhost'
+_port:     int = 995
+_timeout:  int = 15
+_lmax:     int = 100
 
 def _loadenv():
 	"""load config from OS env vars"""
 	global _hostname
 	global _port
 	global _timeout
-	_hostname = getenv('UWSPOP_HOSTNAME', 'localhost')
+	global _lmax
+	_hostname = getenv('UWSPOP_HOSTNAME', _hostname)
 	try:
-		_port = int(getenv('UWSPOP_PORT', 995))
-		_timeout = int(getenv('UWSPOP_TIMEOUT', 15))
+		_port = int(getenv('UWSPOP_PORT', _port))
+		_timeout = int(getenv('UWSPOP_TIMEOUT', _timeout))
+		_lmax = int(getenv('UWSPOP_LIST_MAX', _lmax))
 	except ValueError as err:
-		raise RuntimeError(f"UWSPOP_PORT: invalid setting:", err)
+		raise RuntimeError(f"invalid config:", err)
 
 _loadenv()
 _debug = config.DEBUG()
@@ -71,17 +74,21 @@ def index(req: HttpRequest) -> JsonResponse:
 	return resp
 
 def _mlist(pop: POP3_SSL, l: list[int]) -> JsonResponse:
+	n = 0
 	d = {}
 	d2 = {}
 	try:
 		for idx in l:
 			d2[str(idx)] = pop.retr(idx)
+			n += 1
+			if n >= _lmax:
+				log.print('pop messages list max limit reached:', n)
+				break
 	except Exception as err:
 		log.error(username, 'mbox_list:', err)
 		return _syserror()
-	log.debug('MLIST:', d2)
+	log.debug('MLIST:', len(d2), [i for i in d2.keys()])
 	return JsonResponse(d)
-
 
 def mbox_list(req: HttpRequest, username: str) -> JsonResponse:
 	"""return list of messages"""
