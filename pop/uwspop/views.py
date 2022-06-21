@@ -106,6 +106,7 @@ def _mlist(username: str, pop: POP3_SSL, l: list[int], lmax: int = 0, indent: in
 			log.debug(m_stat.decode(), len(m_lines), m_size)
 			m = _msg(m_lines)
 			d[str(idx)] = {
+				"message_id": m.get('Message-Id', 'NO_MESSAGE_ID'),
 				"date": m.get('Date', 'NO_DATE'),
 				"from": m.get('From', 'NO_FROM'),
 				"subject": m.get('Subject', 'NO_SUBJECT'),
