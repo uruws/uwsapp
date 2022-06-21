@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+import json
+
 from django.http import HttpRequest
 from django.http import JsonResponse
 
@@ -87,8 +89,10 @@ def _msg(m: list[bytes]) -> Message:
 	return p.parse(blob)
 
 def _msg_content(msg):
-	c = msg.get_payload(decode = False)
-	return str(c)
+	c = msg.get_payload(decode = True)
+	s = str(c.decode())
+	log.debug('parse json')
+	return json.loads(s)
 
 def _mlist(username: str, pop: POP3_SSL, l: list[int]) -> JsonResponse:
 	n = 0
