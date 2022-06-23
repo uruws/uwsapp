@@ -56,6 +56,7 @@ def _connect(username: str, password: str):
 		yield p
 	finally:
 		if p is not None:
+			log.debug('quit:', username)
 			p.quit()
 
 def _syserror() -> JsonResponse:
@@ -106,7 +107,7 @@ def _mlist(username: str, pop: POP3_SSL, l: list[int], lmax: int = 0, indent: in
 			log.debug(m_stat.decode(), len(m_lines), m_size)
 			m = _msg(m_lines)
 			d[str(idx)] = {
-				"message_id": m.get('Message-Id', 'NO_MESSAGE_ID'),
+				"orig_id": m.get('Message-Id', 'NO_MESSAGE_ID'),
 				"date": m.get('Date', 'NO_DATE'),
 				"from": m.get('From', 'NO_FROM'),
 				"subject": m.get('Subject', 'NO_SUBJECT'),
@@ -146,5 +147,34 @@ def mbox_list(req: HttpRequest, username: str) -> JsonResponse:
 			return _mlist(username, pop, mlist, lmax = lmax, indent = indent)
 	except ValueError as err:
 		log.error(username, 'mbox_list:', err)
+		return _unauth()
+	return _badreq()
+
+def _mdele(pop: POP3_SSL, username: str, dl: list[int]) -> JsonResponse:
+	log.debug(username, 'DELE:', dl)
+	try:
+		for mid in dl:
+			dstat = pop.dele(mid)
+			log.debug(mid, dstat.decode())
+	except Exception as err:
+		log.error(username, 'message delete:', err)
+		return _syserror()
+	return JsonResponse({})
+
+def mbox_dele(req: HttpRequest, username: str) -> JsonResponse:
+	"""delete messages"""
+	log.debug('username:', username)
+	try:
+		mlist = req.POST.getlist('mid', [])
+	except ValueError as err:
+		log.debug(username, err)
+		mlist = []
+	try:
+		password = req.POST['password']
+		with _connect(username, password) as pop:
+			log.debug('MLIST:', mlist)
+			return _mdele(pop, username, mlist)
+	except ValueError as err:
+		log.error(username, 'mbox_dele:', err)
 		return _unauth()
 	return _badreq()
