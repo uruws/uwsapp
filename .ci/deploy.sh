@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-make -C /srv/uws/deploy uwsapp-deploy
+./setup.sh test
 
 covd=/srv/www/ssl/htmlcov
 if test -d "${covd}"; then
