@@ -14,6 +14,7 @@ COPY --chown=uws:uwsops ./ /opt/uwsapp/api/
 RUN rm -vf /opt/uwsapp/api/Dockerfile /opt/uwsapp/api/.dockerignore
 
 USER uws:uwsops
+WORKDIR /home/uws
 
 ENV USER uws
 ENV HOME /home/uws

@@ -13,6 +13,7 @@ RUN /root/bin/apt-install.sh less shellcheck python3-doc \
 	python3-coverage mypy
 
 USER uws:uws
+WORKDIR /home/uws
 
 ENV USER uws
 ENV HOME /home/uws

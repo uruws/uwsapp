@@ -20,6 +20,7 @@ RUN install -v -d -o uws -g uwsops -m 0750 /opt/uwsapp \
 	&& install -v -d -o uws -g uwsops -m 0750 /run/uwscli
 
 USER uwsops:uwsops
+WORKDIR /home/uwsops
 
 ENV USER uwsops
 ENV HOME /home/uwsops
@@ -30,6 +31,7 @@ ENV UWSAPP_WORKERS 3
 ENV PYTHONPATH /opt/uwsapp/core
 
 USER uws:uws
+WORKDIR /home/uws
 
 ENV USER uws
 ENV HOME /home/uws
