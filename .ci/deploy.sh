@@ -5,10 +5,10 @@ TAG=${UWSCLI_REPO_TAG}
 app='NONE'
 
 case "${TAG}" in
-	*release/api/*)
+	release/api/*)
 		app='api'
 	;;
-	*release/web/*)
+	release/web/*)
 		app='web'
 	;;
 esac
