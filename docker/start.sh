@@ -14,10 +14,11 @@ install -v -d -m 0750 ${appdir}/run
 install -v -d -m 0750 ${appdir}/run/uwscli
 install -v -d -m 0750 ${appdir}/run/uwsapp
 
-exec docker run --rm --name "uwsapp-${appenv}" \
-	--hostname "${appenv}.uwsapp.local" \
+exec docker run --rm --name "uws${app}-${appenv}" \
+	--hostname "${appenv}.uws${app}.local" \
 	--read-only \
 	-e "UWSAPP_NAME=${UWSAPP_NAME}" \
+	-e "UWSAPP_URL=${UWSAPP_NAME}/" \
 	-e "UWSAPP_WORKERS=${UWSAPP_WORKERS}" \
 	-v ${appdir}/run/uwscli:/run/uwscli:ro \
 	-v ${appdir}/run/uwsapp:/run/uwsapp \

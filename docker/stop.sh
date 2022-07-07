@@ -1,4 +1,5 @@
 #!/bin/sh
 set -eu
 appenv=${1:?'app env?'}
-exec docker stop "uwsapp-${appenv}"
+app=${UWSAPP_NAME}
+exec docker stop "uws${app}-${appenv}"
