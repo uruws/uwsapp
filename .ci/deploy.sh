@@ -22,7 +22,7 @@ VERSION=$(echo "${TAG}" | cut -d '-' -f '2-')
 
 echo "*** ${app}: deploy tag ${TAG} (version ${VERSION})"
 
-./setup/deploy.sh "${app}" test "${appver}"
+./setup/deploy.sh "${app}" test "${VERSION}"
 
 if ! test -d "./tmp/htmlcov/${app}"; then
 	exit 0
