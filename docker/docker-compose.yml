@@ -4,7 +4,7 @@
 services:
 
   uwsapi:
-    image: uwsapp/api-${UWSAPP_VERSION}
+    image: 789470191893.dkr.ecr.us-west-1.amazonaws.com/uws:uwsapi-${UWSAPP_VERSION}
     container_name: uwsapi-${UWSAPP_VERSION}
     hostname: uwsapi
     volumes:
@@ -22,7 +22,7 @@ services:
       - uwsapp-${UWSAPP_ENV}
 
   uwsweb:
-    image: uwsapp/web-${UWSAPP_VERSION}
+    image: 789470191893.dkr.ecr.us-west-1.amazonaws.com/uws:uwsweb-${UWSAPP_VERSION}
     container_name: uwsweb-${UWSAPP_VERSION}
     hostname: uwsweb
     volumes:
