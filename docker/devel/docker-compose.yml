@@ -1,6 +1,11 @@
 # https://docs.docker.com/compose/compose-file/
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md#services-top-level-element
 
+version: '3.6'
+
+networks:
+  uwsapp: {}
+
 services:
 
   uwsapi:
@@ -70,6 +75,3 @@ services:
     depends_on:
       - uwsapi
       - uwsweb
-
-networks:
-  uwsapp: {}
