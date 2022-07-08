@@ -3,6 +3,7 @@ set -eu
 
 app=${1:?'app name?'}
 appenv=${2:?'app env?'}
+appver=${3:?'app version?'}
 
 surun='sudo -n'
 sysdctl='sudo -n systemctl'
@@ -27,7 +28,7 @@ if ! ${sysdctl} is-enabled "uws${app}-@${appenv}.service"; then
 	exit 0
 fi
 
-export DOCKER_IMAGE="uwsapp/${app}"
+export DOCKER_IMAGE="uwsapp/${app}-${appver}"
 
 ${surun} /uws/bin/service-restart.sh "uws${app}-@${appenv}" \
 	"/etc/systemd/uws${app}-@.service" \

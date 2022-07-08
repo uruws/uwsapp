@@ -5,10 +5,10 @@ TAG=${UWSCLI_REPO_TAG}
 app='NONE'
 
 case "${TAG}" in
-	release/api/*)
+	release/api-*)
 		app='api'
 	;;
-	release/web/*)
+	release/web-*)
 		app='web'
 	;;
 esac
@@ -18,7 +18,9 @@ if test "X${app}" = 'NONE'; then
 	exit 0
 fi
 
-echo "*** ${app}: deploy ${TAG}"
+VERSION=$(echo "${TAG}" | cut -d '-' -f '2-')
+
+echo "*** ${app}: deploy tag ${TAG} (version ${VERSION})"
 
 ./setup/deploy.sh "${app}" test
 
