@@ -7,5 +7,6 @@ exec python3 -m mypy \
 	--exclude pop/manage.py \
 	/opt/uwsapp/core \
 	/opt/uwsapp/api \
-	/opt/uwsapp/web \
-	/opt/uwsapp/pop
+	/opt/uwsapp/web
+
+	#~ /opt/uwsapp/pop

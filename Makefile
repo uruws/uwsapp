@@ -8,7 +8,7 @@ build:
 	@./core/build.sh
 	@./api/build.sh
 	@./web/build.sh
-	@./pop/build.sh
+#~ 	@./pop/build.sh
 
 .PHONY: devel
 devel:
