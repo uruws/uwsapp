@@ -38,8 +38,8 @@ UWSAPP_VERSION != cat ./VERSION
 
 .PHONY: publish
 publish:
-	@$(MAKE) -C /srv/uws/deploy ./docker/ecr-login.sh us-west-1
-	@$(MAKE) -C /srv/uws/deploy ./cluster/ecr-push.sh us-west-1 \
+	@cd /srv/uws/deploy && ./docker/ecr-login.sh us-west-1
+	@cd /srv/uws/deploy && ./cluster/ecr-push.sh us-west-1 \
 		uwsapp/api uws:uwsapi-$(UWSAPP_VERSION)
-	@$(MAKE) -C /srv/uws/deploy ./cluster/ecr-push.sh us-west-1 \
+	@cd /srv/uws/deploy && ./cluster/ecr-push.sh us-west-1 \
 		uwsapp/web uws:uwsweb-$(UWSAPP_VERSION)
