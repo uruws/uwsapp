@@ -12,7 +12,7 @@ __unset = '__UNSET__'
 
 __secret_key = getenv('UWSAPP_SECRET', __unset)
 if __secret_key is __unset:
-	__secret_key = getoutput('/usr/bin/pwgen -1snyB 64')
+	__secret_key = getoutput('/usr/bin/pwgen -1snyB 64').strip()
 
 def SECRET_KEY() -> str:
 	return __secret_key
@@ -34,7 +34,7 @@ def DBDIR() -> Path:
 	return Path(_getenv('UWSAPP_DATADIR', '/var/opt/uwsapp'))
 
 def DBNAME() -> str:
-	return _getenv('UWSAPP_DBNAME',  '%s.db' % APPNAME)
+	return _getenv('UWSAPP_DBNAME', '%s.db' % APPNAME)
 
 _url_base = _getenv('UWSAPP_URL', '')
 
