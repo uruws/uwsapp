@@ -27,6 +27,7 @@ distclean: clean
 
 .PHONY: prune
 prune:
+	@docker rmi uwsapp/pop || true
 	@docker system prune -f
 
 .PHONY: check
