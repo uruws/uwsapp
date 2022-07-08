@@ -1,0 +1,43 @@
+# https://docs.docker.com/compose/compose-file/
+# https://github.com/compose-spec/compose-spec/blob/master/spec.md#services-top-level-element
+
+services:
+
+  uwsapi:
+    image: uwsapp/api-${UWSAPP_VERSION}
+    container_name: uwsapi-${UWSAPP_VERSION}
+    hostname: uwsapi
+    volumes:
+      - /srv/uwsapp/${UWSAPP_ENV}/data:/var/opt/uwsapp
+      - /srv/uwsapp/${UWSAPP_ENV}/run/uwsapp:/run/uwsapp
+      - /srv/uwsapp/${UWSAPP_ENV}/run/uwscli:/run/uwscli:ro
+    environment:
+      - UWSAPP_PORT=${UWSAPP_API_PORT}
+      - UWSAPP_URL=api/
+    read_only: true
+    restart: on-failure
+    ports:
+      - "127.0.0.1:${UWSAPP_API_PORT}:${UWSAPP_API_PORT}"
+    networks:
+      - uwsapp-${UWSAPP_ENV}
+
+  uwsweb:
+    image: uwsapp/web-${UWSAPP_VERSION}
+    container_name: uwsweb-${UWSAPP_VERSION}
+    hostname: uwsweb
+    volumes:
+      - /srv/uwsapp/${UWSAPP_ENV}/data:/var/opt/uwsapp
+    environment:
+      - UWSAPP_PORT=${UWSAPP_WEB_PORT}
+      - UWSAPP_URL=web/
+    read_only: true
+    restart: on-failure
+    ports:
+      - "127.0.0.1:${UWSAPP_WEB_PORT}:${UWSAPP_WEB_PORT}"
+    networks:
+      - uwsapp-${UWSAPP_ENV}
+    depends_on:
+      - uwsapi
+
+networks:
+  uwsapp-${UWSAPP_ENV}: {}

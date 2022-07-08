@@ -1,0 +1,19 @@
+[Unit]
+Description=uwsapp-${UWSAPP_ENV}
+Requires=syslog.service
+AssertFileIsExecutable=/usr/bin/docker
+AssertFileIsExecutable=/usr/bin/docker-compose
+AssertFileIsExecutable=/srv/uwsapp/${UWSAPP_ENV}/start.sh
+AssertFileIsExecutable=/srv/uwsapp/${UWSAPP_ENV}/stop.sh
+
+[Service]
+Type=exec
+Restart=on-failure
+User=uws
+Group=uws
+WorkingDirectory=/home/uws
+ExecStart=/srv/uwsapp/${UWSAPP_ENV}/start.sh ${UWSAPP_ENV}
+ExecStop=/srv/uwsapp/${UWSAPP_ENV}/stop.sh ${UWSAPP_ENV}
+
+[Install]
+WantedBy=multi-user.target
