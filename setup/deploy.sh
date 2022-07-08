@@ -29,13 +29,13 @@ fi
 
 # docker-compose
 envsubst <./docker/docker-compose.yml |
-	${surun} tee "/srv/uwsapp/${appenv}/docker-compose.yml"
+	${surun} tee "/srv/uwsapp/${appenv}/docker-compose.yml" >/dev/null
 ${surun} chown -v root:uws /srv/uwsapp/${appenv}/docker-compose.yml
 ${surun} chmod -v 0640 /srv/uwsapp/${appenv}/docker-compose.yml
 
 # systemd service file
 envsubst <./setup/uwsapp.service |
-	${surun} tee "/etc/systemd/uwsapp-${appenv}.service"
+	${surun} tee "/etc/systemd/system/uwsapp-${appenv}.service" >/dev/null
 
 ${sysdctl} daemon-reload
 
@@ -45,10 +45,10 @@ if ! ${sysdctl} is-enabled "uwsapp-${appenv}.service"; then
 	exit 0
 fi
 
-export DOCKER_IMAGE="uwsapp/${app}-${appver}"
+export DOCKER_IMAGE="uwsapp/${app}"
 
 ${surun} /uws/bin/service-restart.sh "uwsapp-${appenv}" \
-	"/etc/systemd/uwsapp-${appenv}.service" \
+	"/etc/systemd/system/uwsapp-${appenv}.service" \
 	/srv/uwsapp/${appenv}/start.sh \
 	/srv/uwsapp/${appenv}/stop.sh
 
