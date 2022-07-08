@@ -11,7 +11,6 @@ set -eu
 # django db migrate
 ./${UWSAPP_NAME}/manage.py migrate
 
-
 appmod="uws${UWSAPP_NAME}"
 
 exec uwsgi \

@@ -13,7 +13,6 @@ services:
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwscli:/run/uwscli:ro
     environment:
       - UWSAPP_PORT=${UWSAPP_API_PORT}
-      - UWSAPP_URL=api/
     read_only: true
     restart: on-failure
     ports:
@@ -29,7 +28,6 @@ services:
       - /srv/uwsapp/${UWSAPP_ENV}/data:/var/opt/uwsapp
     environment:
       - UWSAPP_PORT=${UWSAPP_WEB_PORT}
-      - UWSAPP_URL=web/
     read_only: true
     restart: on-failure
     ports:

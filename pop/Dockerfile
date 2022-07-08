@@ -23,6 +23,7 @@ RUN python3 --version \
 	&& python3 -m compileall /opt/uwsapp/pop
 
 ENV UWSAPP_NAME pop
+ENV UWSAPP_URL  pop/
 
 WORKDIR /opt/uwsapp
 ENTRYPOINT /usr/local/bin/entrypoint.sh
