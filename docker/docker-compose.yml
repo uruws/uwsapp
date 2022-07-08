@@ -5,8 +5,8 @@ services:
 
   uwsapi:
     image: 789470191893.dkr.ecr.us-west-1.amazonaws.com/uws:uwsapi-${UWSAPP_VERSION}
-    container_name: uwsapi-${UWSAPP_VERSION}
-    hostname: uwsapi
+    container_name: uwsapi-${UWSAPP_ENV}-${UWSAPP_VERSION}
+    hostname: uwsapi-${UWSAPP_ENV}
     volumes:
       - /srv/uwsapp/${UWSAPP_ENV}/data:/var/opt/uwsapp
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsapp:/run/uwsapp
@@ -22,8 +22,8 @@ services:
 
   uwsweb:
     image: 789470191893.dkr.ecr.us-west-1.amazonaws.com/uws:uwsweb-${UWSAPP_VERSION}
-    container_name: uwsweb-${UWSAPP_VERSION}
-    hostname: uwsweb
+    container_name: uwsweb-${UWSAPP_ENV}-${UWSAPP_VERSION}
+    hostname: uwsweb-${UWSAPP_ENV}
     volumes:
       - /srv/uwsapp/${UWSAPP_ENV}/data:/var/opt/uwsapp
     environment:
