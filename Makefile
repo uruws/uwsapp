@@ -32,3 +32,11 @@ prune:
 .PHONY: check
 check:
 	@./docker/devel/check.sh
+
+UWSAPP_VERSION != cat ./VERSION
+
+.PHONY: publish
+publish:
+	@/srv/uws/deploy/docker/ecr-login.sh us-west-1
+	@/srv/uws/deploy/cluster/ecr-push.sh us-west-1 uwsapp/api uws:uwsapi-$(UWSAPP_VERSION)
+	@/srv/uws/deploy/cluster/ecr-push.sh us-west-1 uwsapp/web uws:uwsweb-$(UWSAPP_VERSION)
