@@ -17,6 +17,7 @@ services:
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsapp:/run/uwsapp
       - /srv/uwscli/${UWSAPP_ENV}/run/auth:/run/uwscli/auth:ro
     environment:
+      - UWSAPP_HOST=${UWSAPP_HOST}
       - UWSAPP_PORT=${UWSAPP_API_PORT}
     read_only: true
     restart: on-failure
@@ -32,6 +33,7 @@ services:
     volumes:
       - /srv/uwsapp/${UWSAPP_ENV}/data/web:/var/opt/uwsapp
     environment:
+      - UWSAPP_HOST=${UWSAPP_HOST}
       - UWSAPP_PORT=${UWSAPP_WEB_PORT}
     read_only: true
     restart: on-failure

@@ -26,12 +26,16 @@ ${surun} install -v -C -o root -g uws -m 0750 \
 ${surun} install -v -C -o root -g uws -m 0750 \
 	./docker/stop.sh /srv/uwsapp/${appenv}/stop.sh
 
+# env settings
+
 export UWSAPP_ENV=${appenv}
 export UWSAPP_VERSION=${appver}
+export UWSAPP_HOST='ops.uws.talkingpts.org'
 export UWSAPP_API_PORT=5600
 export UWSAPP_WEB_PORT=5500
 
 if test "X${appenv}" = 'Xtest'; then
+	export UWSAPP_HOST='opstest.uws.talkingpts.org'
 	export UWSAPP_API_PORT=5610
 	export UWSAPP_WEB_PORT=5510
 fi
