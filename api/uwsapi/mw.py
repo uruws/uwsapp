@@ -100,6 +100,9 @@ class ApiMiddleware:
 		# ignore login url
 		if req.path == settings.LOGIN_URL:
 			resp = mw.get_resp(req)
+		# ignore static urls
+		elif req.path.startswith(settings.STATIC_URL):
+			resp = mw.get_resp(req)
 		# ignore help urls
 		elif req.path.startswith("/%s" % config.URL('help/')):
 			resp = mw.get_resp(req)
