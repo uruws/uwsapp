@@ -26,6 +26,9 @@ def _getenv(name: str, default) -> str:
 def DEBUG() -> bool:
 	return _getenv('UWSAPP_DEBUG', 'off') == 'on'
 
+def TESTING() -> bool:
+	return _getenv('UWSAPP_TESTING', 'off') == 'on'
+
 def ALLOWED_HOSTS() -> list:
 	if DEBUG(): return []
 	return [_getenv('UWSAPP_HOST', 'localhost')]

@@ -139,7 +139,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-if not DEBUG:
+if not DEBUG and not config.TESTING():
 	SECURE_SSL_REDIRECT   = True
 	SECURE_HSTS_SECONDS   = 15724800
 	SESSION_COOKIE_SECURE = True
