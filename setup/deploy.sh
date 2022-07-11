@@ -62,6 +62,7 @@ export DOCKER_IMAGE="uwsapp/${app}"
 
 ${surun} /uws/bin/service-restart.sh "uwsapp-${appenv}" \
 	"/etc/systemd/system/uwsapp-${appenv}.service" \
+	/srv/uwsapp/${appenv}/docker-compose.yml \
 	/srv/uwsapp/${appenv}/start.sh \
 	/srv/uwsapp/${appenv}/stop.sh
 
