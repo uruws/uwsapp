@@ -49,18 +49,21 @@ if test "X${appenv}" = 'Xtest'; then
 fi
 
 # nginx snippet
-envsubst <./setup/nginx.conf | sed 's/__URI__/\$uri/g'
+
+envsubst <./setup/nginx.conf | sed 's/__URI__/\$uri/g' |
 	${surun} tee "/etc/nginx/snippets/uwsapp-${appenv}.conf" >/dev/null
 ${surun} chown -v root:uws "/etc/nginx/snippets/uwsapp-${appenv}.conf"
 ${surun} chmod -v 0640 "/etc/nginx/snippets/uwsapp-${appenv}.conf"
 
 # docker-compose
+
 envsubst <./docker/docker-compose.yml |
 	${surun} tee "/srv/uwsapp/${appenv}/docker-compose.yml" >/dev/null
 ${surun} chown -v root:uws /srv/uwsapp/${appenv}/docker-compose.yml
 ${surun} chmod -v 0640 /srv/uwsapp/${appenv}/docker-compose.yml
 
 # systemd service file
+
 envsubst <./setup/uwsapp.service |
 	${surun} tee "/etc/systemd/system/uwsapp-${appenv}.service" >/dev/null
 
