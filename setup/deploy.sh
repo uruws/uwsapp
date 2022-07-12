@@ -45,6 +45,12 @@ if test "X${appenv}" = 'Xtest'; then
 	export UWSAPP_WEB_PORT=5510
 fi
 
+# nginx snippet
+envsubst <./setup/nginx.conf |
+	${surun} tee "/etc/nginx/snippets/uwsapp-${appenv}.conf" >/dev/null
+${surun} chown -v root:uws "/etc/nginx/snippets/uwsapp-${appenv}.conf"
+${surun} chmod -v 0640 "/etc/nginx/snippets/uwsapp-${appenv}.conf"
+
 # docker-compose
 envsubst <./docker/docker-compose.yml |
 	${surun} tee "/srv/uwsapp/${appenv}/docker-compose.yml" >/dev/null
@@ -55,7 +61,11 @@ ${surun} chmod -v 0640 /srv/uwsapp/${appenv}/docker-compose.yml
 envsubst <./setup/uwsapp.service |
 	${surun} tee "/etc/systemd/system/uwsapp-${appenv}.service" >/dev/null
 
+# systemd reload
+
 ${sysdctl} daemon-reload
+
+# service enable
 
 if ! ${sysdctl} is-enabled "uwsapp-${appenv}.service"; then
 	${sysdctl} enable "uwsapp-${appenv}.service"
@@ -63,12 +73,15 @@ if ! ${sysdctl} is-enabled "uwsapp-${appenv}.service"; then
 	exit 0
 fi
 
+# service restart
+
 export DOCKER_IMAGE="uwsapp/${app}"
 
 ${surun} /uws/bin/service-restart.sh "uwsapp-${appenv}" \
 	"/etc/systemd/system/uwsapp-${appenv}.service" \
-	/srv/uwsapp/${appenv}/docker-compose.yml \
-	/srv/uwsapp/${appenv}/start.sh \
-	/srv/uwsapp/${appenv}/stop.sh
+	"/etc/nginx/snippets/uwsapp-${appenv}.conf" \
+	"/srv/uwsapp/${appenv}/docker-compose.yml" \
+	"/srv/uwsapp/${appenv}/start.sh" \
+	"/srv/uwsapp/${appenv}/stop.sh"
 
 exit 0
