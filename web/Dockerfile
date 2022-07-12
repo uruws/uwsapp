@@ -13,7 +13,7 @@ RUN install -v -d -o uws -g uwsapp -m 0750 /opt/uwsapp/web
 COPY --chown=uws:uwsapp ./ /opt/uwsapp/web/
 RUN rm -vf /opt/uwsapp/web/Dockerfile /opt/uwsapp/web/.dockerignore
 
-USER uws:uwsops
+USER uws:uwsapp
 WORKDIR /home/uws
 
 ENV USER uws

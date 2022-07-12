@@ -18,16 +18,16 @@ RUN /root/bin/apt-install.sh python3 uwsgi-plugin-python3 \
 
 RUN /usr/bin/python3 -m django --version
 
-RUN install -v -d -o uws -g uwsops -m 0750 /opt/uwsapp \
-	&& install -v -d -o uws -g uwsops -m 0750 /var/opt/uwsapp \
-	&& install -v -d -o uws -g uwsops -m 0750 /run/uwsapp \
-	&& install -v -d -o uws -g uwsops -m 0750 /run/uwscli
+RUN install -v -d -o uws -g uwsapp -m 0750 /opt/uwsapp \
+	&& install -v -d -o uws -g uwsapp -m 0750 /var/opt/uwsapp \
+	&& install -v -d -o uws -g uwsapp -m 0750 /run/uwsapp \
+	&& install -v -d -o uws -g uwsapp -m 0750 /run/uwscli
 
-USER uwsops:uwsops
-WORKDIR /home/uwsops
+USER uwsapp:uwsapp
+WORKDIR /home/uwsapp
 
-ENV USER uwsops
-ENV HOME /home/uwsops
+ENV USER uwsapp
+ENV HOME /home/uwsapp
 
 ENV UWSAPP_HOME /opt/uwsapp
 ENV UWSAPP_PORT 3000
@@ -45,7 +45,7 @@ ENV UWSAPP_PORT 3000
 ENV UWSAPP_WORKERS 3
 ENV PYTHONPATH /opt/uwsapp/core
 
-COPY --chown=uws:uwsops ./bin/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chown=uws:uwsapp ./bin/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod -v 0750  /usr/local/bin/entrypoint.sh
 
 WORKDIR /opt/uwsapp

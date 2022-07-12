@@ -11,14 +11,14 @@ sysdctl='sudo -n systemctl'
 ${surun} install -v -d -o root -g uws -m 0750 /srv/uwsapp
 ${surun} install -v -d -o uws -g uws -m 0750 /srv/uwsapp/${appenv}
 
-# 1500 uid/gid for uwsops uws/base user
-${surun} install -v -d -o root -g 1500 -m 0770 /srv/uwsapp/${appenv}/data
-${surun} install -v -d -o root -g 1500 -m 0770 /srv/uwsapp/${appenv}/data/api
-${surun} install -v -d -o root -g 1500 -m 0770 /srv/uwsapp/${appenv}/data/web
-${surun} install -v -d -o root -g 1500 -m 0750 /srv/uwsapp/${appenv}/run
-${surun} install -v -d -o root -g 1500 -m 0770 /srv/uwsapp/${appenv}/run/uwsapp
-${surun} install -v -d -o root -g 1500 -m 0750 /srv/uwsapp/${appenv}/run/uwscli
-${surun} install -v -d -o root -g 1500 -m 0750 /srv/uwsapp/${appenv}/run/uwscli/auth
+# 3000 uid/gid for uwsapp/base and uwscli
+${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data
+${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/api
+${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/web
+${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run
+${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/run/uwsapp
+${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwscli
+${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwscli/auth
 
 ${surun} install -v -C -o root -g uws -m 0750 \
 	./docker/start.sh /srv/uwsapp/${appenv}/start.sh
