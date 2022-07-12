@@ -1,5 +1,3 @@
-# Request
-
 ## POST /auth/login
 
 Content-Type: *application/x-www-form-urlencoded*
@@ -8,8 +6,6 @@ Args:
 
     username: string (user@example.com)
     password: string (not123456)
-
-# Response
 
 ## Status: 400 Bad Request
 
