@@ -46,7 +46,7 @@ if test "X${appenv}" = 'Xtest'; then
 fi
 
 # nginx snippet
-envsubst <./setup/nginx.conf |
+envsubst <./setup/nginx.conf | sed 's/__URI__/\$uri/g'
 	${surun} tee "/etc/nginx/snippets/uwsapp-${appenv}.conf" >/dev/null
 ${surun} chown -v root:uws "/etc/nginx/snippets/uwsapp-${appenv}.conf"
 ${surun} chmod -v 0640 "/etc/nginx/snippets/uwsapp-${appenv}.conf"
