@@ -5,5 +5,12 @@
 {% block content %}
 <div class="w3-text-green">
 <h1>help index</h1>
+
+<p>
+{% for doc in docs %}
+<a href="{% url 'help' doc %}">/{{ doc }}</a><br>
+{% endfor %}
+</p>
+
 </div>
 {% endblock %}

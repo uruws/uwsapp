@@ -8,6 +8,10 @@ from markdown2 import markdown_path # type: ignore
 
 from uwsapp import log
 
+def _docslist() -> list[str]:
+	docsdir = settings.BASE_DIR / 'docs'
+	return list(sorted([fn.as_posix().replace(docsdir.as_posix(), '', 1)[1:-3] for fn in docsdir.rglob('*.md')]))
+
 class Index(TemplateView):
 	template_name = 'uwshelp/index.html'
 	http_method_names = ['get', 'head']
@@ -15,6 +19,7 @@ class Index(TemplateView):
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
 		d['title'] = 'index'
+		d['docs'] = _docslist()
 		return d
 
 class Help(TemplateView):
