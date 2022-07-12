@@ -1,8 +1,6 @@
-## Description
-
-User login.
-
 ### POST /api/auth/login
+
+Description: User login.
 
 Content-Type: *application/x-www-form-urlencoded*
 

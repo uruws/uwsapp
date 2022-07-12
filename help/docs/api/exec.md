@@ -1,8 +1,6 @@
-## Description
-
-Execute application command.
-
 ### POST /api/exec/name
+
+Description: Execute application command.
 
 Content-Type: *application/x-www-form-urlencoded*
 
