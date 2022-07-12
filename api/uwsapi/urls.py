@@ -29,7 +29,6 @@ from . import views
 urlpatterns = [
 	path(URL('exec/<slug:name>'), cmd.view, name = 'exec'),
 	path(URL('auth/'), include('uwsauth.urls')),
-	path(URL('help/'), include('uwshelp.urls')),
 	path(URL('admin/'), admin.site.urls),
 	path(URL(''), views.index, name = 'index'),
 ]
