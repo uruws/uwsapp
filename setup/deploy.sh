@@ -26,6 +26,11 @@ ${surun} install -v -C -o root -g uws -m 0750 \
 ${surun} install -v -C -o root -g uws -m 0750 \
 	./docker/stop.sh /srv/uwsapp/${appenv}/stop.sh
 
+# sync static files
+${surun} install -v -d -o root -g www-data -m 0750 /srv/uwsapp/${appenv}/static
+${surun} rsync -vax --chown=root:www-data --delete-before \
+	./core/static/ /srv/uwsapp/${appenv}/static/
+
 # env settings
 
 export UWSAPP_ENV=${appenv}
