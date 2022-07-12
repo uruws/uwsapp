@@ -16,6 +16,9 @@ echo '*** ./test/coverage.sh api'
 echo '*** ./test/coverage.sh web'
 ./test/coverage.sh web
 
+echo '*** ./test/coverage.sh help'
+./test/coverage.sh help
+
 #~ echo '*** ./test/coverage.sh pop'
 #~ ./test/coverage.sh pop
 

@@ -31,4 +31,4 @@ urlpatterns = [
 	path(URL(''), views.Index.as_view(), name = 'help-index'),
 ]
 
-handler404 = 'uwshelp.views.error404'
+# ~ handler404 = 'uwshelp.views.error404'

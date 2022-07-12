@@ -8,6 +8,7 @@ build:
 	@./core/build.sh
 	@./api/build.sh
 	@./web/build.sh
+	@./help/build.sh
 #~ 	@./pop/build.sh
 
 .PHONY: devel
@@ -43,3 +44,5 @@ publish:
 		uwsapp/api uws:uwsapi-$(UWSAPP_VERSION)
 	@cd /srv/uws/deploy && ./cluster/ecr-push.sh us-west-1 \
 		uwsapp/web uws:uwsweb-$(UWSAPP_VERSION)
+	@cd /srv/uws/deploy && ./cluster/ecr-push.sh us-west-1 \
+		uwsapp/help uws:uwshelp-$(UWSAPP_VERSION)
