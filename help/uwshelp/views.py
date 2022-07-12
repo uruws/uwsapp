@@ -34,7 +34,7 @@ class Help(TemplateView):
 
 def _markdown(path: str) -> str:
 	doc = 'EMPTY'
-	fn = settings.BASE_DIR / 'help' / str('%s.md' % path)
+	fn = settings.BASE_DIR / 'docs' / str('%s.md' % path)
 	try:
 		doc = markdown_path(fn)
 	except Exception as err:
