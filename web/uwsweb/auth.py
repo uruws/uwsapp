@@ -10,7 +10,7 @@ from uwsapp import log
 
 def _check_credentials(username: str, password: str) -> Optional[User]:
 	log.debug('username:', username)
-	return User(username = username)
+	return None
 
 class AuthBackend(BaseBackend):
 

@@ -110,6 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#std-setting-AUTHENTICATION_BACKENDS
 AUTHENTICATION_BACKENDS = [
 	'django.contrib.auth.backends.ModelBackend',
+	'uwsweb.auth.AuthBackend',
 ]
 
 LOGIN_URL = '/%s' % config.URL('auth/login')
