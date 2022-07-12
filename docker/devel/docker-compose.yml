@@ -50,6 +50,26 @@ services:
     depends_on:
       - uwsapi
 
+  uwshelp:
+    image: uwsapp/devel
+    container_name: uwshelp-devel
+    hostname: uwshelp
+    user: uws
+    volumes:
+      - ../../:/opt/uwsapp
+      - ../../tmp:/opt/uwsapp/tmp
+      - ../../data:/var/opt/uwsapp
+    entrypoint: /opt/uwsapp/_devel/run.sh help
+    environment:
+      - UWSAPP_PORT=5001
+      - UWSAPP_URL=help/
+    read_only: true
+    restart: "no"
+    ports:
+      - "127.0.0.1:5001:5001"
+    networks:
+      - uwsapp
+
   nginx:
     image: uwsapp/nginx
     container_name: uwsapp-nginx

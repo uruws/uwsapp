@@ -43,3 +43,19 @@ services:
       - uwsapp-${UWSAPP_ENV}
     depends_on:
       - uwsapi
+
+  uwshelp:
+    image: 789470191893.dkr.ecr.us-west-1.amazonaws.com/uws:uwshelp-${UWSAPP_VERSION}
+    container_name: uwshelp-${UWSAPP_ENV}-${UWSAPP_VERSION}
+    hostname: uwshelp-${UWSAPP_ENV}
+    volumes:
+      - /srv/uwsapp/${UWSAPP_ENV}/data/help:/var/opt/uwsapp
+    environment:
+      - UWSAPP_HOST=${UWSAPP_HOST}
+      - UWSAPP_PORT=${UWSAPP_HELP_PORT}
+    read_only: true
+    restart: on-failure
+    ports:
+      - "127.0.0.1:${UWSAPP_HELP_PORT}:${UWSAPP_HELP_PORT}"
+    networks:
+      - uwsapp-${UWSAPP_ENV}

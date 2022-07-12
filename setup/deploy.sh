@@ -15,6 +15,7 @@ ${surun} install -v -d -o uws -g uws -m 0750 /srv/uwsapp/${appenv}
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/api
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/web
+${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/help
 ${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/run/uwsapp
 ${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwscli
@@ -41,11 +42,13 @@ export UWSAPP_VERSION=${appver}
 export UWSAPP_HOST='ops.uws.talkingpts.org'
 export UWSAPP_API_PORT=5600
 export UWSAPP_WEB_PORT=5500
+export UWSAPP_HELP_PORT=5501
 
 if test "X${appenv}" = 'Xtest'; then
 	export UWSAPP_HOST='opstest.uws.talkingpts.org'
 	export UWSAPP_API_PORT=5610
 	export UWSAPP_WEB_PORT=5510
+	export UWSAPP_HELP_PORT=5511
 fi
 
 # nginx snippet
