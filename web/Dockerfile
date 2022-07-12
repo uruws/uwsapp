@@ -9,8 +9,8 @@ WORKDIR /root
 ENV USER root
 ENV HOME /root
 
-RUN install -v -d -o uws -g uwsops -m 0750 /opt/uwsapp/web
-COPY --chown=uws:uwsops ./ /opt/uwsapp/web/
+RUN install -v -d -o uws -g uwsapp -m 0750 /opt/uwsapp/web
+COPY --chown=uws:uwsapp ./ /opt/uwsapp/web/
 RUN rm -vf /opt/uwsapp/web/Dockerfile /opt/uwsapp/web/.dockerignore
 
 USER uws:uwsops
@@ -22,8 +22,13 @@ ENV HOME /home/uws
 RUN python3 --version \
 	&& python3 -m compileall /opt/uwsapp/web
 
+USER uwsapp:uwsapp
+WORKDIR /opt/uwsapp
+
+ENV USER uwsapp
+ENV HOME /home/uwsapp
+
 ENV UWSAPP_NAME web
 ENV UWSAPP_URL web/
 
-WORKDIR /opt/uwsapp
 ENTRYPOINT /usr/local/bin/entrypoint.sh

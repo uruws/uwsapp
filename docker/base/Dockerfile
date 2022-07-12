@@ -1,13 +1,17 @@
 FROM uws/base-testing
 
 LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
-LABEL version="220523"
+LABEL version="220711"
 
 USER root:root
 WORKDIR /root
 
 ENV USER root
 ENV HOME /root
+
+RUN groupadd -o -g 3000 uwsapp \
+	&& useradd -o -d /home/uwsapp -m -c 'uwsapp' -g 3000 -u 3000 uwsapp \
+	&& chmod -v 0750 /home/uwsapp
 
 RUN /root/bin/apt-install.sh python3 uwsgi-plugin-python3 \
 	pwgen sqlite3 python3-django python3-markdown2 nq
