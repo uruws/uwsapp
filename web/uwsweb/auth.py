@@ -10,18 +10,38 @@ from uwsapp import log
 
 from uwsapp.api import ApiClient
 
+def _get_resp_user(resp) -> dict[str, str]:
+	log.debug('get_resp_user:', resp)
+	u = {
+		'uid': 'fake-uid',
+		'name': 'fakename',
+	}
+	return u
+
 def _check_credentials(username: str, password: str) -> Optional[User]:
 	log.debug('username:', username)
 	cli = ApiClient()
 	try:
-		cli.POST('/auth/login', {
+		resp = cli.POST('/auth/login', {
 			'username': username,
 			'password': password,
 		})
 	except Exception as err:
 		log.error('api /auth/login:', err)
 		return None
-	return None
+	u = _get_resp_user(resp)
+	uid = u['uid']
+	log.print('auth:', uid)
+	try:
+		user = User.objects.get(email = username)
+	except User.DoesNotExist:
+		log.debug(uid, 'create username:', username)
+		user = User(username = u['name'], email = username)
+		user.save()
+	if not user.is_active:
+		log.error('%s: inactive user' % uid, username)
+		return None
+	return user
 
 class AuthBackend(BaseBackend):
 
@@ -32,6 +52,7 @@ class AuthBackend(BaseBackend):
 		username = username.strip()
 		password = password.strip()
 		if username == '' or password == '':
+			log.error('auth: empty username and/or password')
 			return None
 		return _check_credentials(username, password)
 
