@@ -21,6 +21,7 @@ services:
     environment:
       - UWSAPP_PORT=5100
       - UWSAPP_URL=api/
+      - UWSAPP_HOST=localhost,nginx
     read_only: true
     restart: "no"
     ports:

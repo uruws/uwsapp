@@ -38,8 +38,7 @@ def TESTING() -> bool:
 	return _getenv('UWSAPP_TESTING', 'off') == 'on'
 
 def ALLOWED_HOSTS() -> list:
-	if DEBUG(): return []
-	return [_getenv('UWSAPP_HOST', 'localhost')]
+	return [h.strip() for h in _getenv('UWSAPP_HOST', 'localhost').split(',')]
 
 def DBDIR() -> Path:
 	return Path(_getenv('UWSAPP_DATADIR', '/var/opt/uwsapp'))
