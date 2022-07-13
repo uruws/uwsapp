@@ -115,6 +115,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/%s' % config.URL('auth/login')
+LOGIN_REDIRECT_URL = '/%s' % config.URL('')
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
