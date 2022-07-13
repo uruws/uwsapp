@@ -8,21 +8,16 @@ from typing import Optional
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.models   import User
 
-from hashlib import pbkdf2_hmac
 from pathlib import Path
-from uuid    import NAMESPACE_DNS
-from uuid    import uuid5
 
-from uwsapp import config
 from uwsapp import log
-
-__salt = config.AUTH_SECRET_KEY()
+from uwsapp import user
 
 def _user_uuid(username: str) -> str:
-	return str(uuid5(NAMESPACE_DNS, username))
+	return user.uuid(username)
 
 def _user_password(pw: str) -> str:
-	return pbkdf2_hmac('sha256', pw.encode(), __salt, 100000).hex()
+	return user.password_hash(pw)
 
 def _check_password(uid: str, fn: Path, password: str) -> bool:
 	pw = fn.read_text().strip()
