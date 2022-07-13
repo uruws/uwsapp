@@ -62,3 +62,12 @@ def API_PORT() -> str:
 
 def API_TIMEOUT() -> str:
 	return _getenv('UWSAPP_API_TIMEOUT', '15')
+
+def API_CERTFILE() -> str:
+	return _getenv('UWSAPP_API_CERTFILE', '')
+
+def API_KEYFILE() -> str:
+	return _getenv('UWSAPP_API_KEYFILE', '')
+
+def API_KEYPASS() -> str:
+	return _getenv('UWSAPP_API_KEYPASS', '')

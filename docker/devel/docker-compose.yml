@@ -43,7 +43,10 @@ services:
       - UWSAPP_URL=web/
       - UWSAPP_API_HOST=nginx
       - UWSAPP_API_PORT=443
-      - UWSAPP_API_TIMEOUT=7
+      - UWSAPP_API_TIMEOUT=5
+      - UWSAPP_API_CERTFILE=/opt/uwsapp/tmp/devel-local.pem
+      - UWSAPP_API_KEYFILE=/opt/uwsapp/tmp/devel-local-key.pem
+      - UWSAPP_API_KEYPASS=supersecret
     read_only: true
     restart: "no"
     ports:
