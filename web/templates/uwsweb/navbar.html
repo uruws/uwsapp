@@ -1,6 +1,11 @@
 <!-- uwsweb/navbar.html -->
-<div class="w3-bar w3-small w3-text-green">
+<div class="w3-bar w3-small">
+	<div class="w3-bar-item w3-center">
+		<span>{{ title }}</span>
+	</div>
 	<div class="w3-bar-item w3-right">{{ now }}</div>
-	<div class="w3-bar-item w3-right">{{ user.name }}</div>
+	<div class="w3-bar-item w3-right">
+		<a href="/user">{{ user.name }}</a>
+	</div>
 </div>
 <!-- uwsweb/navbar.html -->
