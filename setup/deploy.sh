@@ -49,6 +49,9 @@ if test "X${appenv}" = 'Xtest'; then
 	export UWSAPP_API_PORT=5610
 	export UWSAPP_WEB_PORT=5510
 	export UWSAPP_HELP_PORT=5511
+
+	${surun} install -v -o root -g www-data -m 0640 \
+		./VERSION /srv/www/uwsapp/${appenv}/static/version.txt
 fi
 
 # nginx snippet
