@@ -17,6 +17,13 @@ if __secret_key is __unset:
 def SECRET_KEY() -> str:
 	return __secret_key
 
+__auth_secret_key = getenv('UWSAPP_AUTH_SECRET', __unset)
+if __auth_secret_key is __unset:
+	__auth_secret_key = getoutput('/usr/bin/pwgen -1snyB 64').strip()
+
+def AUTH_SECRET_KEY() -> bytes:
+	return __auth_secret_key.encode()
+
 def _getenv(name: str, default) -> str:
 	val = getenv(name, __unset)
 	if val is __unset:

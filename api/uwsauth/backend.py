@@ -13,9 +13,10 @@ from pathlib import Path
 from uuid    import NAMESPACE_DNS
 from uuid    import uuid5
 
+from uwsapp import config
 from uwsapp import log
 
-__salt = b'K0mP2LvwSIPnCI_hyqmEaeRN4_hHiQ1PC_ohAf1J6Eh3FAhD'
+__salt = config.AUTH_SECRET_KEY()
 
 def _user_uuid(username: str) -> str:
 	return str(uuid5(NAMESPACE_DNS, username))
