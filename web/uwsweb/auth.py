@@ -18,7 +18,7 @@ def _get_resp_user(resp) -> dict[str, str]:
 	}
 	return u
 
-def _check_credentials(username: str, password: str) -> Optional[User]:
+def _check_credentials(req, username: str, password: str) -> Optional[User]:
 	log.debug('username:', username)
 	cli = ApiClient()
 	try:
@@ -41,6 +41,7 @@ def _check_credentials(username: str, password: str) -> Optional[User]:
 	if not user.is_active:
 		log.error('%s: inactive user' % uid, username)
 		return None
+	req.session['user'] = u
 	return user
 
 class AuthBackend(BaseBackend):
@@ -54,7 +55,7 @@ class AuthBackend(BaseBackend):
 		if username == '' or password == '':
 			log.error('auth: empty username and/or password')
 			return None
-		return _check_credentials(username, password)
+		return _check_credentials(request, username, password)
 
 	def get_user(b, user_id) -> Optional[User]:
 		log.debug('user_id:', user_id)
