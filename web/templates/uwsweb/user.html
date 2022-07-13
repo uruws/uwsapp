@@ -4,7 +4,10 @@
 
 {% include "uwsweb/navbar.html" %}
 
-<pre>{{ user }}</pre>
+<table class="w3-table">
+	<tr><td>UID</td><td>{{ user.uid }}</td></tr>
+	<tr><td>Username</td><td>{{ user.username }}</td></tr>
+</table>
 
 {% endblock %}
 <!-- uwsweb/user.html -->
