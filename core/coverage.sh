@@ -1,8 +1,7 @@
 #!/bin/sh
 set -eu
 
-export UWSAPP_DEBUG='off'
-export UWSAPP_TESTING='on'
+. ./test/env.sh
 
 rm -f .coverage
 python3-coverage erase
