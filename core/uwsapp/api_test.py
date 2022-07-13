@@ -20,7 +20,7 @@ class Test(unittest.TestCase):
 		api.urlopen = bup_urlopen
 
 	def test_POST(t):
-		t.cli.POST('/testing')
+		t.cli.POST('/testing', {'test': 'ing'})
 
 if __name__ == '__main__':
 	unittest.main()

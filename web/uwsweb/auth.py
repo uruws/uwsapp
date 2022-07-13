@@ -13,7 +13,10 @@ from uwsapp.api import ApiClient
 def _check_credentials(username: str, password: str) -> Optional[User]:
 	log.debug('username:', username)
 	cli = ApiClient()
-	cli.POST('/auth/login')
+	cli.POST('/auth/login', {
+		'username': username,
+		'password': password,
+	})
 	return None
 
 class AuthBackend(BaseBackend):
