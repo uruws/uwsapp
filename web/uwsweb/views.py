@@ -38,3 +38,11 @@ class Index(WebView):
 		d = super().get_context_data(**kwargs)
 		d['title'] = 'index'
 		return d
+
+class User(WebView):
+	template_name = 'uwsweb/user.html'
+
+	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
+		d['title'] = 'user'
+		return d
