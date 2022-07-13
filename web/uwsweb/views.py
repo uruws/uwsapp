@@ -3,5 +3,17 @@
 
 from django.views.generic import TemplateView
 
-class Index(TemplateView):
+class WebView(TemplateView):
+	http_method_names = ['get', 'head']
+
+	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
+		return d
+
+class Index(WebView):
 	template_name = 'uwsweb/index.html'
+
+	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
+		d['title'] = 'index'
+		return d
