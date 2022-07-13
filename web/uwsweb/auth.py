@@ -8,8 +8,12 @@ from django.contrib.auth.models   import User
 
 from uwsapp import log
 
+from uwsapp.api import ApiClient
+
 def _check_credentials(username: str, password: str) -> Optional[User]:
 	log.debug('username:', username)
+	cli = ApiClient()
+	cli.POST('/auth/login')
 	return None
 
 class AuthBackend(BaseBackend):

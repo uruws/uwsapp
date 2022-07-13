@@ -8,10 +8,19 @@ from unittest.mock import MagicMock
 
 from uwsapp import api
 
+bup_urlopen = api.urlopen
+
 class Test(unittest.TestCase):
 
-	def test_fake(t):
-		pass
+	def setUp(t):
+		api.urlopen = MagicMock(return_value = None)
+		t.cli = api.ApiClient()
+
+	def tearDown(t):
+		api.urlopen = bup_urlopen
+
+	def test_POST(t):
+		t.cli.POST('/testing')
 
 if __name__ == '__main__':
 	unittest.main()

@@ -59,3 +59,6 @@ def API_HOST() -> str:
 
 def API_PORT() -> str:
 	return _getenv('UWSAPP_API_PORT', '443')
+
+def API_TIMEOUT() -> str:
+	return _getenv('UWSAPP_API_TIMEOUT', '15')

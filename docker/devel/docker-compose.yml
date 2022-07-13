@@ -43,6 +43,7 @@ services:
       - UWSAPP_URL=web/
       - UWSAPP_API_HOST=nginx
       - UWSAPP_API_PORT=443
+      - UWSAPP_API_TIMEOUT=7
     read_only: true
     restart: "no"
     ports:
