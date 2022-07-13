@@ -19,7 +19,8 @@ def SECRET_KEY() -> str:
 
 __auth_secret_key = getenv('UWSAPP_AUTH_SECRET', __unset)
 if __auth_secret_key is __unset:
-	__auth_secret_key = getoutput('/usr/bin/pwgen -1snyB 64').strip()
+	# ~ __auth_secret_key = getoutput('/usr/bin/pwgen -1snyB 64').strip()
+	__auth_secret_key = 'K0mP2LvwSIPnCI_hyqmEaeRN4_hHiQ1PC_ohAf1J6Eh3FAhD'
 
 def AUTH_SECRET_KEY() -> bytes:
 	return __auth_secret_key.encode()
