@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+import json
+
 from typing import Optional
 
 from django.contrib.auth.backends import BaseBackend
@@ -11,11 +13,10 @@ from uwsapp import log
 from uwsapp.api import ApiClient
 
 def _get_resp_user(resp) -> dict[str, str]:
-	log.debug('get_resp_user:', resp)
-	u = {
-		'uid': 'fake-uid',
-		'name': 'fakename',
-	}
+	log.debug('get_resp_user:', type(resp), resp)
+	with resp:
+		u = json.load(resp)
+	log.debug('user:', u)
 	return u
 
 def _check_credentials(req, username: str, password: str) -> Optional[User]:
