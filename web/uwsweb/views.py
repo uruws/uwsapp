@@ -4,13 +4,27 @@
 from django.utils.timezone import now
 from django.views.generic  import TemplateView
 
+from uwsapp import log
+
 class WebView(TemplateView):
 	http_method_names = ['get', 'head']
+	__req = None
+
+	def dispatch(v, req, *args, **kwargs):
+		v.__req = req
+		return super().dispatch(req, *args, **kwargs)
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
+		d['user'] = v.uwsweb_user()
 		d['now'] = now()
 		return d
+
+	def uwsweb_user(v):
+		log.debug('user:', v.__req.user)
+		return {
+			'name': v.__req.user.username,
+		}
 
 class Index(WebView):
 	template_name = 'uwsweb/index.html'
