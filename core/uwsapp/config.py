@@ -53,3 +53,9 @@ def URL(path: str = '') -> str:
 	if _url_base == '':
 		return path
 	return urljoin(_url_base, path)
+
+def API_HOST() -> str:
+	return _getenv('UWSAPP_API_HOST', 'localhost')
+
+def API_PORT() -> str:
+	return _getenv('UWSAPP_API_PORT', '443')
