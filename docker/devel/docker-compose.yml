@@ -41,6 +41,7 @@ services:
       - ../../tmp:/opt/uwsapp/tmp
       - ../../data:/var/opt/uwsapp
       - ../../run/uwsapp:/run/uwsapp
+      - ./run/uwscli:/run/uwscli:ro
     entrypoint: /opt/uwsapp/_devel/run.sh web
     environment:
       - UWSAPP_PORT=5000

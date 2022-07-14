@@ -34,6 +34,7 @@ services:
       - /srv/uwsapp/${UWSAPP_ENV}/data/web:/var/opt/uwsapp
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsweb:/run/uwsweb:ro
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsapi:/run/uwsapi:ro
+      - /srv/uwscli/${UWSAPP_ENV}/logs:/run/uwscli/logs:ro
     environment:
       - UWSAPP_HOST=${UWSAPP_HOST}
       - UWSAPP_PORT=${UWSAPP_WEB_PORT}
