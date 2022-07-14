@@ -11,7 +11,7 @@ from uwsapp import config
 from uwsapp import log
 
 _navbar = [
-	('index', 'index'),
+	('syslog', 'syslog'),
 	('apps', 'apps'),
 ]
 
