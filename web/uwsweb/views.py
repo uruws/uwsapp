@@ -27,6 +27,7 @@ class WebView(TemplateView):
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
+		d['appname']       = 'uwsweb'
 		d['title']         = v.uwsweb_title()
 		d['title_desc']    = v.uwsweb_title().title()
 		d['user']          = v.uwsweb_user()
