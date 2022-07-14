@@ -43,6 +43,10 @@ ${surun} rsync -vax --chown=root:3000 --delete-before \
 	"${ca_src}/client/c4bc1cea-8052-54c7-9db8-d25c6b3b747a-key.pem" \
 	/srv/uwsapp/${appenv}/run/uwsweb/ca/
 
+grep -F 'c4bc1cea-8052-54c7-9db8-d25c6b3b747a' "${CASRC}/etc/client.pw" |
+	cut -d ':' -f 2 |
+	${surun} tee /srv/uwsapp/${appenv}/run/uwsweb/ca/api_keypass >/dev/null
+
 # sync static files
 
 ${surun} install -v -d -o root -g www-data -m 0750 /srv/www/uwsapp
