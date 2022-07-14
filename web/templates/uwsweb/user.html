@@ -4,7 +4,6 @@
 
 {% include "uwsweb/navbar.html" %}
 
-<hr class="w3-border-blue">
 <table class="w3-table">
 	<tr><td>UID</td><td>{{ user.uid }}</td></tr>
 	<tr><td>Username</td><td>{{ user.username }}</td></tr>
@@ -17,7 +16,7 @@
 </table>
 
 {% if user.apps %}
-<hr class="w3-border-blue">
+<div class="w3-panel">
 <table class="w3-table">
 	<tr class="w3-blue"><td>Apps</td><td></td></tr>
 
@@ -36,7 +35,7 @@
 	{% endif %}
 
 </table>
-<hr class="w3-border-blue">
+</div>
 {% endif %}
 
 {% endblock %}
