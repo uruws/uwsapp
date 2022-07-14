@@ -12,8 +12,8 @@ from uwsapp import log
 
 from uwsapp.api import ApiClient
 
-def _get_resp_user(resp) -> dict[str, str]:
-	log.debug('get_resp_user:', type(resp), resp)
+def _get_resp_user(resp):
+	log.debug('get_resp_user:', resp)
 	with resp:
 		u = json.load(resp)
 	log.debug('user:', u)

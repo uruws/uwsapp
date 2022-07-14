@@ -20,7 +20,7 @@ class WebView(TemplateView):
 		d['now'] = now()
 		return d
 
-	def uwsweb_user(v) -> dict[str, str]:
+	def uwsweb_user(v):
 		log.debug('user:', v.__req.user)
 		log.debug('session:', v.__req.session.session_key)
 		log.debug('session.keys:', sorted(v.__req.session.keys()))
