@@ -38,8 +38,8 @@ services:
       - UWSAPP_HOST=${UWSAPP_HOST}
       - UWSAPP_PORT=${UWSAPP_WEB_PORT}
       - UWSAPP_API_HOST=${UWSAPP_HOST}
-      - UWSAPP_API_CERTFILE=/run/uwsapp/ca/c4bc1cea-8052-54c7-9db8-d25c6b3b747a.pem
-      - UWSAPP_API_KEYFILE=/run/uwsapp/ca/c4bc1cea-8052-54c7-9db8-d25c6b3b747a-key.pem
+      - UWSAPP_API_CERTFILE=/run/uwsweb/ca/c4bc1cea-8052-54c7-9db8-d25c6b3b747a.pem
+      - UWSAPP_API_KEYFILE=/run/uwsweb/ca/c4bc1cea-8052-54c7-9db8-d25c6b3b747a-key.pem
     read_only: true
     restart: on-failure
     ports:
