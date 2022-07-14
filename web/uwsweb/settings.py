@@ -36,13 +36,14 @@ ALLOWED_HOSTS = config.ALLOWED_HOSTS()
 # Application definition
 
 INSTALLED_APPS = [
+	'uwslogs.apps.LogsConfig',
+	'uwsapps.apps.AppsConfig',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'uwslogs.apps.LogsConfig',
 ]
 
 MIDDLEWARE = [

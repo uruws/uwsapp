@@ -67,10 +67,3 @@ class User(WebView):
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
 		return v.uwsweb_data(d)
-
-class Apps(WebView):
-	template_name = 'uwsweb/apps.html'
-
-	def get_context_data(v, **kwargs):
-		d = super().get_context_data(**kwargs)
-		return v.uwsweb_data(d)

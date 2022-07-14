@@ -34,10 +34,9 @@ urlpatterns = [
 		name = 'login'),
 
 	path(URL('logs/'), include('uwslogs.urls')),
+	path(URL('apps/'), include('uwsapps.urls')),
 
 	path(URL('user'), views.User.as_view(), name = 'user'),
-	path(URL('apps'), views.Apps.as_view(), name = 'apps'),
-
 	path(URL('admin/'), admin.site.urls, name = 'admin'),
 
 	path(URL(''), logs_views.Index.as_view(), name = 'index'),

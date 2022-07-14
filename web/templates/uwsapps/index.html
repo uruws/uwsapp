@@ -2,11 +2,10 @@
 {% block title %}uwsweb - {{ title }}{% endblock %}
 {% block content %}
 {% include "uwsweb/navbar.html" %}
-<!-- uwsweb/apps.html -->
+<!-- uwsapps/index.html -->
 
 {% if user.apps %}
 <table class="w3-table">
-	<!-- tr class="w3-blue"><td>Apps</td><td></td></tr -->
 
 	{% if user.apps.build %}
 	<tr class="w3-green w3-text-black"><td>Build</td><td></td></tr>
@@ -25,6 +24,6 @@
 </table>
 {% endif %}
 
-<!-- uwsweb/apps.html -->
+<!-- uwsapps/index.html -->
 {% include "uwsweb/footer.html" %}
 {% endblock %}
