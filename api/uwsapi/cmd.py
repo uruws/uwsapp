@@ -38,7 +38,7 @@ __env: dict[str, str] = {
 
 def _setenv(user: str) -> dict[str, str]:
 	e = __env.copy()
-	e['NQDIR'] = '/run/uwsapp/nq/%s' % user
+	e['NQDIR'] = '/run/uwsapi/nq/%s' % user
 	return e
 
 def _check_output(user: str, cmd: str) -> str:
@@ -55,7 +55,7 @@ def _exec(req: HttpRequest, name: str, app: str) -> JsonResponse:
 	cmd = f"apicmd.sh {user} {name} {app}"
 	log.debug(cmd)
 	try:
-		rundir = Path('/run/uwsapp/nq/%s' % user)
+		rundir = Path('/run/uwsapi/nq/%s' % user)
 		rundir.mkdir(mode = 0o750, parents = True, exist_ok = True)
 		qid = _nq(user, cmd)
 		if qid == '':

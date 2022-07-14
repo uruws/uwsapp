@@ -17,14 +17,13 @@ ${surun} install -v -d -o root -g uws -m 0750 /srv/uwsapp
 ${surun} install -v -d -o uws -g uws -m 0750 /srv/uwsapp/${appenv}
 
 # 3000 uid/gid for uwsapp/base and uwscli
-${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data
+${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/data
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/api
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/web
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/help
 ${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run
-${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/run/uwsapp
-${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwscli
-${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwscli/auth
+${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/run/uwsapi
+${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/run/uwsweb
 
 # systemd service scripts
 
@@ -36,13 +35,13 @@ ${surun} install -v -C -o root -g uws -m 0750 \
 
 # sync CA files
 
-${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwsapp/ca
+${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwsweb/ca
 ca_src="${CASRC}/${CA}"
 ${surun} rsync -vax --chown=root:3000 --delete-before \
 	"${ca_src}/rootCA.pem" \
 	"${ca_src}/client/c4bc1cea-8052-54c7-9db8-d25c6b3b747a.pem" \
 	"${ca_src}/client/c4bc1cea-8052-54c7-9db8-d25c6b3b747a-key.pem" \
-	/srv/uwsapp/${appenv}/run/uwsapp/ca/
+	/srv/uwsapp/${appenv}/run/uwsweb/ca/
 
 # sync static files
 

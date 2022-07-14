@@ -9,6 +9,8 @@ WORKDIR /root
 ENV USER root
 ENV HOME /root
 
+RUN install -v -d -o uws -g uwsapp -m 0750 /run/uwsSKEL
+
 RUN install -v -d -o uws -g uwsapp -m 0750 /opt/uwsapp/SKEL
 COPY --chown=uws:uwsapp ./ /opt/uwsapp/SKEL/
 RUN rm -vf /opt/uwsapp/SKEL/Dockerfile /opt/uwsapp/SKEL/.dockerignore

@@ -9,6 +9,8 @@ WORKDIR /root
 ENV USER root
 ENV HOME /root
 
+RUN install -v -d -o uws -g uwsapp -m 0750 /run/uwspop
+
 RUN install -v -d -o uws -g uwsapp -m 0750 /opt/uwsapp/pop
 COPY --chown=uws:uwsapp ./ /opt/uwsapp/pop/
 RUN rm -vf /opt/uwsapp/pop/Dockerfile /opt/uwsapp/pop/.dockerignore
