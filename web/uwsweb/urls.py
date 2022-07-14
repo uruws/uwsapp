@@ -24,6 +24,8 @@ from django.urls         import path
 
 from uwsapp.config import URL
 
+from uwslogs import views as logs_views
+
 from . import views
 
 urlpatterns = [
@@ -37,5 +39,7 @@ urlpatterns = [
 	path(URL('apps'), views.Apps.as_view(), name = 'apps'),
 
 	path(URL('admin/'), admin.site.urls, name = 'admin'),
-	path(URL(''), views.Index.as_view(), name = 'index'),
+
+	path(URL(''), logs_views.Index.as_view(), name = 'index'),
+	# ~ path(URL(''), views.Index.as_view(), name = 'index'),
 ]
