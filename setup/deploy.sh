@@ -39,7 +39,10 @@ ${surun} install -v -C -o root -g uws -m 0750 \
 ${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwsapp/ca
 ca_src="${CASRC}/${CA}"
 ${surun} rsync -vax --chown=root:3000 --delete-before \
-	"${ca_src}/rootCA.pem" /srv/uwsapp/${appenv}/run/uwsapp/ca/rootCA.pem
+	"${ca_src}/rootCA.pem" \
+	"${ca_src}/client/c4bc1cea-8052-54c7-9db8-d25c6b3b747a.pem" \
+	"${ca_src}/client/c4bc1cea-8052-54c7-9db8-d25c6b3b747a-key.pem" \
+	/srv/uwsapp/${appenv}/run/uwsapp/ca/
 
 # sync static files
 
