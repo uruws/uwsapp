@@ -10,9 +10,7 @@ ENV USER root
 ENV HOME /root
 
 RUN install -v -d -o uws -g uwsapp -m 0750 /run/uwsapi \
-	&& install -v -d -o uws -g uwsapp -m 0750 /run/uwsweb \
-	&& install -v -d -o uws -g uwsapp -m 0750 /run/uwscli \
-	&& install -v -d -o uws -g uwsapp -m 0750 /run/uwscli/auth
+	&& install -v -d -o uws -g uwsapp -m 0750 /run/uwsweb
 
 RUN install -v -d -o uws -g uwsapp -m 0750 /opt/uwsapp/web
 COPY --chown=uws:uwsapp ./ /opt/uwsapp/web/
