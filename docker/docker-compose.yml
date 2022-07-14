@@ -32,7 +32,7 @@ services:
     hostname: uwsweb-${UWSAPP_ENV}
     volumes:
       - /srv/uwsapp/${UWSAPP_ENV}/data/web:/var/opt/uwsapp
-      - /srv/uwsapp/${UWSAPP_ENV}/run/uwsweb:/run/uwsweb
+      - /srv/uwsapp/${UWSAPP_ENV}/run/uwsweb:/run/uwsweb:ro
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsapi:/run/uwsapi:ro
     environment:
       - UWSAPP_HOST=${UWSAPP_HOST}
