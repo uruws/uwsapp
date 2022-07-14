@@ -7,11 +7,11 @@
 <table class="w3-table">
 	<tr><td>UID</td><td>{{ user.uid }}</td></tr>
 	<tr><td>Username</td><td>{{ user.username }}</td></tr>
-	{% if user.is_admin %}
-	<tr><td>Admin</td><td></td></tr>
-	{% endif %}
-	{% if user.is_operator %}
-	<tr><td>Operator</td><td></td></tr>
+	{% if user.is_admin or user.is_operator %}
+	<tr>
+		<td class="w3-text-green">{% if user.is_admin %}Admin{% endif %}</td>
+		<td class="w3-text-green">{% if user.is_operator %}Operator{% endif %}</td>
+	</tr>
 	{% endif %}
 </table>
 
