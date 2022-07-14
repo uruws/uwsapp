@@ -1,0 +1,31 @@
+Mon, 11 Jul 2022 15:00:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src infra-ui/src --target infra-ui --version 9.1.6
+Mon, 11 Jul 2022 15:00:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh infra-ui
+Mon, 11 Jul 2022 15:00:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh infra-ui 9.1.6
+Mon, 11 Jul 2022 15:00:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src cs/src --target crowdsourcing --version 1.73.6
+Mon, 11 Jul 2022 15:00:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh crowdsourcing
+Mon, 11 Jul 2022 15:00:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh crowdsourcing 1.73.6
+Mon, 11 Jul 2022 15:00:04 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.73.16
+Mon, 11 Jul 2022 15:00:04 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
+Mon, 11 Jul 2022 15:00:04 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.73.16
+Mon, 11 Jul 2022 15:15:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.73.16
+Mon, 11 Jul 2022 15:15:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
+Mon, 11 Jul 2022 15:15:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.73.16
+Tue, 12 Jul 2022 19:15:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.73.17
+Tue, 12 Jul 2022 19:15:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
+Tue, 12 Jul 2022 19:15:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.73.17
+Tue, 12 Jul 2022 20:37:40 +0000 [gabriel] /srv/uws/deploy/cli/buildpack.sh infra-ui/src infra-ui 9.1.67
+Tue, 12 Jul 2022 20:37:40 +0000 [gabriel] /srv/deploy/Buildpack/build.py --src infra-ui/src --target infra-ui --version 9.1.67
+Tue, 12 Jul 2022 20:37:40 +0000 [gabriel] /srv/uws/deploy/cli/app-clean-build.sh infra-ui
+Tue, 12 Jul 2022 20:37:40 +0000 [gabriel] /srv/uws/deploy/cli/app-autobuild-deploy.sh infra-ui 9.1.67
+Wed, 13 Jul 2022 15:45:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src cs/src --target crowdsourcing --version 1.74.0
+Wed, 13 Jul 2022 15:45:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh crowdsourcing
+Wed, 13 Jul 2022 15:45:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh crowdsourcing 1.74.0
+Wed, 13 Jul 2022 15:45:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.74.0
+Wed, 13 Jul 2022 15:45:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
+Wed, 13 Jul 2022 15:45:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.74.0
+Wed, 13 Jul 2022 17:00:02 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.74.1
+Wed, 13 Jul 2022 17:00:02 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
+Wed, 13 Jul 2022 17:00:02 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.74.1
+Thu, 14 Jul 2022 17:30:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.75.0
+Thu, 14 Jul 2022 17:30:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
+Thu, 14 Jul 2022 17:30:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.75.0
