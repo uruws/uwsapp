@@ -5,8 +5,13 @@ app=${1:?'app name?'}
 appenv=${2:?'app env?'}
 appver=${3:?'app version?'}
 
+CA='opstest/220414'
+CASRC=/srv/uws/deploy/secret/ca/uws
+
 surun='sudo -n'
 sysdctl='sudo -n systemctl'
+
+# runtime dirs
 
 ${surun} install -v -d -o root -g uws -m 0750 /srv/uwsapp
 ${surun} install -v -d -o uws -g uws -m 0750 /srv/uwsapp/${appenv}
@@ -21,11 +26,20 @@ ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/run/uwsapp
 ${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwscli
 ${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwscli/auth
 
+# systemd service scripts
+
 ${surun} install -v -C -o root -g uws -m 0750 \
 	./docker/start.sh /srv/uwsapp/${appenv}/start.sh
 
 ${surun} install -v -C -o root -g uws -m 0750 \
 	./docker/stop.sh /srv/uwsapp/${appenv}/stop.sh
+
+# sync CA files
+
+${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run/uwsapp/ca
+ca_src="${CASRC}/${CA}"
+${surun} rsync -vax --chown=root:3000 --delete-before \
+	"${ca_src}/rootCA.pem" /srv/uwsapp/${appenv}/run/uwsapp/ca/rootCA.pem
 
 # sync static files
 
