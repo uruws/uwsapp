@@ -5,6 +5,7 @@ from django.utils.timezone import now
 from django.views.generic  import TemplateView
 
 from pathlib import Path
+from time    import time
 
 from uwsapp import config
 from uwsapp import log
@@ -16,9 +17,11 @@ _navbar = [
 
 class WebView(TemplateView):
 	http_method_names = ['get', 'head']
+	__start = None
 	__req = None
 
 	def dispatch(v, req, *args, **kwargs):
+		v.__start = time()
 		v.__req = req
 		return super().dispatch(req, *args, **kwargs)
 
@@ -47,25 +50,27 @@ class WebView(TemplateView):
 		}
 		return u
 
+	def uwsweb_data(v, d):
+		d['took'] = '%.6f' % (time() - v.__start)
+		return d
+
 class Index(WebView):
 	template_name = 'uwsweb/index.html'
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
-		d['title'] = 'index'
-		return d
+		return v.uwsweb_data(d)
 
 class User(WebView):
 	template_name = 'uwsweb/user.html'
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
-		d['title'] = 'user'
-		return d
+		return v.uwsweb_data(d)
 
 class Apps(WebView):
 	template_name = 'uwsweb/apps.html'
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
-		return d
+		return v.uwsweb_data(d)
