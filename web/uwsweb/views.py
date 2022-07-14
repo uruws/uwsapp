@@ -4,6 +4,8 @@
 from django.utils.timezone import now
 from django.views.generic  import TemplateView
 
+from pathlib import Path
+
 from uwsapp import log
 
 class WebView(TemplateView):
@@ -16,9 +18,13 @@ class WebView(TemplateView):
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
+		d['title'] = v.uwsweb_title()
 		d['user'] = v.uwsweb_user()
 		d['now'] = now()
 		return d
+
+	def uwsweb_title(v):
+		return Path(v.template_name).stem
 
 	def uwsweb_user(v):
 		log.debug('user:', v.__req.user)
@@ -45,4 +51,11 @@ class User(WebView):
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
 		d['title'] = 'user'
+		return d
+
+class Apps(WebView):
+	template_name = 'uwsweb/apps.html'
+
+	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
 		return d

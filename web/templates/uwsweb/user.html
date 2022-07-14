@@ -15,28 +15,5 @@
 	{% endif %}
 </table>
 
-{% if user.apps %}
-<div class="w3-panel">
-<table class="w3-table">
-	<tr class="w3-blue"><td>Apps</td><td></td></tr>
-
-	{% if user.apps.build %}
-	<tr class="w3-dark-grey"><td></td><td>Build</td></tr>
-	{% for app, desc in user.apps.build.items %}
-	<tr><td>{{ app }}</td><td>{{ desc }}</td></tr>
-	{% endfor %}
-	{% endif %}
-
-	{% if user.apps.deploy %}
-	<tr class="w3-dark-grey"><td></td><td>Deploy</td></tr>
-	{% for app, desc in user.apps.deploy.items %}
-	<tr><td>{{ app }}</td><td>{{ desc }}</td></tr>
-	{% endfor %}
-	{% endif %}
-
-</table>
-</div>
-{% endif %}
-
 {% endblock %}
 <!-- uwsweb/user.html -->
