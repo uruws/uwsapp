@@ -19,6 +19,7 @@ Including another URLconf
 
 from django.contrib      import admin
 from django.contrib.auth import views as auth_views
+from django.urls         import include
 from django.urls         import path
 
 from uwsapp.config import URL
@@ -29,8 +30,12 @@ urlpatterns = [
 	path(URL('auth/login'),
 		auth_views.LoginView.as_view(template_name = 'uwsweb/auth/login.html'),
 		name = 'login'),
+
+	path(URL('logs/'), include('uwslogs.urls')),
+
 	path(URL('user'), views.User.as_view(), name = 'user'),
 	path(URL('apps'), views.Apps.as_view(), name = 'apps'),
+
 	path(URL('admin/'), admin.site.urls, name = 'admin'),
 	path(URL(''), views.Index.as_view(), name = 'index'),
 ]
