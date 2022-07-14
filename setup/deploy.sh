@@ -5,8 +5,14 @@ app=${1:?'app name?'}
 appenv=${2:?'app env?'}
 appver=${3:?'app version?'}
 
-CA='opstest/220414'
+CA='ops/210823'
+CANAME='ops'
 CASRC=/srv/uws/deploy/secret/ca/uws
+
+if test "X${appenv}" = 'Xtest'; then
+	CA='opstest/220414'
+	CANAME='opstest'
+fi
 
 surun='sudo -n'
 sysdctl='sudo -n systemctl'
@@ -43,7 +49,7 @@ ${surun} rsync -vax --chown=root:3000 --delete-before \
 	"${ca_src}/client/c4bc1cea-8052-54c7-9db8-d25c6b3b747a-key.pem" \
 	/srv/uwsapp/${appenv}/run/uwsweb/ca/
 
-grep -F 'c4bc1cea-8052-54c7-9db8-d25c6b3b747a' "${CASRC}/etc/client.pw" |
+grep -F 'c4bc1cea-8052-54c7-9db8-d25c6b3b747a' "${CASRC}/${CANAME}/etc/client.pw" |
 	cut -d ':' -f 2 |
 	${surun} tee /srv/uwsapp/${appenv}/run/uwsweb/ca/api_keypass >/dev/null
 
