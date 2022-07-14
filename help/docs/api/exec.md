@@ -1,6 +1,6 @@
 ### POST /api/exec/name
 
-Description: Execute application command.
+**Description**: Execute application command.
 
 Content-Type: *application/x-www-form-urlencoded*
 
@@ -11,37 +11,35 @@ URL args:
 Args:
 
     session: string (abcdef123456)
-    app:     string (cs)
+    app:     string (app1)
 
 ### Status: 401 Unauthorized
 
-Reason: not logged in or invalid session.
+**Reason**: Not logged in or invalid session.
 
 Content-Type: *application/json*
 
-Content: `{}`
+`{}`
 
 ### Status: 400 Bad Request
 
-Reason: invalid or missing arguments, wrong request method.
+**Reason**: Invalid or missing arguments; wrong request method.
 
 Content-Type: *application/json*
 
-Content: `{}`
+`{}`
 
 ### Status: 500 Internal Server Error
 
-Reason: error dispatching command.
+**Reason**: Error dispatching command.
 
 Content-Type: *application/json*
 
-Content: `{}`
+`{}`
 
 ### Status: 200 OK
 
 Content-Type: *application/json*
-
-Content:
 
     {
         "qid": ",123456abcdef"

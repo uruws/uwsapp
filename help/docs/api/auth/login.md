@@ -1,6 +1,6 @@
 ### POST /api/auth/login
 
-Description: User login.
+**Description**: User login.
 
 Content-Type: *application/x-www-form-urlencoded*
 
@@ -11,22 +11,20 @@ Args:
 
 ### Status: 400 Bad Request
 
-Reason: invalid or missing arguments, wrong request method.
+**Reason**: Invalid or missing arguments, wrong request method.
 
 Content-Type: *application/json*
 
-Content: `{}`
+`{}`
 
 ### Status: 200 OK
 
 Content-Type: *application/json*
 
-Content:
-
     {
-      "uid": "7044e95f-e20e-54be-9ce1-efa08e2b5a11",
-      "name": "uwsdev",
-      "username": "uwsdev@uwsapp.local",
+      "uid": "abcdef-123456",
+      "name": "richard",
+      "username": "richard@uwsapp.docs",
       "is_operator": false,
       "is_admin": true,
       "apps": {
@@ -43,5 +41,5 @@ Content:
           "app3-test": "App3 test"
         }
       },
-      "session": "9em9sz2ekm8h1hq01g8ga3prh7qehn0a"
+      "session": "abcdef123456"
     }
