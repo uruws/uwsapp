@@ -1,7 +1,9 @@
 #!/bin/sh
 set -eu
+
 install -v -d -m 0750 ${PWD}/tmp
 install -v -d -m 0750 ${PWD}/data
+
 exec docker run --rm --name uwsapp-check \
 	--hostname check.uwsapp.local \
 	--read-only \

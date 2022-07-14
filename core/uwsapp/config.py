@@ -6,6 +6,8 @@ from pathlib      import Path
 from subprocess   import getoutput
 from urllib.parse import urljoin
 
+from uwsapp import log
+
 APPNAME = 'app'
 
 __unset = '__UNSET__'
@@ -69,4 +71,11 @@ def API_KEYFILE() -> str:
 	return _getenv('UWSAPP_API_KEYFILE', '')
 
 def API_KEYPASS() -> str:
-	return _getenv('UWSAPP_API_KEYPASS', '')
+	fn = _getenv('UWSAPP_API_KEYPASS', '/run/uws%s/ca/api_keypass' % APPNAME)
+	k = ''
+	try:
+		k = Path(fn).read_text()
+	except Exception as err:
+		log.error('API_KEYPASS:', err)
+		k = ''
+	return k.strip()

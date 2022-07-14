@@ -6,6 +6,8 @@ install -v -d -m 0750 ${PWD}/data
 install -v -d -m 0750 ${PWD}/run
 install -v -d -m 0750 ${PWD}/run/uwsapp
 
+echo 'supersecret' >${PWD}/run/uwsapp/api_keypass
+
 exec docker run -it --rm --name uwsapp-devel \
 	--hostname devel.uwsapp.local \
 	--read-only \

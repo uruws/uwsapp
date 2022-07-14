@@ -40,7 +40,7 @@ services:
       - ../../:/opt/uwsapp
       - ../../tmp:/opt/uwsapp/tmp
       - ../../data:/var/opt/uwsapp
-      - ../../run:/run/uwsapp
+      - ../../run/uwsapp:/run/uwsapp
     entrypoint: /opt/uwsapp/_devel/run.sh web
     environment:
       - UWSAPP_PORT=5000
@@ -50,7 +50,7 @@ services:
       - UWSAPP_API_TIMEOUT=5
       - UWSAPP_API_CERTFILE=/opt/uwsapp/tmp/devel-local.pem
       - UWSAPP_API_KEYFILE=/opt/uwsapp/tmp/devel-local-key.pem
-      - UWSAPP_API_KEYPASS=supersecret
+      - UWSAPP_API_KEYPASS=/run/uwsapp/api_keypass
     read_only: true
     restart: "no"
     ports:
