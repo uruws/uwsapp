@@ -4,6 +4,7 @@
 
 {% include "uwsweb/navbar.html" %}
 
+<hr class="w3-border-blue">
 <table class="w3-table">
 	<tr><td>UID</td><td>{{ user.uid }}</td></tr>
 	<tr><td>Username</td><td>{{ user.username }}</td></tr>
@@ -13,8 +14,11 @@
 		<td class="w3-text-green">{% if user.is_operator %}Operator{% endif %}</td>
 	</tr>
 	{% endif %}
+</table>
 
-	{% if user.apps %}
+{% if user.apps %}
+<hr class="w3-border-blue">
+<table class="w3-table">
 	<tr class="w3-blue"><td>Apps</td><td></td></tr>
 
 	{% if user.apps.build %}
@@ -31,8 +35,9 @@
 	{% endfor %}
 	{% endif %}
 
-	{% endif %}
 </table>
+<hr class="w3-border-blue">
+{% endif %}
 
 {% endblock %}
 <!-- uwsweb/user.html -->
