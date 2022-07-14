@@ -153,3 +153,4 @@ if not DEBUG and not config.TESTING():
 	SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 	SECURE_HSTS_PRELOAD            = True
 	SESSION_COOKIE_SECURE          = True
+	CSRF_COOKIE_SECURE             = True
