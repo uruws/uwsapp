@@ -16,7 +16,7 @@ def _get_resp_user(resp):
 	log.debug('get_resp_user:', resp)
 	with resp:
 		u = json.load(resp)
-	log.debug('user:', u)
+	log.debug('user:', u['uid'])
 	return u
 
 def _check_credentials(req, username: str, password: str) -> Optional[User]:
