@@ -4,16 +4,15 @@
 		<span>{{ title }}</span>
 	</div>
 	<div class="w3-bar-item w3-right w3-small w3-text-green">{{ now }}</div>
-	<div class="w3-bar-item w3-right">
+	<div class="w3-bar-item w3-right {% if title == 'user' %}w3-blue{% endif %}">
 		<a href="{% url 'user' %}">{{ user.name }}</a>
 	</div>
 </div>
 <div class="w3-bar w3-text-blue">
-	<div class="w3-bar-item">
-		<a href="{% url 'index' %}">index</a>
+	{% for i_title, i_name in navbar %}
+	<div class="w3-bar-item {% if i_title == title %}w3-blue{% endif %}">
+		<a href="{% url i_name %}">{{ i_title }}</a>
 	</div>
-	<div class="w3-bar-item">
-		<a href="{% url 'apps' %}">apps</a>
-	</div>
+	{% endfor %}
 </div>
 <!-- uwsweb/navbar.html -->

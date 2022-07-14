@@ -8,6 +8,11 @@ from pathlib import Path
 
 from uwsapp import log
 
+_navbar = [
+	('index', 'index'),
+	('apps', 'apps'),
+]
+
 class WebView(TemplateView):
 	http_method_names = ['get', 'head']
 	__req = None
@@ -20,6 +25,7 @@ class WebView(TemplateView):
 		d = super().get_context_data(**kwargs)
 		d['title'] = v.uwsweb_title()
 		d['user'] = v.uwsweb_user()
+		d['navbar'] = _navbar
 		d['now'] = now()
 		return d
 
