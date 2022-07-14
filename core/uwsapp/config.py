@@ -10,6 +10,8 @@ from uwsapp import log
 
 APPNAME = 'app'
 
+# secrets
+
 __unset = '__UNSET__'
 
 __secret_key = getenv('UWSAPP_SECRET', __unset)
@@ -26,6 +28,8 @@ if __auth_secret_key is __unset:
 
 def AUTH_SECRET_KEY() -> bytes:
 	return __auth_secret_key.encode()
+
+# settings
 
 def _getenv(name: str, default) -> str:
 	val = getenv(name, __unset)
@@ -55,6 +59,8 @@ def URL(path: str = '') -> str:
 		return path
 	return urljoin(_url_base, path)
 
+# api
+
 def API_HOST() -> str:
 	return _getenv('UWSAPP_API_HOST', 'localhost')
 
@@ -79,3 +85,6 @@ def API_KEYPASS() -> str:
 		log.error('API_KEYPASS:', err)
 		k = ''
 	return k.strip()
+
+def API_LOGSDIR() -> Path:
+	return Path(_getenv('UWSAPP_API_LOGSDIR', '/run/uwscli/logs'))
