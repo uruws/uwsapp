@@ -5,8 +5,8 @@
 <!-- uwsweb/user.html -->
 
 <table class="w3-table">
-	<tr><td>UID</td><td>{{ user.uid }}</td></tr>
 	<tr><td>Username</td><td>{{ user.username }}</td></tr>
+
 	{% if user.is_admin or user.is_operator %}
 	<tr>
 		<td class="w3-text-green">{% if user.is_admin %}Admin{% endif %}</td>
@@ -14,6 +14,15 @@
 	</tr>
 	{% endif %}
 </table>
+
+{% if debug %}
+<hr class="w3-border-dark-grey">
+<table class="w3-table">
+	<tr><td>UID</td><td>{{ user.uid }}</td></tr>
+	<tr><td>Session</td><td>{{ user.web.session_key }}</td></tr>
+	<tr><td>Api Session</td><td>{{ user.session }}</td></tr>
+</table>
+{% endif %}
 
 <!-- uwsweb/user.html -->
 {% include "uwsweb/footer.html" %}
