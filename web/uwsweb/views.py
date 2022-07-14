@@ -6,6 +6,7 @@ from django.views.generic  import TemplateView
 
 from pathlib import Path
 
+from uwsapp import config
 from uwsapp import log
 
 _navbar = [
@@ -23,11 +24,13 @@ class WebView(TemplateView):
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
-		d['title'] = v.uwsweb_title()
-		d['title_desc'] = v.uwsweb_title().title()
-		d['user'] = v.uwsweb_user()
-		d['navbar'] = _navbar
-		d['now'] = now()
+		d['title']         = v.uwsweb_title()
+		d['title_desc']    = v.uwsweb_title().title()
+		d['user']          = v.uwsweb_user()
+		d['debug']         = config.DEBUG()
+		d['template_name'] = v.template_name.strip()
+		d['navbar']        = _navbar
+		d['now']           = now()
 		return d
 
 	def uwsweb_title(v):
