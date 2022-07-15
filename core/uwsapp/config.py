@@ -86,5 +86,7 @@ def API_KEYPASS() -> str:
 		k = ''
 	return k.strip()
 
-def API_LOGSDIR() -> Path:
-	return Path(_getenv('UWSAPP_API_LOGSDIR', '/run/uwscli/logs'))
+# cli
+
+def CLI_LOGSDIR() -> Path:
+	return Path(_getenv('UWSAPP_CLI_LOGSDIR', '/run/uwscli/logs'))

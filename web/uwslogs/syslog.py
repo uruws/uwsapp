@@ -3,6 +3,9 @@
 
 from collections import deque
 
+from uwsapp import config
+from uwsapp import log
+
 class LogEntry(object):
 	message: str  = ''
 	error:   bool = False
@@ -12,20 +15,15 @@ class LogEntry(object):
 		e.error = error
 		e.warning = warning
 
-def _msg(m: str, error: bool = False, warning: bool = False):
-	e = LogEntry(error = error, warning = warning)
-	e.message = m
-	return e
-
 def syslog() -> deque:
 	d = deque()
-	# ~ d.append(_msg('1'))
-	# ~ d.append(_msg('2'))
-	# ~ d.append(_msg('3'))
-	# ~ d.append(_msg('4', warning = True))
-	# ~ d.append(_msg('5'))
-	# ~ d.append(_msg('6', error = True))
-	# ~ d.append(_msg('7'))
-	# ~ d.append(_msg('8'))
+	fn = config.CLI_LOGSDIR() / 'uwsq.log'
+	log.debug('parse:', fn)
+	with fn.open() as fh:
+		for line in fh.readlines():
+			# ~ line = line.strip()
+			e = LogEntry()
+			e.message = line.strip()
+			d.append(e)
 	d.reverse()
 	return d
