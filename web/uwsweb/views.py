@@ -1,7 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.utils.timezone import now
 from django.views.generic  import TemplateView
 
 from pathlib import Path
@@ -34,7 +33,6 @@ class WebView(TemplateView):
 		d['debug']         = config.DEBUG()
 		d['template_name'] = v.template_name.strip()
 		d['navbar']        = _navbar
-		d['now']           = now()
 		return d
 
 	def uwsweb_title(v):

@@ -1,6 +1,6 @@
 <!-- uwsweb/navbar.html -->
 <div class="w3-bar w3-text-blue">
-	<div class="w3-bar-item w3-right w3-text-green w3-small">{{ now }}</div>
+	<div class="w3-bar-item w3-right w3-text-green w3-small">{% now 'DATETIME_FORMAT' %}</div>
 	<div class="w3-bar-item w3-right {% if title == 'user' %}w3-blue{% endif %}">
 		<a href="{% url 'user' %}">{{ user.name }}</a>
 	</div>
