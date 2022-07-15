@@ -15,8 +15,14 @@ class LogEntry(object):
 		e.error = error
 		e.warning = warning
 
-def syslog() -> deque:
-	d = deque()
+class Syslog(deque):
+
+	def all(q):
+		for i in range(len(q)):
+			yield q.pop()
+
+def syslog() -> Syslog:
+	d = Syslog()
 	fn = config.CLI_LOGSDIR() / 'uwsq.log'
 	log.debug('parse:', fn)
 	with fn.open() as fh:
@@ -25,5 +31,4 @@ def syslog() -> deque:
 			e = LogEntry()
 			e.message = line.strip()
 			d.append(e)
-	d.reverse()
 	return d

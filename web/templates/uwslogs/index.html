@@ -4,7 +4,7 @@
 <!-- uwslogs/index.html -->
 
 <table class="w3-table">
-	{% for e in syslog %}
+{% for e in syslog.all %}
 	{% if e.error %}
 	<tr class="w3-text-red">
 	{% elif e.warning %}
@@ -14,9 +14,9 @@
 	{% endif %}
 		<td>{{ e.message }}</td>
 	</tr>
-	{% empty %}
+{% empty %}
 	<tr><td>no messages</td></tr>
-	{% endfor %}
+{% endfor %}
 </table>
 
 <!-- uwslogs/index.html -->
