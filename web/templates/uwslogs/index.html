@@ -2,6 +2,15 @@
 {% block content %}
 {% include "uwsweb/navbar.html" %}
 <!-- uwslogs/index.html -->
+
+<table class="w3-table">
+	{% for e in syslog %}
+	<tr><td>{{ e.message }}</td></tr>
+	{% empty %}
+	<tr><td>no messages</td></tr>
+	{% endfor %}
+</table>
+
 <!-- uwslogs/index.html -->
 {% include "uwsweb/footer.html" %}
 {% endblock %}
