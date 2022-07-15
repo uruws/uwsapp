@@ -5,7 +5,15 @@
 
 <table class="w3-table">
 	{% for e in syslog %}
-	<tr><td>{{ e.message }}</td></tr>
+	{% if e.error %}
+	<tr class="w3-text-red">
+	{% elif e.warning %}
+	<tr class="w3-text-yellow">
+	{% else %}
+	<tr class="w3-text-green">
+	{% endif %}
+		<td>{{ e.message }}</td>
+	</tr>
 	{% empty %}
 	<tr><td>no messages</td></tr>
 	{% endfor %}
