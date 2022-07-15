@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from typing import Optional
+
 from collections import deque
 
 from uwsapp import config
@@ -11,7 +13,8 @@ class LogEntry(object):
 	message:   str  = ''
 	error:     bool = False
 	warning:   bool = False
-	timestamp: str = ''
+	timestamp: str  = ''
+	user:      str  = ''
 
 	def __init__(e, source: str, error: bool = False, warning: bool = False):
 		e.source  = source
@@ -30,12 +33,20 @@ def syslog() -> Syslog:
 	log.debug('parse:', fn)
 	with fn.open() as fh:
 		for line in fh.readlines():
-			d.append(_uwsq(line.strip()))
+			e = _uwsq(line.strip())
+			if e is not None:
+				d.append(e)
 	return d
 
-def _uwsq(line) -> LogEntry:
+def _uwsq(line) -> Optional[LogEntry]:
+	if line == '':
+		return None
 	e = LogEntry('uwsq')
 	e.message   = line
+
 	line_items = line.split('[', maxsplit = 1)
 	e.timestamp = line_items[0].strip()
+
+	line_items = line_items[1].split(' ', maxsplit = 1)
+	e.user = line_items[0][:-1]
 	return e
