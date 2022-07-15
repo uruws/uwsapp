@@ -97,3 +97,15 @@ Fri, 15 Jul 2022 10:06:01 +0000 [uwscli] apptest-east meteor/worker scale 2
 Fri, 15 Jul 2022 10:07:02 +0000 [uwscli] apptest-east meteor/web scale 3
 Fri, 15 Jul 2022 10:08:01 +0000 [uwscli] apptest-west meteor/web scale 3
 Fri, 15 Jul 2022 10:09:01 +0000 [uwscli] panoramix-2206 meteor/cs scale 30
+Fri, 15 Jul 2022 16:43:26 +0000 [gabriel] app-west meteor/web restart 
+Fri, 15 Jul 2022 16:48:13 +0000 [uws] apptest-east meteor/web deploy 2.75.0-bp35
+Fri, 15 Jul 2022 16:48:22 +0000 [uws] apptest-west meteor/web deploy 2.75.0-bp35
+Fri, 15 Jul 2022 16:48:30 +0000 [uws] apptest-east meteor/worker deploy 2.75.0-bp35
+Fri, 15 Jul 2022 17:00:54 +0000 [gabriel] app-west meteor/web deploy 2.74.4-bp35
+Fri, 15 Jul 2022 17:01:57 +0000 [gabriel] app-east meteor/web deploy 2.74.4-bp35
+Fri, 15 Jul 2022 17:15:36 +0000 [uws] apptest-east meteor/web deploy 2.75.0-bp35
+Fri, 15 Jul 2022 17:15:46 +0000 [uws] apptest-west meteor/web deploy 2.75.0-bp35
+Fri, 15 Jul 2022 17:15:55 +0000 [uws] apptest-east meteor/worker deploy 2.75.0-bp35
+Fri, 15 Jul 2022 17:17:37 +0000 [uws] apptest-east meteor/web deploy 2.75.0-bp35
+Fri, 15 Jul 2022 17:17:46 +0000 [uws] apptest-west meteor/web deploy 2.75.0-bp35
+Fri, 15 Jul 2022 17:17:54 +0000 [uws] apptest-east meteor/worker deploy 2.75.0-bp35

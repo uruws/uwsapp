@@ -29,3 +29,13 @@ Wed, 13 Jul 2022 17:00:02 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deplo
 Thu, 14 Jul 2022 17:30:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.75.0
 Thu, 14 Jul 2022 17:30:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
 Thu, 14 Jul 2022 17:30:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.75.0
+Fri, 15 Jul 2022 16:19:29 +0000 [gabriel] /srv/uws/deploy/cli/buildpack.sh app/src app 2.74.4
+Fri, 15 Jul 2022 16:19:30 +0000 [gabriel] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.74.4
+Fri, 15 Jul 2022 16:19:30 +0000 [gabriel] /srv/uws/deploy/cli/app-clean-build.sh app
+Fri, 15 Jul 2022 16:19:30 +0000 [gabriel] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.74.4
+Fri, 15 Jul 2022 16:30:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.75.0
+Fri, 15 Jul 2022 16:30:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
+Fri, 15 Jul 2022 16:30:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.75.0
+Fri, 15 Jul 2022 16:45:03 +0000 [uwscli] /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.75.0
+Fri, 15 Jul 2022 16:45:03 +0000 [uwscli] /srv/uws/deploy/cli/app-clean-build.sh app
+Fri, 15 Jul 2022 16:45:03 +0000 [uwscli] /srv/uws/deploy/cli/app-autobuild-deploy.sh app 2.75.0

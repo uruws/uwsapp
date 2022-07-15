@@ -1,0 +1,464 @@
+exec nq -c -- /srv/deploy/Buildpack/build.py --src app/src --target app --version 2.75.0
+
+HEAD is now at a450d0c3e Merge pull request #959 from TalkingPts/dev-2701-customGroups
+***
+*** Build: base image
+***
+Sending build context to Docker daemon  9.216kB
+Step 1/22 : FROM debian:bullseye-20220328-slim
+ ---> 6578cd967f7f
+Step 2/22 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 564bdaf14bfd
+Step 3/22 : LABEL version="220707"
+ ---> Using cache
+ ---> f7e4ba0bccad
+Step 4/22 : USER root:root
+ ---> Using cache
+ ---> 913ff249a66e
+Step 5/22 : WORKDIR /root
+ ---> Using cache
+ ---> e498da31c0c6
+Step 6/22 : ENV USER root
+ ---> Using cache
+ ---> 7c347dc4a056
+Step 7/22 : ENV HOME /root
+ ---> Using cache
+ ---> 00719e5f45aa
+Step 8/22 : COPY ./utils/apt-*.sh /root/bin/
+ ---> Using cache
+ ---> 417d96816720
+Step 9/22 : RUN chmod -v 0750 /root/bin /root/bin/*.sh
+ ---> Using cache
+ ---> 3e225f931e29
+Step 10/22 : RUN /root/bin/apt-distupgrade.sh
+ ---> Using cache
+ ---> 43d3d3047529
+Step 11/22 : RUN /root/bin/apt-install.sh bash ca-certificates locales tar gzip bzip2 	xz-utils zip unzip libfontconfig1 openssl
+ ---> Using cache
+ ---> 68432264a5e6
+Step 12/22 : RUN echo 'en_US.UTF-8 UTF-8' >/etc/locale.gen 	&& locale-gen 	&& update-locale LANG=en_US.UTF-8
+ ---> Using cache
+ ---> 6cb4e2bfd11a
+Step 13/22 : ENV UWS_UID 3000
+ ---> Using cache
+ ---> b17888e67854
+Step 14/22 : ENV UWS_GID 3000
+ ---> Using cache
+ ---> 2734b4b2dec1
+Step 15/22 : RUN groupadd -g ${UWS_GID} uws 	&& useradd -d /home/uws -m -c 'uws' -g ${UWS_GID} -u ${UWS_UID} uws 	&& chmod -v 0750 /home/uws
+ ---> Using cache
+ ---> f0bf27d9bc6d
+Step 16/22 : COPY ./meteor-test.sh /usr/local/bin/meteor-test.sh
+ ---> Using cache
+ ---> 594171eef3cc
+Step 17/22 : RUN chmod -v 0755 /usr/local/bin/meteor-test.sh
+ ---> Using cache
+ ---> f199f99432d9
+Step 18/22 : USER uws:uws
+ ---> Using cache
+ ---> abee319bb464
+Step 19/22 : WORKDIR /home/uws
+ ---> Using cache
+ ---> 2438bbad499e
+Step 20/22 : ENV USER uws
+ ---> Using cache
+ ---> 68eff212c7bd
+Step 21/22 : ENV HOME /home/uws
+ ---> Using cache
+ ---> a2be5cf5b231
+Step 22/22 : CMD exec /bin/bash -l
+ ---> Using cache
+ ---> 37c0a98b82ad
+Successfully built 37c0a98b82ad
+Successfully tagged uws/buildpack:base-2203
+***
+*** Build: meteor
+***
+Sending build context to Docker daemon  49.66kB
+Step 1/22 : FROM uws/buildpack:base-2203
+ ---> 37c0a98b82ad
+Step 2/22 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 90290b532743
+Step 3/22 : LABEL version="220707"
+ ---> Using cache
+ ---> 9d975566b955
+Step 4/22 : USER root:root
+ ---> Using cache
+ ---> 39797b9db5e3
+Step 5/22 : WORKDIR /root
+ ---> Using cache
+ ---> c1587c953dd2
+Step 6/22 : ENV USER root
+ ---> Using cache
+ ---> 1ffcf30ab19e
+Step 7/22 : ENV HOME /root
+ ---> Using cache
+ ---> bcdfea1b7b0d
+Step 8/22 : RUN /root/bin/apt-install.sh curl procps git make python3
+ ---> Using cache
+ ---> b8658a3ae446
+Step 9/22 : USER uws:uws
+ ---> Using cache
+ ---> 4c9022feca83
+Step 10/22 : WORKDIR /home/uws
+ ---> Using cache
+ ---> 94646bc6b7b3
+Step 11/22 : ENV USER uws
+ ---> Using cache
+ ---> 698b7ee042d9
+Step 12/22 : ENV HOME /home/uws
+ ---> Using cache
+ ---> 3aca3e92985e
+Step 13/22 : RUN curl -sS https://install.meteor.com/?release=2.7.1 | /bin/sh
+ ---> Using cache
+ ---> 197ce987f91a
+Step 14/22 : USER root:root
+ ---> Using cache
+ ---> b152091f81e5
+Step 15/22 : RUN chgrp -v uws /usr/local/bin 	&& chmod -v g+w /usr/local/bin
+ ---> Using cache
+ ---> e631f760fe2c
+Step 16/22 : USER uws:uws
+ ---> Using cache
+ ---> 28ea0308b864
+Step 17/22 : RUN ln -sv /home/uws/.meteor/meteor /usr/local/bin/meteor
+ ---> Using cache
+ ---> 15d09a77ef6f
+Step 18/22 : RUN export METEOR_NODE=$(meteor node -e "process.stdout.write(process.execPath)"); 	export METEOR_NPM=$(dirname ${METEOR_NODE})/npm; 	ln -sv ${METEOR_NODE} /usr/local/bin/node 	&& ln -sv ${METEOR_NPM} /usr/local/bin/npm
+ ---> Using cache
+ ---> f84c2516a858
+Step 19/22 : RUN echo "*** $(meteor --version)" 	&& echo "***   Node $(node --version)" 	&& echo "***    NPM $(npm --version)"
+ ---> Using cache
+ ---> e0e005379afa
+Step 20/22 : RUN npm config set color false
+ ---> Using cache
+ ---> a705a6aea17a
+Step 21/22 : ENV NO_COLOR 1
+ ---> Using cache
+ ---> f0320fed3897
+Step 22/22 : ENV NODE_DISABLE_COLORS 1
+ ---> Using cache
+ ---> 2d09618117ba
+Successfully built 2d09618117ba
+Successfully tagged uws/meteor-2203:latest
+***
+*** Make: app 2.75.0
+***
+Sending build context to Docker daemon  186.9MB
+Step 1/7 : FROM uws/meteor-2203
+ ---> 2d09618117ba
+Step 2/7 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> ad7c64f5f990
+Step 3/7 : LABEL version="220411"
+ ---> Using cache
+ ---> a38d2ecbe173
+Step 4/7 : ARG APP
+ ---> Using cache
+ ---> 7578f95c0eb6
+Step 5/7 : ENV APP ${APP}
+ ---> Using cache
+ ---> 5485ce865085
+Step 6/7 : RUN install -v -d -m 0750 ${HOME}/${APP}/
+ ---> Using cache
+ ---> b26f76983017
+Step 7/7 : COPY --chown=uws:uws ./src/ ${HOME}/${APP}/
+ ---> Using cache
+ ---> 0a75ca3b370c
+Successfully built 0a75ca3b370c
+Successfully tagged uws/app:2.75.0
+***
+*** NPM install: app 2.75.0
+***
+Sending build context to Docker daemon  4.096kB
+Step 1/16 : ARG APP
+Step 2/16 : ARG APP_TAG
+Step 3/16 : FROM uws/${APP}:${APP_TAG}
+ ---> 0a75ca3b370c
+Step 4/16 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 5ae5d06d7b14
+Step 5/16 : LABEL version="220412"
+ ---> Using cache
+ ---> 75ef5e1ce16d
+Step 6/16 : USER root:root
+ ---> Using cache
+ ---> 276c1706674c
+Step 7/16 : WORKDIR /root
+ ---> Using cache
+ ---> c7f8713e34be
+Step 8/16 : ENV USER root
+ ---> Using cache
+ ---> 1244b6e937c7
+Step 9/16 : ENV HOME /root
+ ---> Using cache
+ ---> 83da75dc31b0
+Step 10/16 : USER uws:uws
+ ---> Using cache
+ ---> 28d89a54efdc
+Step 11/16 : WORKDIR /home/uws
+ ---> Using cache
+ ---> 8ccde33eec77
+Step 12/16 : ENV USER uws
+ ---> Using cache
+ ---> 683447853327
+Step 13/16 : ENV HOME /home/uws
+ ---> Using cache
+ ---> 02a26b7f4820
+Step 14/16 : ARG APP_NAME
+ ---> Using cache
+ ---> afcf2dba861a
+Step 15/16 : WORKDIR ${HOME}/${APP_NAME}
+ ---> Using cache
+ ---> aef2b347bae0
+Step 16/16 : RUN meteor npm install
+ ---> Using cache
+ ---> 68f8011a0c24
+Successfully built 68f8011a0c24
+Successfully tagged uws/app:install-2.75.0
+***
+*** Meteor bundle: app 2.75.0
+***
+Sending build context to Docker daemon  7.168kB
+Step 1/21 : ARG APP
+Step 2/21 : ARG APP_TAG
+Step 3/21 : FROM uws/${APP}:install-${APP_TAG}
+ ---> 68f8011a0c24
+Step 4/21 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 176b2c921f46
+Step 5/21 : LABEL version="220412"
+ ---> Using cache
+ ---> 7285f4e02807
+Step 6/21 : ARG APP_NAME
+ ---> Using cache
+ ---> 63893b440c55
+Step 7/21 : ENV APP ${APP_NAME}
+ ---> Using cache
+ ---> cc63bee0955c
+Step 8/21 : USER root:root
+ ---> Using cache
+ ---> bc838af6f797
+Step 9/21 : WORKDIR /root
+ ---> Using cache
+ ---> 8d326d2232e1
+Step 10/21 : ENV USER root
+ ---> Using cache
+ ---> 852224de9b90
+Step 11/21 : ENV HOME /root
+ ---> Using cache
+ ---> d18a8974dacd
+Step 12/21 : RUN install -v -d -m 0750 -o uws -g uws /opt/${APP}
+ ---> Using cache
+ ---> 3d099536d973
+Step 13/21 : USER uws:uws
+ ---> Using cache
+ ---> 685bac147a20
+Step 14/21 : WORKDIR /home/uws
+ ---> Using cache
+ ---> 53e47193ee37
+Step 15/21 : ENV USER uws
+ ---> Using cache
+ ---> d58b62d16914
+Step 16/21 : ENV HOME /home/uws
+ ---> Using cache
+ ---> 857198d97527
+Step 17/21 : RUN touch /var/tmp/fake-openssl.cnf
+ ---> Using cache
+ ---> b4e162ef97f7
+Step 18/21 : ENV OPENSSL_CONF /var/tmp/fake-openssl.cnf
+ ---> Using cache
+ ---> 87d6a1dd4e65
+Step 19/21 : COPY --chown=uws:uws ./utils/*.sh /home/uws/utils/
+ ---> Using cache
+ ---> eddcf8f22f85
+Step 20/21 : RUN /home/uws/utils/meteor-build.sh ${APP}
+ ---> Using cache
+ ---> c4bf589ea7f4
+Step 21/21 : RUN /home/uws/utils/server-npm-install.sh ${APP}
+ ---> Using cache
+ ---> ed72df38c0d8
+Successfully built ed72df38c0d8
+Successfully tagged uws/app:bundle-2.75.0
+***
+*** Build: app 2.75.0
+***
+Sending build context to Docker daemon  6.656kB
+Step 1/35 : ARG APP
+Step 2/35 : ARG APP_TAG
+Step 3/35 : FROM uws/${APP}:bundle-${APP_TAG}
+ ---> ed72df38c0d8
+Step 4/35 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 9acdb1cf375e
+Step 5/35 : LABEL version="220412"
+ ---> Using cache
+ ---> 930061ac203f
+Step 6/35 : ARG APP_NAME
+ ---> Using cache
+ ---> 03210e88c72d
+Step 7/35 : ENV APP ${APP_NAME}
+ ---> Using cache
+ ---> 84f25b9fe2eb
+Step 8/35 : USER root:root
+ ---> Using cache
+ ---> 3c1f217dd0ea
+Step 9/35 : WORKDIR /root
+ ---> Using cache
+ ---> 913e2847f9d8
+Step 10/35 : ENV USER root
+ ---> Using cache
+ ---> ed6e46dc6428
+Step 11/35 : ENV HOME /root
+ ---> Using cache
+ ---> 27b042b07b54
+Step 12/35 : RUN rm -vf /usr/local/bin/node
+ ---> Using cache
+ ---> 06d1af925f06
+Step 13/35 : RUN install -v -m 0755 /home/uws/${APP}/.meteor/local/dev_bundle/bin/node /usr/local/bin/node
+ ---> Using cache
+ ---> 5192a41d2c41
+Step 14/35 : FROM uws/buildpack:base-2203
+ ---> 37c0a98b82ad
+Step 15/35 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 90290b532743
+Step 16/35 : LABEL version="220412"
+ ---> Running in 37eb91273d3c
+Removing intermediate container 37eb91273d3c
+ ---> c1c82574917c
+Step 17/35 : ARG APP_NAME2
+ ---> Running in 6bcbad54fd65
+Removing intermediate container 6bcbad54fd65
+ ---> 4878ae53accd
+Step 18/35 : ENV APP ${APP_NAME2}
+ ---> Running in 224f055d7487
+Removing intermediate container 224f055d7487
+ ---> e2f419996e8d
+Step 19/35 : USER root:root
+ ---> Running in 08eec28e8584
+Removing intermediate container 08eec28e8584
+ ---> b3de0f5c66f2
+Step 20/35 : WORKDIR /root
+ ---> Running in 4933dd16d8b3
+Removing intermediate container 4933dd16d8b3
+ ---> 0a3cd51b404c
+Step 21/35 : ENV USER root
+ ---> Running in 1b507318c0ac
+Removing intermediate container 1b507318c0ac
+ ---> 622d5458330b
+Step 22/35 : ENV HOME /root
+ ---> Running in 8ecf8e776316
+Removing intermediate container 8ecf8e776316
+ ---> a963cc594925
+Step 23/35 : RUN install -v -d -m 0750 -o uws -g uws /opt/${APP}
+ ---> Running in e16ba7e203e1
+install: creating directory '/opt/app'
+Removing intermediate container e16ba7e203e1
+ ---> c79342a3eaeb
+Step 24/35 : COPY --from=0 /opt/${APP}/bundle/ /opt/${APP}/bundle/
+ ---> e7f6b295232f
+Step 25/35 : COPY --from=0 /usr/local/bin/node /usr/local/bin/node
+ ---> 15cb89677c93
+Step 26/35 : COPY --chown=uws:uws ./meteor-start.sh /usr/local/bin/meteor-start.sh
+ ---> 9294ddc94d60
+Step 27/35 : RUN rm -vf /usr/local/bin/meteor-test.sh
+ ---> Running in 362b9bbbc905
+removed '/usr/local/bin/meteor-test.sh'
+Removing intermediate container 362b9bbbc905
+ ---> b3f1b7b342b6
+Step 28/35 : USER uws:uws
+ ---> Running in 859e21d94fcd
+Removing intermediate container 859e21d94fcd
+ ---> 4c510f4c4ea3
+Step 29/35 : WORKDIR /home/uws
+ ---> Running in 5e607ce2ee7e
+Removing intermediate container 5e607ce2ee7e
+ ---> 863144b160aa
+Step 30/35 : ENV USER uws
+ ---> Running in 1eaea788098a
+Removing intermediate container 1eaea788098a
+ ---> 56949bf70df4
+Step 31/35 : ENV HOME /home/uws
+ ---> Running in 116607c11ab5
+Removing intermediate container 116607c11ab5
+ ---> 9f4fe3dc4908
+Step 32/35 : RUN touch /var/tmp/fake-openssl.cnf
+ ---> Running in 3792ad1d4dd3
+Removing intermediate container 3792ad1d4dd3
+ ---> 5aec5e020ce7
+Step 33/35 : ENV OPENSSL_CONF /var/tmp/fake-openssl.cnf
+ ---> Running in dbc5d5a3bfaf
+Removing intermediate container dbc5d5a3bfaf
+ ---> a37968eb9d9f
+Step 34/35 : WORKDIR /opt/${APP}/bundle
+ ---> Running in 8d9d66e700ff
+Removing intermediate container 8d9d66e700ff
+ ---> 9458a95f650c
+Step 35/35 : ENTRYPOINT exec /usr/local/bin/meteor-start.sh
+ ---> Running in 46256a60f251
+Removing intermediate container 46256a60f251
+ ---> 85a5acef7d51
+Successfully built 85a5acef7d51
+Successfully tagged uws/app:deploy-2.75.0
+***
+*** Publish: app 2.75.0
+***
+i - ECR login aws region: us-east-1
+mode of '/var/tmp/uws-docker-login.SXnlroq1' changed from 0600 (rw-------) to 0755 (rwxr-xr-x)
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /home/uws/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+removed '/var/tmp/uws-docker-login.SXnlroq1'
+i - ecr push: uws/app:deploy-2.75.0 -> 789470191893.dkr.ecr.us-east-1.amazonaws.com/uws:meteor-app-2.75.0-bp35
+The push refers to repository [789470191893.dkr.ecr.us-east-1.amazonaws.com/uws]
+4076a3e66187: Preparing
+6bc218dbc73f: Preparing
+3d7458d2cab2: Preparing
+94982fae1ae1: Preparing
+d86599b7a23a: Preparing
+4987a00985ab: Preparing
+3a940620d8d8: Preparing
+6d241db4518e: Preparing
+0f81c150522a: Preparing
+bb94e9e6bf87: Preparing
+b436fe719af6: Preparing
+23a5dc558129: Preparing
+6d241db4518e: Waiting
+0f81c150522a: Waiting
+bb94e9e6bf87: Waiting
+b436fe719af6: Waiting
+4987a00985ab: Waiting
+3a940620d8d8: Waiting
+282dd64e135b: Preparing
+83876fce5acb: Preparing
+608f3a074261: Preparing
+282dd64e135b: Waiting
+83876fce5acb: Waiting
+608f3a074261: Waiting
+23a5dc558129: Waiting
+6bc218dbc73f: Pushed
+4076a3e66187: Pushed
+3d7458d2cab2: Pushed
+3a940620d8d8: Layer already exists
+6d241db4518e: Layer already exists
+0f81c150522a: Layer already exists
+bb94e9e6bf87: Layer already exists
+b436fe719af6: Layer already exists
+23a5dc558129: Layer already exists
+282dd64e135b: Layer already exists
+83876fce5acb: Layer already exists
+4987a00985ab: Pushed
+608f3a074261: Layer already exists
+94982fae1ae1: Pushed
+d86599b7a23a: Pushed
+tag invalid: The image tag 'meteor-app-2.75.0-bp35' already exists in the 'uws' repository and cannot be overwritten because the repository is immutable.
+make: *** [Makefile:195: publish-app] Error 1
+Publish app version 2.75.0 failed!
+
+[exited with status 13.]

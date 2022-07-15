@@ -1,0 +1,1130 @@
+exec nq -c -- /srv/deploy/Buildpack/build.py --src infra-ui/src --target infra-ui --version 9.1.6
+
+HEAD is now at 804903d monitoring config
+***
+*** Build: base image
+***
+Sending build context to Docker daemon  9.216kB
+Step 1/22 : FROM debian:bullseye-20220328-slim
+ ---> 6578cd967f7f
+Step 2/22 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 564bdaf14bfd
+Step 3/22 : LABEL version="220707"
+ ---> Using cache
+ ---> f7e4ba0bccad
+Step 4/22 : USER root:root
+ ---> Using cache
+ ---> 913ff249a66e
+Step 5/22 : WORKDIR /root
+ ---> Using cache
+ ---> e498da31c0c6
+Step 6/22 : ENV USER root
+ ---> Using cache
+ ---> 7c347dc4a056
+Step 7/22 : ENV HOME /root
+ ---> Using cache
+ ---> 00719e5f45aa
+Step 8/22 : COPY ./utils/apt-*.sh /root/bin/
+ ---> Using cache
+ ---> 417d96816720
+Step 9/22 : RUN chmod -v 0750 /root/bin /root/bin/*.sh
+ ---> Using cache
+ ---> 3e225f931e29
+Step 10/22 : RUN /root/bin/apt-distupgrade.sh
+ ---> Using cache
+ ---> 43d3d3047529
+Step 11/22 : RUN /root/bin/apt-install.sh bash ca-certificates locales tar gzip bzip2 	xz-utils zip unzip libfontconfig1 openssl
+ ---> Using cache
+ ---> 68432264a5e6
+Step 12/22 : RUN echo 'en_US.UTF-8 UTF-8' >/etc/locale.gen 	&& locale-gen 	&& update-locale LANG=en_US.UTF-8
+ ---> Using cache
+ ---> 6cb4e2bfd11a
+Step 13/22 : ENV UWS_UID 3000
+ ---> Using cache
+ ---> b17888e67854
+Step 14/22 : ENV UWS_GID 3000
+ ---> Using cache
+ ---> 2734b4b2dec1
+Step 15/22 : RUN groupadd -g ${UWS_GID} uws 	&& useradd -d /home/uws -m -c 'uws' -g ${UWS_GID} -u ${UWS_UID} uws 	&& chmod -v 0750 /home/uws
+ ---> Using cache
+ ---> f0bf27d9bc6d
+Step 16/22 : COPY ./meteor-test.sh /usr/local/bin/meteor-test.sh
+ ---> Using cache
+ ---> 594171eef3cc
+Step 17/22 : RUN chmod -v 0755 /usr/local/bin/meteor-test.sh
+ ---> Using cache
+ ---> f199f99432d9
+Step 18/22 : USER uws:uws
+ ---> Using cache
+ ---> abee319bb464
+Step 19/22 : WORKDIR /home/uws
+ ---> Using cache
+ ---> 2438bbad499e
+Step 20/22 : ENV USER uws
+ ---> Using cache
+ ---> 68eff212c7bd
+Step 21/22 : ENV HOME /home/uws
+ ---> Using cache
+ ---> a2be5cf5b231
+Step 22/22 : CMD exec /bin/bash -l
+ ---> Using cache
+ ---> 37c0a98b82ad
+Successfully built 37c0a98b82ad
+Successfully tagged uws/buildpack:base-2203
+***
+*** Build: meteor
+***
+Sending build context to Docker daemon  49.66kB
+Step 1/22 : FROM uws/buildpack:base-2203
+ ---> 37c0a98b82ad
+Step 2/22 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 90290b532743
+Step 3/22 : LABEL version="220707"
+ ---> Using cache
+ ---> 9d975566b955
+Step 4/22 : USER root:root
+ ---> Using cache
+ ---> 39797b9db5e3
+Step 5/22 : WORKDIR /root
+ ---> Using cache
+ ---> c1587c953dd2
+Step 6/22 : ENV USER root
+ ---> Using cache
+ ---> 1ffcf30ab19e
+Step 7/22 : ENV HOME /root
+ ---> Using cache
+ ---> bcdfea1b7b0d
+Step 8/22 : RUN /root/bin/apt-install.sh curl procps git make python3
+ ---> Using cache
+ ---> b8658a3ae446
+Step 9/22 : USER uws:uws
+ ---> Using cache
+ ---> 4c9022feca83
+Step 10/22 : WORKDIR /home/uws
+ ---> Using cache
+ ---> 94646bc6b7b3
+Step 11/22 : ENV USER uws
+ ---> Using cache
+ ---> 698b7ee042d9
+Step 12/22 : ENV HOME /home/uws
+ ---> Using cache
+ ---> 3aca3e92985e
+Step 13/22 : RUN curl -sS https://install.meteor.com/?release=2.7.1 | /bin/sh
+ ---> Using cache
+ ---> 197ce987f91a
+Step 14/22 : USER root:root
+ ---> Using cache
+ ---> b152091f81e5
+Step 15/22 : RUN chgrp -v uws /usr/local/bin 	&& chmod -v g+w /usr/local/bin
+ ---> Using cache
+ ---> e631f760fe2c
+Step 16/22 : USER uws:uws
+ ---> Using cache
+ ---> 28ea0308b864
+Step 17/22 : RUN ln -sv /home/uws/.meteor/meteor /usr/local/bin/meteor
+ ---> Using cache
+ ---> 15d09a77ef6f
+Step 18/22 : RUN export METEOR_NODE=$(meteor node -e "process.stdout.write(process.execPath)"); 	export METEOR_NPM=$(dirname ${METEOR_NODE})/npm; 	ln -sv ${METEOR_NODE} /usr/local/bin/node 	&& ln -sv ${METEOR_NPM} /usr/local/bin/npm
+ ---> Using cache
+ ---> f84c2516a858
+Step 19/22 : RUN echo "*** $(meteor --version)" 	&& echo "***   Node $(node --version)" 	&& echo "***    NPM $(npm --version)"
+ ---> Using cache
+ ---> e0e005379afa
+Step 20/22 : RUN npm config set color false
+ ---> Using cache
+ ---> a705a6aea17a
+Step 21/22 : ENV NO_COLOR 1
+ ---> Using cache
+ ---> f0320fed3897
+Step 22/22 : ENV NODE_DISABLE_COLORS 1
+ ---> Using cache
+ ---> 2d09618117ba
+Successfully built 2d09618117ba
+Successfully tagged uws/meteor-2203:latest
+***
+*** Make: infra-ui 9.1.6
+***
+Sending build context to Docker daemon   2.35MB
+Step 1/6 : FROM uws/meteor-2203
+ ---> 2d09618117ba
+Step 2/6 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> ad7c64f5f990
+Step 3/6 : LABEL version="220407"
+ ---> Running in 682492f62379
+Removing intermediate container 682492f62379
+ ---> b121ac351632
+Step 4/6 : ENV APP infra-ui
+ ---> Running in 511ac14ba2d6
+Removing intermediate container 511ac14ba2d6
+ ---> e447e784daf8
+Step 5/6 : RUN install -v -d -m 0750 ${HOME}/${APP}/
+ ---> Running in 917f03a1a3ca
+install: creating directory '/home/uws/infra-ui/'
+Removing intermediate container 917f03a1a3ca
+ ---> e7f905875c95
+Step 6/6 : COPY --chown=uws:uws ./src/ ${HOME}/${APP}/
+ ---> 45d136d8db80
+Successfully built 45d136d8db80
+Successfully tagged uws/infra-ui:9.1.6
+***
+*** NPM install: infra-ui 9.1.6
+***
+Sending build context to Docker daemon  4.096kB
+Step 1/16 : ARG APP
+Step 2/16 : ARG APP_TAG
+Step 3/16 : FROM uws/${APP}:${APP_TAG}
+ ---> 45d136d8db80
+Step 4/16 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Running in 4cb2e0b857d0
+Removing intermediate container 4cb2e0b857d0
+ ---> 04aaf24c96f2
+Step 5/16 : LABEL version="220412"
+ ---> Running in acc295b356e3
+Removing intermediate container acc295b356e3
+ ---> fa91fd4783d8
+Step 6/16 : USER root:root
+ ---> Running in 5e1f2453526a
+Removing intermediate container 5e1f2453526a
+ ---> 4e0142291624
+Step 7/16 : WORKDIR /root
+ ---> Running in 26b1290da728
+Removing intermediate container 26b1290da728
+ ---> ca05ce34657e
+Step 8/16 : ENV USER root
+ ---> Running in 0eab917e291e
+Removing intermediate container 0eab917e291e
+ ---> 27b22e5cda48
+Step 9/16 : ENV HOME /root
+ ---> Running in 7edc979e82fb
+Removing intermediate container 7edc979e82fb
+ ---> 2cb71268b01e
+Step 10/16 : USER uws:uws
+ ---> Running in a3b51ab7e238
+Removing intermediate container a3b51ab7e238
+ ---> dfa1676f72bc
+Step 11/16 : WORKDIR /home/uws
+ ---> Running in a42f9e1b0376
+Removing intermediate container a42f9e1b0376
+ ---> 1074af7ba326
+Step 12/16 : ENV USER uws
+ ---> Running in 04cb954080d8
+Removing intermediate container 04cb954080d8
+ ---> f011b65ffd85
+Step 13/16 : ENV HOME /home/uws
+ ---> Running in cf6a08f35755
+Removing intermediate container cf6a08f35755
+ ---> 46773f65ee9d
+Step 14/16 : ARG APP_NAME
+ ---> Running in 45ed21c9233b
+Removing intermediate container 45ed21c9233b
+ ---> 2509f92b2c01
+Step 15/16 : WORKDIR ${HOME}/${APP_NAME}
+ ---> Running in 5815b788ad3a
+Removing intermediate container 5815b788ad3a
+ ---> 86e34d81b43f
+Step 16/16 : RUN meteor npm install
+ ---> Running in fb1fb79c83cd
+
+> core-js-pure@3.23.3 postinstall /home/uws/infra-ui/node_modules/core-js-pure
+> node -e "try{require('./postinstall')}catch(e){}"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js:
+> https://opencollective.com/core-js 
+> https://patreon.com/zloirock 
+> bitcoin: bc1qlea7544qtsmj2rayg0lthvza9fau63ux0fstcz 
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+added 520 packages from 427 contributors and audited 521 packages in 19.814s
+
+88 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+Removing intermediate container fb1fb79c83cd
+ ---> 8dc178c926b4
+Successfully built 8dc178c926b4
+Successfully tagged uws/infra-ui:install-9.1.6
+***
+*** Meteor bundle: infra-ui 9.1.6
+***
+Sending build context to Docker daemon  7.168kB
+Step 1/21 : ARG APP
+Step 2/21 : ARG APP_TAG
+Step 3/21 : FROM uws/${APP}:install-${APP_TAG}
+ ---> 8dc178c926b4
+Step 4/21 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Running in 633a14aa2713
+Removing intermediate container 633a14aa2713
+ ---> c1f4c313d489
+Step 5/21 : LABEL version="220412"
+ ---> Running in 988c669742d8
+Removing intermediate container 988c669742d8
+ ---> 5adf55fb8ffb
+Step 6/21 : ARG APP_NAME
+ ---> Running in 03a544db0421
+Removing intermediate container 03a544db0421
+ ---> a547e78414c5
+Step 7/21 : ENV APP ${APP_NAME}
+ ---> Running in 1d00fa24b797
+Removing intermediate container 1d00fa24b797
+ ---> b102758a841d
+Step 8/21 : USER root:root
+ ---> Running in 2e30558b6a82
+Removing intermediate container 2e30558b6a82
+ ---> ff656c1d2243
+Step 9/21 : WORKDIR /root
+ ---> Running in f0cd47e4f9b2
+Removing intermediate container f0cd47e4f9b2
+ ---> c2925506127a
+Step 10/21 : ENV USER root
+ ---> Running in 450249c83c06
+Removing intermediate container 450249c83c06
+ ---> 78cf8ecf3795
+Step 11/21 : ENV HOME /root
+ ---> Running in 227cc51db464
+Removing intermediate container 227cc51db464
+ ---> 2cbb03a2787b
+Step 12/21 : RUN install -v -d -m 0750 -o uws -g uws /opt/${APP}
+ ---> Running in 4db802a1519a
+install: creating directory '/opt/infra-ui'
+Removing intermediate container 4db802a1519a
+ ---> 304030d1c7fa
+Step 13/21 : USER uws:uws
+ ---> Running in b5f98c5796c2
+Removing intermediate container b5f98c5796c2
+ ---> 98dbb14d67c9
+Step 14/21 : WORKDIR /home/uws
+ ---> Running in 5373bdac4a48
+Removing intermediate container 5373bdac4a48
+ ---> c48f9113756c
+Step 15/21 : ENV USER uws
+ ---> Running in 2e580133f1b9
+Removing intermediate container 2e580133f1b9
+ ---> 33cd9ce2c71e
+Step 16/21 : ENV HOME /home/uws
+ ---> Running in f009ce3f7b2b
+Removing intermediate container f009ce3f7b2b
+ ---> d30f57c78759
+Step 17/21 : RUN touch /var/tmp/fake-openssl.cnf
+ ---> Running in b0bf4dda3ecd
+Removing intermediate container b0bf4dda3ecd
+ ---> 2dab26a8d49f
+Step 18/21 : ENV OPENSSL_CONF /var/tmp/fake-openssl.cnf
+ ---> Running in 72ffd4a341a3
+Removing intermediate container 72ffd4a341a3
+ ---> 60b30ab9ded6
+Step 19/21 : COPY --chown=uws:uws ./utils/*.sh /home/uws/utils/
+ ---> 8c5c9f8d59d4
+Step 20/21 : RUN /home/uws/utils/meteor-build.sh ${APP}
+ ---> Running in d29795abff3c
+[91mBrowserslist: caniuse-lite is outdated. Please run:
+npx browserslist@latest --update-db
+
+Why you should do it regularly:
+https://github.com/browserslist/browserslist#browsers-data-updating
+[0mRemoving intermediate container d29795abff3c
+ ---> d6756b80fb28
+Step 21/21 : RUN /home/uws/utils/server-npm-install.sh ${APP}
+ ---> Running in 8ed7e9c0ec5d
+[91mnpm WARN deprecated node-pre-gyp@0.15.0: Please upgrade to @mapbox/node-pre-gyp: the non-scoped node-pre-gyp package is deprecated and only the @mapbox scoped package will recieve updates in the future
+[0m
+> fibers@5.0.1 install /opt/infra-ui/bundle/programs/server/node_modules/fibers
+> node build.js || nodejs build.js
+
+`linux-x64-83-glibc` exists; testing
+Binary is fine; exiting
+
+> meteor-dev-bundle@ install /opt/infra-ui/bundle/programs/server
+> node npm-rebuild.js
+
+
+> core-js@3.15.2 postinstall /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/ecmascript-runtime-client/node_modules/core-js
+> node -e "try{require('./postinstall')}catch(e){}"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js on Open Collective or Patreon: 
+> https://opencollective.com/core-js 
+> https://www.patreon.com/zloirock 
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+core-js@3.15.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/ecmascript-runtime-client/node_modules/core-js
+
+> core-js@3.16.0 postinstall /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/ecmascript-runtime-server/node_modules/core-js
+> node -e "try{require('./postinstall')}catch(e){}"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js:
+> https://opencollective.com/core-js 
+> https://patreon.com/zloirock 
+> https://paypal.me/zloirock 
+> bitcoin: bc1qlea7544qtsmj2rayg0lthvza9fau63ux0fstcz 
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+core-js@3.16.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/ecmascript-runtime-server/node_modules/core-js
+@ampproject/remapping@2.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@ampproject/remapping
+@jridgewell/trace-mapping@0.3.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@jridgewell/trace-mapping
+@jridgewell/resolve-uri@3.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@jridgewell/resolve-uri
+@jridgewell/sourcemap-codec@1.4.11 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@jridgewell/sourcemap-codec
+@babel/code-frame@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/code-frame
+@babel/highlight@7.16.10 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/highlight
+@babel/helper-validator-identifier@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-validator-identifier
+chalk@2.4.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/chalk
+ansi-styles@3.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/ansi-styles
+color-convert@1.9.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/color-convert
+color-name@1.1.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/color-name
+escape-string-regexp@1.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/escape-string-regexp
+supports-color@5.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/supports-color
+has-flag@3.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/has-flag
+js-tokens@4.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/js-tokens
+@babel/compat-data@7.17.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/compat-data
+@babel/core@7.17.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/core
+@babel/generator@7.17.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/generator
+@babel/types@7.17.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/types
+to-fast-properties@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/to-fast-properties
+jsesc@2.5.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/jsesc
+source-map@0.5.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/source-map
+@babel/helper-compilation-targets@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-compilation-targets
+@babel/helper-validator-option@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-validator-option
+browserslist@4.19.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/browserslist
+caniuse-lite@1.0.30001312 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/caniuse-lite
+electron-to-chromium@1.4.71 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/electron-to-chromium
+escalade@3.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/escalade
+node-releases@2.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/node-releases
+picocolors@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/picocolors
+semver@6.3.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/semver
+@babel/helper-module-transforms@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-module-transforms
+@babel/helper-environment-visitor@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-environment-visitor
+@babel/helper-module-imports@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-module-imports
+@babel/helper-simple-access@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-simple-access
+@babel/helper-split-export-declaration@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-split-export-declaration
+@babel/template@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/template
+@babel/parser@7.17.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/parser
+@babel/traverse@7.17.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/traverse
+@babel/helper-function-name@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-function-name
+@babel/helper-get-function-arity@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-get-function-arity
+@babel/helper-hoist-variables@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-hoist-variables
+debug@4.3.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/debug
+ms@2.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/ms
+globals@11.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/globals
+@babel/helpers@7.17.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helpers
+convert-source-map@1.8.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/convert-source-map
+safe-buffer@5.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/safe-buffer
+gensync@1.0.0-beta.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/gensync
+json5@2.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/core/node_modules/json5
+minimist@1.2.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/minimist
+@babel/helper-annotate-as-pure@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-annotate-as-pure
+@babel/helper-builder-binary-assignment-operator-visitor@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-builder-binary-assignment-operator-visitor
+@babel/helper-explode-assignable-expression@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-explode-assignable-expression
+@babel/helper-create-class-features-plugin@7.17.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-create-class-features-plugin
+@babel/helper-member-expression-to-functions@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-member-expression-to-functions
+@babel/helper-optimise-call-expression@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-optimise-call-expression
+@babel/helper-replace-supers@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-replace-supers
+@babel/helper-create-regexp-features-plugin@7.17.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-create-regexp-features-plugin
+regexpu-core@5.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/regexpu-core
+regenerate@1.4.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/regenerate
+regenerate-unicode-properties@10.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/regenerate-unicode-properties
+regjsgen@0.6.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/regjsgen
+regjsparser@0.8.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/regjsparser
+jsesc@0.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/regjsparser/node_modules/jsesc
+unicode-match-property-ecmascript@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/unicode-match-property-ecmascript
+unicode-canonical-property-names-ecmascript@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/unicode-canonical-property-names-ecmascript
+unicode-property-aliases-ecmascript@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/unicode-property-aliases-ecmascript
+unicode-match-property-value-ecmascript@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/unicode-match-property-value-ecmascript
+@babel/helper-define-polyfill-provider@0.3.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-define-polyfill-provider
+@babel/helper-plugin-utils@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-plugin-utils
+lodash.debounce@4.0.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/lodash.debounce
+resolve@1.22.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/resolve
+is-core-module@2.8.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/is-core-module
+has@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/has
+function-bind@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/function-bind
+path-parse@1.0.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/path-parse
+supports-preserve-symlinks-flag@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/supports-preserve-symlinks-flag
+@babel/helper-remap-async-to-generator@7.16.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-remap-async-to-generator
+@babel/helper-wrap-function@7.16.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-wrap-function
+@babel/helper-skip-transparent-expression-wrappers@7.16.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/helper-skip-transparent-expression-wrappers
+@babel/plugin-proposal-async-generator-functions@7.16.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-proposal-async-generator-functions
+@babel/plugin-syntax-async-generators@7.8.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-async-generators
+@babel/plugin-proposal-class-properties@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-proposal-class-properties
+@babel/plugin-proposal-logical-assignment-operators@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-proposal-logical-assignment-operators
+@babel/plugin-syntax-logical-assignment-operators@7.10.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-logical-assignment-operators
+@babel/plugin-proposal-nullish-coalescing-operator@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-proposal-nullish-coalescing-operator
+@babel/plugin-syntax-nullish-coalescing-operator@7.8.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-nullish-coalescing-operator
+@babel/plugin-proposal-object-rest-spread@7.17.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-proposal-object-rest-spread
+@babel/plugin-syntax-object-rest-spread@7.8.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-object-rest-spread
+@babel/plugin-transform-parameters@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-parameters
+@babel/plugin-proposal-optional-catch-binding@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-proposal-optional-catch-binding
+@babel/plugin-syntax-optional-catch-binding@7.8.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-optional-catch-binding
+@babel/plugin-proposal-optional-chaining@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-proposal-optional-chaining
+@babel/plugin-syntax-optional-chaining@7.8.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-optional-chaining
+@babel/plugin-syntax-class-properties@7.12.13 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-class-properties
+@babel/plugin-syntax-dynamic-import@7.8.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-dynamic-import
+@babel/plugin-syntax-jsx@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-syntax-jsx
+@babel/plugin-transform-arrow-functions@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-arrow-functions
+@babel/plugin-transform-async-to-generator@7.16.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-async-to-generator
+@babel/plugin-transform-block-scoped-functions@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-block-scoped-functions
+@babel/plugin-transform-block-scoping@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-block-scoping
+@babel/plugin-transform-classes@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-classes
+@babel/plugin-transform-computed-properties@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-computed-properties
+@babel/plugin-transform-destructuring@7.17.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-destructuring
+@babel/plugin-transform-exponentiation-operator@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-exponentiation-operator
+@babel/plugin-transform-for-of@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-for-of
+@babel/plugin-transform-literals@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-literals
+@babel/plugin-transform-modules-commonjs@7.16.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-modules-commonjs
+babel-plugin-dynamic-import-node@2.3.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-dynamic-import-node
+object.assign@4.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/object.assign
+call-bind@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/call-bind
+get-intrinsic@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/get-intrinsic
+has-symbols@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/has-symbols
+define-properties@1.1.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/define-properties
+object-keys@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/object-keys
+@babel/plugin-transform-object-super@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-object-super
+@babel/plugin-transform-property-literals@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-property-literals
+@babel/plugin-transform-react-display-name@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-react-display-name
+@babel/plugin-transform-react-jsx@7.17.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-react-jsx
+@babel/plugin-transform-react-jsx-development@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-react-jsx-development
+@babel/plugin-transform-react-pure-annotations@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-react-pure-annotations
+@babel/plugin-transform-regenerator@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-regenerator
+regenerator-transform@0.14.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/regenerator-transform
+@babel/runtime@7.17.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/runtime
+regenerator-runtime@0.13.9 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/regenerator-runtime
+@babel/plugin-transform-runtime@7.17.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-runtime
+babel-plugin-polyfill-corejs2@0.3.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-polyfill-corejs2
+babel-plugin-polyfill-corejs3@0.5.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-polyfill-corejs3
+core-js-compat@3.21.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/core-js-compat
+semver@7.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/core-js-compat/node_modules/semver
+babel-plugin-polyfill-regenerator@0.3.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-polyfill-regenerator
+@babel/plugin-transform-shorthand-properties@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-shorthand-properties
+@babel/plugin-transform-spread@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-spread
+@babel/plugin-transform-sticky-regex@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-sticky-regex
+@babel/plugin-transform-template-literals@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-template-literals
+@babel/plugin-transform-typeof-symbol@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-typeof-symbol
+@babel/plugin-transform-unicode-regex@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/plugin-transform-unicode-regex
+@babel/preset-react@7.16.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@babel/preset-react
+@meteorjs/babel@7.16.0-beta.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@meteorjs/babel
+@meteorjs/reify@0.23.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@meteorjs/reify
+acorn@6.4.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/acorn
+acorn-dynamic-import@4.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/acorn-dynamic-import
+magic-string@0.25.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/magic-string
+sourcemap-codec@1.4.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/sourcemap-codec
+periscopic@2.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/periscopic
+estree-walker@2.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/estree-walker
+is-reference@1.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/is-reference
+@types/estree@0.0.51 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@types/estree
+semver@5.7.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/@meteorjs/reify/node_modules/semver
+babel-preset-meteor@7.10.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-preset-meteor
+babel-preset-minify@0.5.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-preset-minify
+babel-plugin-minify-builtins@0.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-builtins
+babel-plugin-minify-constant-folding@0.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-constant-folding
+babel-helper-evaluate-path@0.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-helper-evaluate-path
+babel-plugin-minify-dead-code-elimination@0.5.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-dead-code-elimination
+babel-helper-mark-eval-scopes@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-helper-mark-eval-scopes
+babel-helper-remove-or-void@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-helper-remove-or-void
+lodash@4.17.21 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/lodash
+babel-plugin-minify-flip-comparisons@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-flip-comparisons
+babel-helper-is-void-0@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-helper-is-void-0
+babel-plugin-minify-guarded-expressions@0.4.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-guarded-expressions
+babel-helper-flip-expressions@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-helper-flip-expressions
+babel-plugin-minify-infinity@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-infinity
+babel-plugin-minify-mangle-names@0.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-mangle-names
+babel-plugin-minify-numeric-literals@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-numeric-literals
+babel-plugin-minify-replace@0.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-replace
+babel-plugin-minify-simplify@0.5.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-simplify
+babel-helper-is-nodes-equiv@0.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-helper-is-nodes-equiv
+babel-helper-to-multiple-sequence-expressions@0.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-helper-to-multiple-sequence-expressions
+babel-plugin-minify-type-constructors@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-minify-type-constructors
+babel-plugin-transform-inline-consecutive-adds@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-inline-consecutive-adds
+babel-plugin-transform-member-expression-literals@6.9.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-member-expression-literals
+babel-plugin-transform-merge-sibling-variables@6.9.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-merge-sibling-variables
+babel-plugin-transform-minify-booleans@6.9.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-minify-booleans
+babel-plugin-transform-property-literals@6.9.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-property-literals
+esutils@2.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/esutils
+babel-plugin-transform-regexp-constructors@0.4.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-regexp-constructors
+babel-plugin-transform-remove-console@6.9.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-remove-console
+babel-plugin-transform-remove-debugger@6.9.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-remove-debugger
+babel-plugin-transform-remove-undefined@0.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-remove-undefined
+babel-plugin-transform-simplify-comparison-operators@6.9.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-simplify-comparison-operators
+babel-plugin-transform-undefined-to-void@6.9.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/babel-plugin-transform-undefined-to-void
+meteor-babel-helpers@0.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/meteor-babel-helpers
+typescript@4.5.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/typescript
+json5@2.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/babel-compiler/node_modules/json5
+
+> core-js@3.14.0 postinstall /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/url/node_modules/core-js
+> node -e "try{require('./postinstall')}catch(e){}"
+
+core-js@3.14.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor/url/node_modules/core-js
+@babel/runtime@7.17.9 /opt/infra-ui/bundle/programs/server/npm/node_modules/@babel/runtime
+regenerator-runtime@0.13.9 /opt/infra-ui/bundle/programs/server/npm/node_modules/regenerator-runtime
+@octokit/app@12.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/app
+@octokit/auth-app@3.6.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/auth-app
+@octokit/auth-oauth-app@4.3.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/auth-oauth-app
+@octokit/auth-oauth-device@3.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/auth-oauth-device
+@octokit/oauth-methods@1.2.6 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/oauth-methods
+@octokit/oauth-authorization-url@4.3.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/oauth-authorization-url
+@octokit/request@5.6.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/request
+@octokit/endpoint@6.0.12 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/endpoint
+@octokit/types@6.34.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/types
+@octokit/openapi-types@11.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/openapi-types
+is-plain-object@5.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-plain-object
+universal-user-agent@6.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/universal-user-agent
+@octokit/request-error@2.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/request-error
+deprecation@2.3.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/deprecation
+once@1.4.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/once
+wrappy@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/wrappy
+node-fetch@2.6.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/request/node_modules/node-fetch
+whatwg-url@5.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/whatwg-url
+tr46@0.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/tr46
+webidl-conversions@3.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/webidl-conversions
+btoa-lite@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/btoa-lite
+@octokit/auth-oauth-user@1.3.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/auth-oauth-user
+@types/btoa-lite@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@types/btoa-lite
+@types/lru-cache@5.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/@types/lru-cache
+lru-cache@6.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/lru-cache
+yallist@4.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/yallist
+universal-github-app-jwt@1.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/universal-github-app-jwt
+@types/jsonwebtoken@8.5.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/@types/jsonwebtoken
+@types/node@17.0.34 /opt/infra-ui/bundle/programs/server/npm/node_modules/@types/node
+jsonwebtoken@8.5.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/jsonwebtoken
+jws@3.2.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/jsonwebtoken/node_modules/jws
+jwa@1.4.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/jsonwebtoken/node_modules/jwa
+buffer-equal-constant-time@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/buffer-equal-constant-time
+ecdsa-sig-formatter@1.0.11 /opt/infra-ui/bundle/programs/server/npm/node_modules/ecdsa-sig-formatter
+safe-buffer@5.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/safe-buffer
+lodash.includes@4.3.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/lodash.includes
+lodash.isboolean@3.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/lodash.isboolean
+lodash.isinteger@4.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/lodash.isinteger
+lodash.isnumber@3.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/lodash.isnumber
+lodash.isplainobject@4.0.6 /opt/infra-ui/bundle/programs/server/npm/node_modules/lodash.isplainobject
+lodash.isstring@4.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/lodash.isstring
+lodash.once@4.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/lodash.once
+ms@2.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/ms
+semver@5.7.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/semver
+@octokit/auth-unauthenticated@2.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/auth-unauthenticated
+@octokit/core@3.6.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/core
+@octokit/auth-token@2.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/auth-token
+@octokit/graphql@4.8.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/graphql
+before-after-hook@2.2.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/before-after-hook
+@octokit/oauth-app@3.6.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/oauth-app
+@types/aws-lambda@8.10.97 /opt/infra-ui/bundle/programs/server/npm/node_modules/@types/aws-lambda
+fromentries@1.3.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/fromentries
+@octokit/plugin-paginate-rest@2.17.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/plugin-paginate-rest
+@octokit/webhooks@9.24.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/webhooks
+@octokit/webhooks-methods@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/webhooks-methods
+@octokit/webhooks-types@5.6.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/webhooks-types
+aggregate-error@3.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/aggregate-error
+clean-stack@2.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/clean-stack
+indent-string@4.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/indent-string
+@octokit/plugin-rest-endpoint-methods@5.13.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/plugin-rest-endpoint-methods
+@octokit/plugin-retry@3.0.9 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/plugin-retry
+bottleneck@2.19.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/bottleneck
+@octokit/plugin-throttling@3.6.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/@octokit/plugin-throttling
+@popperjs/core@2.11.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/@popperjs/core
+@postman/form-data@3.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/@postman/form-data
+asynckit@0.4.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/asynckit
+combined-stream@1.0.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/combined-stream
+delayed-stream@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/delayed-stream
+mime-types@2.1.35 /opt/infra-ui/bundle/programs/server/npm/node_modules/mime-types
+mime-db@1.52.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/mime-db
+@postman/tunnel-agent@0.6.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/@postman/tunnel-agent
+@types/webidl-conversions@6.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/@types/webidl-conversions
+@types/whatwg-url@8.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/@types/whatwg-url
+abort-controller@3.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/abort-controller
+event-target-shim@5.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/event-target-shim
+agent-base@6.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/agent-base
+debug@4.3.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/debug
+ajv@6.12.6 /opt/infra-ui/bundle/programs/server/npm/node_modules/ajv
+fast-deep-equal@3.1.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/fast-deep-equal
+fast-json-stable-stringify@2.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/fast-json-stable-stringify
+json-schema-traverse@0.4.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/json-schema-traverse
+uri-js@4.4.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/uri-js
+punycode@2.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/uri-js/node_modules/punycode
+argparse@1.0.10 /opt/infra-ui/bundle/programs/server/npm/node_modules/argparse
+sprintf-js@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/sprintf-js
+arrify@2.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/arrify
+asn1@0.2.6 /opt/infra-ui/bundle/programs/server/npm/node_modules/asn1
+safer-buffer@2.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/safer-buffer
+assert-plus@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/assert-plus
+aws-lambda@1.0.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/aws-lambda
+aws-sdk@2.1137.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/aws-sdk
+buffer@4.9.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/buffer
+base64-js@1.5.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/base64-js
+ieee754@1.1.13 /opt/infra-ui/bundle/programs/server/npm/node_modules/ieee754
+isarray@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/isarray
+events@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/events
+jmespath@0.16.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/jmespath
+querystring@0.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/querystring
+sax@1.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/sax
+url@0.10.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/url
+punycode@1.3.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/punycode
+uuid@3.3.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/aws-sdk/node_modules/uuid
+xml2js@0.4.19 /opt/infra-ui/bundle/programs/server/npm/node_modules/xml2js
+xmlbuilder@9.0.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/xmlbuilder
+commander@3.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/commander
+js-yaml@3.14.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/js-yaml
+esprima@4.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/esprima
+watchpack@2.3.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/watchpack
+glob-to-regexp@0.4.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/glob-to-regexp
+graceful-fs@4.2.10 /opt/infra-ui/bundle/programs/server/npm/node_modules/graceful-fs
+aws-sign2@0.7.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/aws-sign2
+aws4@1.11.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/aws4
+bcrypt-pbkdf@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/bcrypt-pbkdf
+tweetnacl@0.14.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/tweetnacl
+bignumber.js@9.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/bignumber.js
+bluebird@3.7.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/bluebird
+body-parser@1.20.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/body-parser
+bytes@3.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/bytes
+content-type@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/content-type
+debug@2.6.9 /opt/infra-ui/bundle/programs/server/npm/node_modules/body-parser/node_modules/debug
+ms@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/body-parser/node_modules/ms
+depd@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/depd
+destroy@1.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/destroy
+http-errors@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/http-errors
+inherits@2.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/inherits
+setprototypeof@1.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/setprototypeof
+statuses@2.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/statuses
+toidentifier@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/toidentifier
+iconv-lite@0.4.24 /opt/infra-ui/bundle/programs/server/npm/node_modules/iconv-lite
+on-finished@2.4.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/on-finished
+ee-first@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/ee-first
+qs@6.10.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/qs
+side-channel@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/side-channel
+call-bind@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/call-bind
+function-bind@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/function-bind
+get-intrinsic@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/get-intrinsic
+has@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/has
+has-symbols@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/has-symbols
+object-inspect@1.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/object-inspect
+raw-body@2.5.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/raw-body
+unpipe@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/unpipe
+type-is@1.6.18 /opt/infra-ui/bundle/programs/server/npm/node_modules/type-is
+media-typer@0.3.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/media-typer
+bootstrap@5.1.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/bootstrap
+brotli@1.3.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/brotli
+bson@4.6.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/bson
+buffer@5.7.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/bson/node_modules/buffer
+caseless@0.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/caseless
+core-util-is@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/core-util-is
+dashdash@1.14.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/dashdash
+data-uri-to-buffer@4.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/data-uri-to-buffer
+define-properties@1.1.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/define-properties
+object-keys@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/object-keys
+denque@2.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/denque
+ecc-jsbn@0.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/ecc-jsbn
+jsbn@0.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/jsbn
+es-abstract@1.20.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/es-abstract
+es-to-primitive@1.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/es-to-primitive
+is-callable@1.2.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-callable
+is-date-object@1.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-date-object
+is-symbol@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-symbol
+is-negative-zero@2.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-negative-zero
+is-regex@1.1.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-regex
+is-string@1.0.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-string
+object.assign@4.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/object.assign
+string.prototype.trimend@1.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/string.prototype.trimend
+string.prototype.trimstart@1.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/string.prototype.trimstart
+unbox-primitive@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/unbox-primitive
+has-bigints@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/has-bigints
+which-boxed-primitive@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/which-boxed-primitive
+is-bigint@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-bigint
+is-boolean-object@1.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-boolean-object
+is-number-object@1.0.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-number-object
+extend@3.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/extend
+extsprintf@1.3.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/extsprintf
+fast-text-encoding@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/fast-text-encoding
+fetch-blob@3.1.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/fetch-blob
+node-domexception@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/node-domexception
+web-streams-polyfill@3.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/web-streams-polyfill
+forever-agent@0.6.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/forever-agent
+formdata-polyfill@4.0.10 /opt/infra-ui/bundle/programs/server/npm/node_modules/formdata-polyfill
+gaxios@4.3.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/gaxios
+https-proxy-agent@5.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/https-proxy-agent
+is-stream@2.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-stream
+node-fetch@2.6.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/gaxios/node_modules/node-fetch
+gcp-metadata@4.3.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/gcp-metadata
+json-bigint@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/json-bigint
+getpass@0.1.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/getpass
+google-auth-library@7.14.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/google-auth-library
+gtoken@5.3.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/gtoken
+google-p12-pem@3.1.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/google-p12-pem
+node-forge@1.3.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/node-forge
+jws@4.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/jws
+jwa@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/jwa
+googleapis@100.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/googleapis
+googleapis-common@5.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/googleapis-common
+url-template@2.0.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/url-template
+uuid@8.3.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/uuid
+har-schema@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/har-schema
+har-validator@5.1.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/har-validator
+http-signature@1.3.6 /opt/infra-ui/bundle/programs/server/npm/node_modules/http-signature
+jsprim@2.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/jsprim
+json-schema@0.4.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/json-schema
+verror@1.10.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/verror
+sshpk@1.17.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/sshpk
+ip@1.1.8 /opt/infra-ui/bundle/programs/server/npm/node_modules/ip
+is-typedarray@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/is-typedarray
+isstream@0.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/isstream
+jira-client@8.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/jira-client
+postman-request@2.88.1-postman.31 /opt/infra-ui/bundle/programs/server/npm/node_modules/postman-request
+json-stringify-safe@5.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/json-stringify-safe
+oauth-sign@0.9.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/oauth-sign
+performance-now@2.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/performance-now
+qs@6.5.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/postman-request/node_modules/qs
+stream-length@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/stream-length
+bluebird@2.11.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/stream-length/node_modules/bluebird
+tough-cookie@2.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/tough-cookie
+psl@1.8.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/psl
+punycode@2.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/tough-cookie/node_modules/punycode
+uuid@3.4.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/postman-request/node_modules/uuid
+jquery@3.6.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/jquery
+memory-pager@1.5.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/memory-pager
+meteor-node-stubs@1.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs
+assert@2.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/assert
+es6-object-assign@1.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/es6-object-assign
+is-nan@1.3.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-nan
+call-bind@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/call-bind
+function-bind@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/function-bind
+get-intrinsic@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/get-intrinsic
+has@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/has
+has-symbols@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/has-symbols
+define-properties@1.1.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/define-properties
+object-keys@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/object-keys
+object-is@1.1.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/object-is
+util@0.12.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/util
+inherits@2.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/inherits
+is-arguments@1.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-arguments
+is-generator-function@1.0.9 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-generator-function
+is-typed-array@1.1.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-typed-array
+available-typed-arrays@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/available-typed-arrays
+es-abstract@1.18.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/es-abstract
+es-to-primitive@1.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/es-to-primitive
+is-callable@1.2.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-callable
+is-date-object@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-date-object
+is-symbol@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-symbol
+is-negative-zero@2.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-negative-zero
+is-regex@1.1.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-regex
+is-string@1.0.6 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-string
+object-inspect@1.10.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/object-inspect
+object.assign@4.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/object.assign
+string.prototype.trimend@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/string.prototype.trimend
+string.prototype.trimstart@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/string.prototype.trimstart
+unbox-primitive@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/unbox-primitive
+has-bigints@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/has-bigints
+which-boxed-primitive@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/which-boxed-primitive
+is-bigint@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-bigint
+is-boolean-object@1.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-boolean-object
+is-number-object@1.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/is-number-object
+foreach@2.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/foreach
+safe-buffer@5.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/safe-buffer
+which-typed-array@1.1.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/which-typed-array
+browserify-zlib@0.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/browserify-zlib
+pako@1.0.11 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/pako
+buffer@6.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/buffer
+base64-js@1.5.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/base64-js
+ieee754@1.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/ieee754
+console-browserify@1.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/console-browserify
+constants-browserify@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/constants-browserify
+crypto-browserify@3.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/crypto-browserify
+browserify-cipher@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/browserify-cipher
+browserify-aes@1.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/browserify-aes
+buffer-xor@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/buffer-xor
+cipher-base@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/cipher-base
+create-hash@1.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/create-hash
+md5.js@1.3.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/md5.js
+hash-base@3.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/hash-base
+readable-stream@3.6.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/readable-stream
+string_decoder@1.3.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/string_decoder
+util-deprecate@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/util-deprecate
+ripemd160@2.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/ripemd160
+sha.js@2.4.11 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/sha.js
+evp_bytestokey@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/evp_bytestokey
+browserify-des@1.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/browserify-des
+des.js@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/des.js
+minimalistic-assert@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/minimalistic-assert
+browserify-sign@4.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/browserify-sign
+bn.js@5.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/bn.js
+browserify-rsa@4.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/browserify-rsa
+randombytes@2.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/randombytes
+create-hmac@1.1.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/create-hmac
+elliptic@6.5.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/elliptic
+bn.js@4.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/elliptic/node_modules/bn.js
+brorand@1.1.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/brorand
+hash.js@1.1.7 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/hash.js
+hmac-drbg@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/hmac-drbg
+minimalistic-crypto-utils@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/minimalistic-crypto-utils
+parse-asn1@5.1.6 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/parse-asn1
+asn1.js@5.4.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/asn1.js
+bn.js@4.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/asn1.js/node_modules/bn.js
+safer-buffer@2.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/safer-buffer
+pbkdf2@3.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/pbkdf2
+create-ecdh@4.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/create-ecdh
+bn.js@4.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/create-ecdh/node_modules/bn.js
+diffie-hellman@5.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/diffie-hellman
+bn.js@4.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/diffie-hellman/node_modules/bn.js
+miller-rabin@4.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/miller-rabin
+bn.js@4.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/miller-rabin/node_modules/bn.js
+public-encrypt@4.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/public-encrypt
+bn.js@4.12.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/public-encrypt/node_modules/bn.js
+randomfill@1.0.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/randomfill
+domain-browser@4.19.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/domain-browser
+events@3.3.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/events
+https-browserify@1.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/https-browserify
+os-browserify@0.3.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/os-browserify
+path-browserify@1.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/path-browserify
+process@0.11.10 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/process
+punycode@2.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/punycode
+querystring-es3@0.2.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/querystring-es3
+stream-browserify@3.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/stream-browserify
+stream-http@3.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/stream-http
+builtin-status-codes@3.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/builtin-status-codes
+xtend@4.0.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/xtend
+timers-browserify@2.0.12 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/timers-browserify
+setimmediate@1.0.5 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/setimmediate
+tty-browserify@0.0.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/tty-browserify
+url@0.11.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/url
+punycode@1.3.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/url/node_modules/punycode
+querystring@0.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/querystring
+vm-browserify@1.1.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/meteor-node-stubs/node_modules/vm-browserify
+moment@2.29.4 /opt/infra-ui/bundle/programs/server/npm/node_modules/moment
+mongodb@4.7.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/mongodb
+mongodb-connection-string-url@2.5.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/mongodb-connection-string-url
+whatwg-url@11.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/mongodb-connection-string-url/node_modules/whatwg-url
+tr46@3.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/mongodb-connection-string-url/node_modules/tr46
+punycode@2.1.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/mongodb-connection-string-url/node_modules/punycode
+webidl-conversions@7.0.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/mongodb-connection-string-url/node_modules/webidl-conversions
+socks@2.6.2 /opt/infra-ui/bundle/programs/server/npm/node_modules/socks
+smart-buffer@4.2.0 /opt/infra-ui/bundle/programs/server/npm/node_modules/smart-buffer
+node-fetch@3.2.6 /opt/infra-ui/bundle/programs/server/npm/node_modules/node-fetch
+octokit@1.7.1 /opt/infra-ui/bundle/programs/server/npm/node_modules/octokit
+saslprep@1.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/saslprep
+sparse-bitfield@3.0.3 /opt/infra-ui/bundle/programs/server/npm/node_modules/sparse-bitfield
+{
+  "npm": "6.14.16",
+  "ares": "1.18.1",
+  "brotli": "1.0.9",
+  "cldr": "40.0",
+  "icu": "70.1",
+  "llhttp": "2.1.4",
+  "modules": "83",
+  "napi": "8",
+  "nghttp2": "1.42.0",
+  "node": "14.19.1",
+  "openssl": "1.1.1n",
+  "tz": "2021a3",
+  "unicode": "14.0",
+  "uv": "1.42.0",
+  "v8": "8.4.371.23-node.85",
+  "zlib": "1.2.11"
+}
+added 146 packages from 83 contributors and audited 157 packages in 9.835s
+
+4 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+Removing intermediate container 8ed7e9c0ec5d
+ ---> 4b480e40387d
+Successfully built 4b480e40387d
+Successfully tagged uws/infra-ui:bundle-9.1.6
+***
+*** Build: infra-ui 9.1.6
+***
+Sending build context to Docker daemon  6.656kB
+Step 1/35 : ARG APP
+Step 2/35 : ARG APP_TAG
+Step 3/35 : FROM uws/${APP}:bundle-${APP_TAG}
+ ---> 4b480e40387d
+Step 4/35 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Running in 5dea0007a8fa
+Removing intermediate container 5dea0007a8fa
+ ---> 95b1f71fe8b4
+Step 5/35 : LABEL version="220412"
+ ---> Running in a8d11ecb8773
+Removing intermediate container a8d11ecb8773
+ ---> d7b17cc772c4
+Step 6/35 : ARG APP_NAME
+ ---> Running in 02471fcac497
+Removing intermediate container 02471fcac497
+ ---> daec0dd8363f
+Step 7/35 : ENV APP ${APP_NAME}
+ ---> Running in d9cea4876ed3
+Removing intermediate container d9cea4876ed3
+ ---> 82005c24958e
+Step 8/35 : USER root:root
+ ---> Running in 07969c46403c
+Removing intermediate container 07969c46403c
+ ---> 48961a5d6245
+Step 9/35 : WORKDIR /root
+ ---> Running in cde2b38e0a42
+Removing intermediate container cde2b38e0a42
+ ---> 7d37e5cb6203
+Step 10/35 : ENV USER root
+ ---> Running in c871fd05e011
+Removing intermediate container c871fd05e011
+ ---> 5851657c7691
+Step 11/35 : ENV HOME /root
+ ---> Running in 3ac2ab400f5c
+Removing intermediate container 3ac2ab400f5c
+ ---> 5065dc518880
+Step 12/35 : RUN rm -vf /usr/local/bin/node
+ ---> Running in 90274c5335cc
+removed '/usr/local/bin/node'
+Removing intermediate container 90274c5335cc
+ ---> 3708fef0c499
+Step 13/35 : RUN install -v -m 0755 /home/uws/${APP}/.meteor/local/dev_bundle/bin/node /usr/local/bin/node
+ ---> Running in b030514a9ce8
+'/home/uws/infra-ui/.meteor/local/dev_bundle/bin/node' -> '/usr/local/bin/node'
+Removing intermediate container b030514a9ce8
+ ---> 9fbda5a27b95
+Step 14/35 : FROM uws/buildpack:base-2203
+ ---> 37c0a98b82ad
+Step 15/35 : LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
+ ---> Using cache
+ ---> 90290b532743
+Step 16/35 : LABEL version="220412"
+ ---> Running in 477520daa41f
+Removing intermediate container 477520daa41f
+ ---> ba39b3d48c7f
+Step 17/35 : ARG APP_NAME2
+ ---> Running in bfc80c9f52f7
+Removing intermediate container bfc80c9f52f7
+ ---> 16d6efb622aa
+Step 18/35 : ENV APP ${APP_NAME2}
+ ---> Running in f300b0f3de4f
+Removing intermediate container f300b0f3de4f
+ ---> c10669ae1001
+Step 19/35 : USER root:root
+ ---> Running in d2b2fbd94645
+Removing intermediate container d2b2fbd94645
+ ---> 4a21b06ff0da
+Step 20/35 : WORKDIR /root
+ ---> Running in 8d492f930e8a
+Removing intermediate container 8d492f930e8a
+ ---> 9b4582121325
+Step 21/35 : ENV USER root
+ ---> Running in e81adb9b3989
+Removing intermediate container e81adb9b3989
+ ---> c2d38ed53cc1
+Step 22/35 : ENV HOME /root
+ ---> Running in 86cc1991501a
+Removing intermediate container 86cc1991501a
+ ---> a3c98d280c83
+Step 23/35 : RUN install -v -d -m 0750 -o uws -g uws /opt/${APP}
+ ---> Running in 7d421afc5c2b
+install: creating directory '/opt/infra-ui'
+Removing intermediate container 7d421afc5c2b
+ ---> 8b0c234b4a39
+Step 24/35 : COPY --from=0 /opt/${APP}/bundle/ /opt/${APP}/bundle/
+ ---> 71958fec4b18
+Step 25/35 : COPY --from=0 /usr/local/bin/node /usr/local/bin/node
+ ---> 59a6ca09ed67
+Step 26/35 : COPY --chown=uws:uws ./meteor-start.sh /usr/local/bin/meteor-start.sh
+ ---> 048767d7c8ee
+Step 27/35 : RUN rm -vf /usr/local/bin/meteor-test.sh
+ ---> Running in 4c83d4f8b8e5
+removed '/usr/local/bin/meteor-test.sh'
+Removing intermediate container 4c83d4f8b8e5
+ ---> fbc32e37f821
+Step 28/35 : USER uws:uws
+ ---> Running in 3151f440bc5d
+Removing intermediate container 3151f440bc5d
+ ---> 4f68e30f24c3
+Step 29/35 : WORKDIR /home/uws
+ ---> Running in cad5a79c6c13
+Removing intermediate container cad5a79c6c13
+ ---> faa842e2618e
+Step 30/35 : ENV USER uws
+ ---> Running in a11836016efd
+Removing intermediate container a11836016efd
+ ---> 6ecf81ee89f2
+Step 31/35 : ENV HOME /home/uws
+ ---> Running in 538d19e3a1d4
+Removing intermediate container 538d19e3a1d4
+ ---> d47eabe8ea7e
+Step 32/35 : RUN touch /var/tmp/fake-openssl.cnf
+ ---> Running in 89dc636c29bb
+Removing intermediate container 89dc636c29bb
+ ---> 502320bb2c20
+Step 33/35 : ENV OPENSSL_CONF /var/tmp/fake-openssl.cnf
+ ---> Running in 33c4f2ca0f8c
+Removing intermediate container 33c4f2ca0f8c
+ ---> 68634bdd2d0a
+Step 34/35 : WORKDIR /opt/${APP}/bundle
+ ---> Running in 538dfd7f6d2e
+Removing intermediate container 538dfd7f6d2e
+ ---> fbd08f56e75f
+Step 35/35 : ENTRYPOINT exec /usr/local/bin/meteor-start.sh
+ ---> Running in b5b3494e84d7
+Removing intermediate container b5b3494e84d7
+ ---> d1d11200142e
+Successfully built d1d11200142e
+Successfully tagged uws/infra-ui:deploy-9.1.6
+***
+*** Publish: infra-ui 9.1.6
+***
+i - ECR login aws region: us-east-1
+mode of '/var/tmp/uws-docker-login.EuwGztpC' changed from 0600 (rw-------) to 0755 (rwxr-xr-x)
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /home/uws/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+removed '/var/tmp/uws-docker-login.EuwGztpC'
+i - ecr push: uws/infra-ui:deploy-9.1.6 -> 789470191893.dkr.ecr.us-east-1.amazonaws.com/uws:meteor-infra-ui-9.1.6-bp35
+The push refers to repository [789470191893.dkr.ecr.us-east-1.amazonaws.com/uws]
+a64f520d4231: Preparing
+79222f8e566a: Preparing
+bb7665207e90: Preparing
+5e10baf670f5: Preparing
+13439effcaeb: Preparing
+5fae26f6b7b7: Preparing
+3a940620d8d8: Preparing
+6d241db4518e: Preparing
+0f81c150522a: Preparing
+bb94e9e6bf87: Preparing
+b436fe719af6: Preparing
+23a5dc558129: Preparing
+282dd64e135b: Preparing
+83876fce5acb: Preparing
+608f3a074261: Preparing
+0f81c150522a: Waiting
+b436fe719af6: Waiting
+bb94e9e6bf87: Waiting
+23a5dc558129: Waiting
+83876fce5acb: Waiting
+282dd64e135b: Waiting
+3a940620d8d8: Waiting
+6d241db4518e: Waiting
+608f3a074261: Waiting
+5fae26f6b7b7: Waiting
+79222f8e566a: Pushed
+a64f520d4231: Pushed
+bb7665207e90: Pushed
+3a940620d8d8: Layer already exists
+6d241db4518e: Layer already exists
+0f81c150522a: Layer already exists
+bb94e9e6bf87: Layer already exists
+b436fe719af6: Layer already exists
+23a5dc558129: Layer already exists
+282dd64e135b: Layer already exists
+83876fce5acb: Layer already exists
+5fae26f6b7b7: Pushed
+608f3a074261: Layer already exists
+5e10baf670f5: Pushed
+13439effcaeb: Pushed
+tag invalid: The image tag 'meteor-infra-ui-9.1.6-bp35' already exists in the 'uws' repository and cannot be overwritten because the repository is immutable.
+make: *** [Makefile:255: publish-infra-ui] Error 1
+Publish infra-ui version 9.1.6 failed!
+
+[exited with status 13.]
