@@ -7,12 +7,14 @@ from uwsapp import config
 from uwsapp import log
 
 class LogEntry(object):
+	source:  str  = ''
 	message: str  = ''
 	error:   bool = False
 	warning: bool = False
 
-	def __init__(e, error: bool = False, warning: bool = False):
-		e.error = error
+	def __init__(e, source: str, error: bool = False, warning: bool = False):
+		e.source  = source
+		e.error   = error
 		e.warning = warning
 
 class Syslog(deque):
@@ -27,8 +29,10 @@ def syslog() -> Syslog:
 	log.debug('parse:', fn)
 	with fn.open() as fh:
 		for line in fh.readlines():
-			# ~ line = line.strip()
-			e = LogEntry()
-			e.message = line.strip()
-			d.append(e)
+			d.append(_uwsq(line.strip()))
 	return d
+
+def _uwsq(line) -> LogEntry:
+	e = LogEntry('uwsq')
+	e.message = line
+	return e
