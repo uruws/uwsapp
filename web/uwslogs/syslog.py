@@ -7,10 +7,11 @@ from uwsapp import config
 from uwsapp import log
 
 class LogEntry(object):
-	source:  str  = ''
-	message: str  = ''
-	error:   bool = False
-	warning: bool = False
+	source:    str  = ''
+	message:   str  = ''
+	error:     bool = False
+	warning:   bool = False
+	timestamp: str = ''
 
 	def __init__(e, source: str, error: bool = False, warning: bool = False):
 		e.source  = source
@@ -34,5 +35,7 @@ def syslog() -> Syslog:
 
 def _uwsq(line) -> LogEntry:
 	e = LogEntry('uwsq')
-	e.message = line
+	e.message   = line
+	line_items = line.split('[', maxsplit = 1)
+	e.timestamp = line_items[0].strip()
 	return e
