@@ -5,7 +5,7 @@ from django.test import TestCase
 
 from uwsapp import config
 
-class ApiViewsTests(TestCase):
+class WebViewsTests(TestCase):
 
 	def test_index_nologin(t):
 		resp = t.client.get('/')

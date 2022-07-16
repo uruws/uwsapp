@@ -3,7 +3,9 @@
 {% include "uwsweb/navbar.html" %}
 <!-- uwsweb/api.html -->
 
-<form class="w3-container">
+<form class="w3-panel" method="post" action="{% url 'api' %}">
+	{% csrf_token %}
+	<span>/api</span><input type="text" name="endpoint" placeholder="/endpoint/url">
 </form>
 
 <!-- uwsweb/api.html -->

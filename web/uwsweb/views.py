@@ -13,17 +13,20 @@ _navbar = [
 	# title     name
 	('syslog', 'syslog'),
 	('apps',   'apps'),
+	('api',    'api'),
 ]
+
+# WebView
 
 class WebView(TemplateView):
 	http_method_names = ['get', 'head']
 	__start = None
 	__req = None
 
-	def dispatch(v, req, *args, **kwargs):
+	def setup(v, req, *args, **kwargs):
+		super().setup(req, *args, **kwargs)
 		v.__start = time()
 		v.__req = req
-		return super().dispatch(req, *args, **kwargs)
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -54,12 +57,16 @@ class WebView(TemplateView):
 		d['took'] = '%.6f' % (time() - v.__start)
 		return d
 
+# Index
+
 class Index(WebView):
 	template_name = 'uwsweb/index.html'
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
 		return v.uwsweb_data(d)
+
+# User
 
 class User(WebView):
 	template_name = 'uwsweb/user.html'
@@ -68,9 +75,16 @@ class User(WebView):
 		d = super().get_context_data(**kwargs)
 		return v.uwsweb_data(d)
 
+# Api
+
 class Api(WebView):
+	http_method_names = ['get', 'head', 'post']
 	template_name = 'uwsweb/api.html'
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
+		d['title_desc'] = 'Api Client'
 		return v.uwsweb_data(d)
+
+	def post(v, req):
+		return v.get(req)
