@@ -10,8 +10,9 @@ from uwsapp import config
 from uwsapp import log
 
 _navbar = [
+	# title     name
 	('syslog', 'syslog'),
-	('apps', 'apps'),
+	('apps',   'apps'),
 ]
 
 class WebView(TemplateView):
@@ -62,6 +63,13 @@ class Index(WebView):
 
 class User(WebView):
 	template_name = 'uwsweb/user.html'
+
+	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
+		return v.uwsweb_data(d)
+
+class Api(WebView):
+	template_name = 'uwsweb/api.html'
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
