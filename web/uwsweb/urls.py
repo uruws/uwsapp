@@ -37,7 +37,7 @@ urlpatterns = [
 	path(URL('apps/'), include('uwsapps.urls')),
 
 	path(URL('user'),   views.User.as_view(), name = 'user'),
-	path(URL('api'),    views.Api.as_view(), name = 'api'),
+	path(URL('api'),    views.Api.as_view(),  name = 'api'),
 	path(URL('admin/'), admin.site.urls,      name = 'admin'),
 
 	path(URL(''), logs_views.Index.as_view(), name = 'index'),

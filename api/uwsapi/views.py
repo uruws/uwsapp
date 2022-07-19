@@ -25,28 +25,33 @@ def error404(req: HttpRequest, err: Exception) -> JsonResponse:
 # ApiView
 
 class ApiView(View):
-	http_method_names = ['get', 'head']
+	http_method_names = ['post']
 
 	def setup(v, req, *args, **kwargs):
 		super().setup(req, *args, **kwargs)
+		log.debug('username:', req.user)
+
+	def uwsapi_resp(v, data, status = HTTPStatus.OK) -> JsonResponse:
+		resp = JsonResponse(data)
+		resp.status_code = status
+		return resp
 
 # Index
 
-def index(req: HttpRequest) -> JsonResponse:
-	log.debug('username:', req.user)
-	if config.DEBUG(): return _debug(req)
-	resp = JsonResponse(dict())
-	resp.status_code = HTTPStatus.NOT_FOUND
-	return resp
+class Index(ApiView):
+	http_method_names = ['get', 'head']
 
-def _debug(req: HttpRequest) -> JsonResponse:
-	d: dict[str, dict[str, Optional[str]]] = dict(
-		environ = dict(),
-		headers = dict(),
-	)
-	for k in sorted(environ.keys()):
-		d['environ'][k] = environ.get(k)
-	for k in sorted(req.headers.keys()):
-		d['headers'][k] = req.headers.get(k)
-	resp = JsonResponse(d)
-	return resp
+	def get(v, req, *args, **kwargs) -> JsonResponse:
+		if config.DEBUG(): return v._debug(req)
+		return v.uwsapi_resp({}, status = HTTPStatus.NOT_FOUND)
+
+	def __debug(v, req: HttpRequest) -> JsonResponse:
+		d: dict[str, dict[str, Optional[str]]] = dict(
+			environ = dict(),
+			headers = dict(),
+		)
+		for k in sorted(environ.keys()):
+			d['environ'][k] = environ.get(k)
+		for k in sorted(req.headers.keys()):
+			d['headers'][k] = req.headers.get(k)
+		return v.uwsapi_resp(d)

@@ -28,9 +28,12 @@ from . import views
 
 urlpatterns = [
 	path(URL('exec/<slug:name>'), cmd.view, name = 'exec'),
+
 	path(URL('auth/'), include('uwsauth.urls')),
+
 	path(URL('admin/'), admin.site.urls),
-	path(URL(''), views.index, name = 'index'),
+
+	path(URL(''), views.Index.as_view(), name = 'index'),
 ]
 
 handler404 = 'uwsapi.views.error404'
