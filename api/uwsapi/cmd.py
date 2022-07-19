@@ -21,9 +21,11 @@ def view(req: HttpRequest, name: str) -> JsonResponse:
 			resp = _exec(req, name, app)
 		except KeyError as err:
 			log.error(err)
-	if resp is None:
+			resp = JsonResponse({})
+			resp.status_code = HTTPStatus.BAD_REQUEST
+	else:
 		resp = JsonResponse({})
-		resp.status_code = HTTPStatus.BAD_REQUEST
+		resp.status_code = HTTPStatus.METHOD_NOT_ALLOWED
 	return resp
 
 __env: dict[str, str] = {

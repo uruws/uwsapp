@@ -41,5 +41,4 @@ urlpatterns = [
 	path(URL('admin/'), admin.site.urls,      name = 'admin'),
 
 	path(URL(''), logs_views.Index.as_view(), name = 'index'),
-	# ~ path(URL(''), views.Index.as_view(), name = 'index'),
 ]
