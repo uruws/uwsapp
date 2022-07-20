@@ -18,27 +18,30 @@ Including another URLconf
 """
 
 from django.contrib      import admin
-from django.contrib.auth import views as auth_views
 from django.urls         import include
 from django.urls         import path
 
 from uwsapp.config import URL
 
-from uwslogs import views as logs_views
+from .views import User
 
-from . import views
+from .views_api import Api
+
+from uwslogs.views import Index
+
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
 	path(URL('auth/login'),
-		auth_views.LoginView.as_view(template_name = 'uwsweb/auth/login.html'),
+		LoginView.as_view(template_name = 'uwsweb/auth/login.html'),
 		name = 'login'),
 
 	path(URL('logs/'), include('uwslogs.urls')),
 	path(URL('apps/'), include('uwsapps.urls')),
 
-	path(URL('user'),   views.User.as_view(), name = 'user'),
-	path(URL('api'),    views.Api.as_view(),  name = 'api'),
-	path(URL('admin/'), admin.site.urls,      name = 'admin'),
+	path(URL('user'),   User.as_view(), name = 'user'),
+	path(URL('api'),    Api.as_view(),  name = 'api'),
 
-	path(URL(''), logs_views.Index.as_view(), name = 'index'),
+	path(URL('admin/'), admin.site.urls, name = 'admin'),
+	path(URL(''),       Index.as_view(), name = 'index'),
 ]
