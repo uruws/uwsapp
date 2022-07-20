@@ -16,7 +16,9 @@ _navbar = [
 	('api',    'api'),
 ]
 
+#
 # WebView
+#
 
 class WebView(TemplateView):
 	http_method_names = ['get', 'head']
@@ -57,7 +59,9 @@ class WebView(TemplateView):
 		d['took'] = '%.6f' % (time() - v.__start)
 		return d
 
+#
 # Index
+#
 
 class Index(WebView):
 	template_name = 'uwsweb/index.html'
@@ -66,7 +70,9 @@ class Index(WebView):
 		d = super().get_context_data(**kwargs)
 		return v.uwsweb_data(d)
 
+#
 # User
+#
 
 class User(WebView):
 	template_name = 'uwsweb/user.html'
@@ -75,7 +81,9 @@ class User(WebView):
 		d = super().get_context_data(**kwargs)
 		return v.uwsweb_data(d)
 
+#
 # Api
+#
 
 class Api(WebView):
 	http_method_names = ['get', 'head', 'post']
