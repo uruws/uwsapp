@@ -1,7 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.views.generic  import TemplateView
+from django.contrib       import messages
+from django.views.generic import TemplateView
 
 from pathlib import Path
 from time    import time
@@ -59,6 +60,12 @@ class WebView(TemplateView):
 	def uwsweb_data(v, d):
 		d['took'] = '%.6f' % (time() - v.__start)
 		return d
+
+	def uwsweb_msg(v, msg: str):
+		messages.success(v.__req, msg)
+
+	def uwsweb_msg_error(v, msg: str):
+		messages.error(v.__req, msg)
 
 #
 # Index
