@@ -63,8 +63,14 @@ class Api(WebView):
 		if resp is not None:
 			log.debug('api response:', type(resp), resp)
 			with resp:
-				v.__resp['url']          = resp.geturl()
-				v.__resp['code']         = resp.getcode()
-				v.__resp['date']         = resp.getheader('Date',         'NO_DATE')
-				v.__resp['content-type'] = resp.getheader('Content-Type', 'NO_CONTENT_TYPE')
+				v.__resp['url']            = resp.geturl()
+				v.__resp['code']           = resp.getcode()
+				v.__resp['date']           = resp.getheader('Date',
+					'NO_DATE')
+				v.__resp['content_type']   = resp.getheader('Content-Type',
+					'NO_CONTENT_TYPE')
+				v.__resp['content_length'] = resp.getheader('Content-Length',
+					'NO_CONTENT_LENGTH')
+				v.__resp['server']         = resp.getheader('Server',
+					'NO_SERVER')
 		return v.get(req)
