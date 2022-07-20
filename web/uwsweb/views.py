@@ -27,12 +27,12 @@ _navbar = [
 class WebView(TemplateView):
 	http_method_names = ['get', 'head']
 	__start = None
-	__req = None
+	__req   = None
 
 	def setup(v, req, *args, **kwargs):
 		super().setup(req, *args, **kwargs)
 		v.__start = time()
-		v.__req = req
+		v.__req   = req
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -44,6 +44,9 @@ class WebView(TemplateView):
 		d['template_name'] = v.template_name.strip()
 		d['navbar']        = _navbar
 		return d
+
+	def uwsapi_session(v) -> str:
+		return v.__req.session['user'].get('session', 'NOSESSION')
 
 	def uwsweb_title(v):
 		return Path(v.template_name).stem
@@ -123,10 +126,15 @@ class Api(WebView):
 			log.error(err)
 			v.uwsweb_msg_error(str(err))
 			data_error = True
+		data['session'] = v.uwsapi_session()
 		resp = None
 		if not data_error:
 			try:
-				resp = v.__cli.POST(v.__endpoint, data)
+				ep = v.__endpoint.strip()
+				if ep.startswith('/api/'):
+					ep = ep[4:]
+				log.debug(ep)
+				resp = v.__cli.POST(ep, data)
 			except Exception as err:
 				log.error(err)
 				v.uwsweb_msg_error(str(err))
