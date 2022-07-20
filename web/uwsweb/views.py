@@ -9,8 +9,8 @@ from django.views.generic import TemplateView
 from pathlib import Path
 from time    import time
 
-from uwsapp     import config
-from uwsapp     import log
+from uwsapp import config
+from uwsapp import log
 
 _navbar = [
 	# title     name

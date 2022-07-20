@@ -3,6 +3,15 @@
 {% include "uwsweb/navbar.html" %}
 <!-- uwsweb/api.html -->
 
+{% if api_response %}
+<pre class="w3-container w3-margin-top">
+{{ api_response.url }}
+HTTP/1.1 {{ api_response.code }}
+Date: {{ api_response.date }}
+</pre>
+<hr class="w3-border-dark-grey">
+{% endif %}
+
 <form class="w3-panel" method="post" action="{% url 'api' %}">
 	{% csrf_token %}
 	<label>URL</label>
