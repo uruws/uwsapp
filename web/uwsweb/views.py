@@ -44,7 +44,7 @@ class WebView(TemplateView):
 		d['navbar']        = _navbar
 		return d
 
-	def uwsapi_session(v) -> str:
+	def uwsapi_session(v):
 		return v.__req.session['user'].get('session', 'NOSESSION')
 
 	def uwsweb_title(v):

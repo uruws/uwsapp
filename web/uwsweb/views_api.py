@@ -9,12 +9,12 @@ from uwsapp     import log
 from .views import WebView
 
 class Api(WebView):
-	http_method_names = ['get', 'head', 'post']
-	template_name     = 'uwsweb/api.html'
-	__cli             = None
-	__endpoint        = ''
-	__params          = '{}'
-	__resp            = {}
+	http_method_names      = ['get', 'head', 'post']
+	template_name          = 'uwsweb/api.html'
+	__cli                  = None
+	__endpoint             = ''
+	__params               = '{}'
+	__resp: dict[str, str] = {}
 
 	def setup(v, req, *args, **kwargs):
 		super().setup(req, *args, **kwargs)
