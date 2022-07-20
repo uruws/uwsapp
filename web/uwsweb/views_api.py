@@ -56,7 +56,6 @@ class Api(WebView):
 				log.debug(ep)
 				resp = v.__cli.POST(ep, data)
 			except Exception as err:
-				log.debug('api response:', type(resp), resp)
 				log.error(err)
 				v.uwsweb_msg_error(str(err))
 		# show response
@@ -73,4 +72,10 @@ class Api(WebView):
 					'NO_CONTENT_LENGTH')
 				v.__resp['server']         = resp.getheader('Server',
 					'NO_SERVER')
+				try:
+					v.__resp['content'] = json.dumps(json.load(resp), indent = 2)
+				except Exception as err:
+					log.error(err)
+					v.uwsweb_msg_error(str(err))
+					v.__resp['content'] = ''
 		return v.get(req)

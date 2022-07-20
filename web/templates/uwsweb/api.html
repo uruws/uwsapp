@@ -4,13 +4,15 @@
 <!-- uwsweb/api.html -->
 
 {% if api_response %}
-<pre class="w3-container w3-margin-top w3-text-green">
+<pre class="w3-container w3-text-green">
 {{ api_response.url }}
 HTTP/1.1 {{ api_response.code }}
 Date: {{ api_response.date }}
 Content-Type: {{ api_response.content_type }}
 Content-Length: {{ api_response.content_length }}
 Server: {{ api_response.server }}
+
+{{ api_response.content }}
 </pre>
 <hr class="w3-border-dark-grey">
 {% endif %}
