@@ -56,6 +56,9 @@ class AuthBackend(BaseBackend):
 		if username == '' or password == '':
 			log.error('auth: empty username and/or password')
 			return None
+		# clear expired sessions
+		log.debug('clear expired sessions')
+		request.session.clear_expired()
 		return _check_credentials(request, username, password)
 
 	def get_user(b, user_id) -> Optional[User]:

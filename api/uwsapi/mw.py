@@ -30,8 +30,8 @@ class ApiMiddleware:
 		if sess_id == '':
 			return _unauth()
 		# clear expired sessions
-		req.session.clear_expired()
 		log.debug('clear expired sessions')
+		req.session.clear_expired()
 		# check if exists
 		log.debug('req.session:', req.session.session_key)
 		if not req.session.exists(sess_id):

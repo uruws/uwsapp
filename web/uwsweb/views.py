@@ -119,6 +119,7 @@ class Api(WebView):
 	def post(v, req):
 		v.__endpoint = req.POST.get('api_endpoint', '')
 		v.__params   = req.POST.get('api_params',   '{}')
+		log.debug(v.__endpoint)
 		data_error = False
 		try:
 			data = json.loads(v.__params)
