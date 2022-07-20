@@ -6,8 +6,9 @@ from django.views.generic  import TemplateView
 from pathlib import Path
 from time    import time
 
-from uwsapp import config
-from uwsapp import log
+from uwsapp.api import ApiClient
+from uwsapp     import config
+from uwsapp     import log
 
 _navbar = [
 	# title     name
@@ -88,8 +89,13 @@ class User(WebView):
 class Api(WebView):
 	http_method_names = ['get', 'head', 'post']
 	template_name     = 'uwsweb/api.html'
+	__cli             = None
 	__endpoint        = ''
 	__params          = '{}'
+
+	def setup(v, req, *args, **kwargs):
+		super().setup(req, *args, **kwargs)
+		v.__cli = ApiClient()
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
