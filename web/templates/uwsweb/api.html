@@ -6,12 +6,19 @@
 <form class="w3-panel" method="post" action="{% url 'api' %}">
 	{% csrf_token %}
 	<label>URL</label>
-	<input class="w3-input w3-black w3-border w3-border-green w3-text-green" type="text" name="endpoint" placeholder="/api/endpoint" required="required">
+	<input class="w3-input w3-black w3-border w3-border-green w3-text-green"
+		type="text" name="api_endpoint" placeholder="/api/endpoint"
+		required="required" value="{{ api_endpoint }}">
 	<br>
 	<label>POST data in json format</label>
-	<textarea class="w3-padding w3-black w3-border w3-border-green w3-text-green" style="display:block;width:100%;height:300px" name="params">{}</textarea>
+	<textarea
+		class="w3-padding w3-black w3-border w3-border-green w3-text-green"
+		style="display:block;width:100%;height:300px"
+		name="api_params">{{ api_params }}</textarea>
 	<br>
-	<input class="w3-btn w3-block w3-black w3-border w3-border-green w3-text-green" type="submit" name="method" value="POST">
+	<input
+		class="w3-btn w3-block w3-black w3-border w3-border-green w3-text-green"
+		type="submit" name="api_method" value="POST">
 </form>
 
 <!-- uwsweb/api.html -->

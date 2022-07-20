@@ -87,12 +87,18 @@ class User(WebView):
 
 class Api(WebView):
 	http_method_names = ['get', 'head', 'post']
-	template_name = 'uwsweb/api.html'
+	template_name     = 'uwsweb/api.html'
+	__endpoint        = ''
+	__params          = '{}'
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
-		d['title_desc'] = 'Api Client'
+		d['title_desc']   = 'Api Client'
+		d['api_endpoint'] = v.__endpoint
+		d['api_params']   = v.__params
 		return v.uwsweb_data(d)
 
 	def post(v, req):
+		v.__endpoint = req.POST.get('api_endpoint', '')
+		v.__params   = req.POST.get('api_params',   '{}')
 		return v.get(req)
