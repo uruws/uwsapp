@@ -24,7 +24,9 @@ from django.urls    import path
 from uwsapp.config import URL
 
 from . import cmd
-from . import views
+
+from .views import Index
+from .views import Ping
 
 urlpatterns = [
 	path(URL('exec/<slug:name>'), cmd.view, name = 'exec'),
@@ -33,7 +35,8 @@ urlpatterns = [
 
 	path(URL('admin/'), admin.site.urls),
 
-	path(URL(''), views.Index.as_view(), name = 'index'),
+	path(URL('ping'), Ping.as_view(),  name = 'ping'),
+	path(URL(''),     Index.as_view(), name = 'index'),
 ]
 
 handler404 = 'uwsapi.views.error404'

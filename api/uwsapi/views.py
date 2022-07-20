@@ -13,7 +13,9 @@ from os   import environ
 from uwsapp import config
 from uwsapp import log
 
+#
 # custom errors
+#
 
 def error404(req: HttpRequest, err: Exception) -> JsonResponse:
 	log.debug('error 404:', req)
@@ -22,7 +24,9 @@ def error404(req: HttpRequest, err: Exception) -> JsonResponse:
 	resp.status_code = HTTPStatus.NOT_FOUND
 	return resp
 
+#
 # ApiView
+#
 
 class ApiView(View):
 	http_method_names = ['post']
@@ -36,7 +40,9 @@ class ApiView(View):
 		resp.status_code = status
 		return resp
 
+#
 # Index
+#
 
 class Index(ApiView):
 	http_method_names = ['get', 'head']
@@ -55,3 +61,12 @@ class Index(ApiView):
 		for k in sorted(req.headers.keys()):
 			d['headers'][k] = req.headers.get(k)
 		return v.uwsapi_resp(d)
+
+#
+# Ping
+#
+
+class Ping(ApiView):
+
+	def post(v, req) -> JsonResponse:
+		return v.uwsapi_resp({"ping": "pong"})
