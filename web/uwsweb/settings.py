@@ -119,7 +119,8 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_URL = '/%s' % config.URL('auth/login')
 LOGIN_REDIRECT_URL = '/%s' % config.URL('')
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_ENGINE     = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 3600
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
