@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+import json
+
 from django.contrib       import messages
 from django.views.generic import TemplateView
 
@@ -114,4 +116,18 @@ class Api(WebView):
 	def post(v, req):
 		v.__endpoint = req.POST.get('api_endpoint', '')
 		v.__params   = req.POST.get('api_params',   '{}')
+		data_error = False
+		try:
+			data = json.loads(v.__params)
+		except Exception as err:
+			log.error(err)
+			v.uwsweb_msg_error(str(err))
+			data_error = True
+		resp = None
+		if not data_error:
+			try:
+				resp = v.__cli.POST(v.__endpoint, data)
+			except Exception as err:
+				log.error(err)
+				v.uwsweb_msg_error(str(err))
 		return v.get(req)
