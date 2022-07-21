@@ -13,7 +13,7 @@ class Api(WebView):
 	template_name          = 'uwsweb/api.html'
 	__cli                  = None
 	__endpoint             = ''
-	__params               = '{}'
+	__params               = '{"session": "XXXXXXX"}'
 	__resp: dict[str, str] = {}
 
 	def setup(v, req, *args, **kwargs):
