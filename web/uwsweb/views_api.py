@@ -3,6 +3,8 @@
 
 import json
 
+from http import HTTPStatus
+
 from uwsapp.api import ApiClient
 from uwsapp     import log
 
@@ -63,15 +65,16 @@ class Api(WebView):
 			log.debug('api response:', type(resp), resp)
 			with resp:
 				v.__resp['url']            = resp.geturl()
-				v.__resp['code']           = resp.getcode()
+				v.__resp['protocol']       = 'HTTP/1.1'
+				v.__resp['status']         = _resp_status(resp.getcode())
 				v.__resp['date']           = resp.getheader('Date',
 					'NO_DATE')
 				v.__resp['content_type']   = resp.getheader('Content-Type',
 					'NO_CONTENT_TYPE')
-				v.__resp['content_length'] = resp.getheader('Content-Length',
-					'NO_CONTENT_LENGTH')
-				v.__resp['server']         = resp.getheader('Server',
-					'NO_SERVER')
+				# ~ v.__resp['content_length'] = resp.getheader('Content-Length',
+					# ~ 'NO_CONTENT_LENGTH')
+				# ~ v.__resp['server']         = resp.getheader('Server',
+					# ~ 'NO_SERVER')
 				try:
 					v.__resp['content'] = json.dumps(json.load(resp), indent = 2)
 				except Exception as err:
@@ -79,3 +82,7 @@ class Api(WebView):
 					v.uwsweb_msg_error(str(err))
 					v.__resp['content'] = ''
 		return v.get(req)
+
+def _resp_status(code) -> str:
+	desc = str(HTTPStatus(code)).replace('HTTPStatus.', '', 1).replace('_', ' ')
+	return f"{code} {desc}"
