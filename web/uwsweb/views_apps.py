@@ -1,11 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.shortcuts import render
-
 from uwsweb.views import WebView
 
-class Index(WebView):
+class Apps(WebView):
 	template_name = 'uwsapps/index.html'
 
 	def get_context_data(v, **kwargs):

@@ -36,7 +36,6 @@ ALLOWED_HOSTS = config.ALLOWED_HOSTS()
 # Application definition
 
 INSTALLED_APPS = [
-	'uwsapps.apps.AppsConfig',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',

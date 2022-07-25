@@ -1,8 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.shortcuts import render
-
 from uwsapp.api import ApiClient
 from uwsapp.api import ApiError
 
