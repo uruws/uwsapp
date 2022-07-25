@@ -3,6 +3,7 @@
 
 from typing import Optional
 
+import json
 import ssl
 
 from urllib.parse   import urlencode
@@ -13,8 +14,9 @@ from uwsapp import config
 from uwsapp import log
 
 class ApiClient(object):
+	_sess = None
 
-	def __init__(c):
+	def __init__(c, session = None):
 		c.ctx = ssl.create_default_context()
 		if config.DEBUG():
 			c.ctx.check_hostname = False
@@ -32,6 +34,8 @@ class ApiClient(object):
 				c.ctx.load_cert_chain(certfile, keyfile = keyfile, password = keypass)
 			except OSError as err:
 				log.error('api client load cert chain:', err)
+		if session is not None:
+			c._sess = session
 
 	def _url(c, uri) -> str:
 		return f"https://{config.API_HOST()}:{config.API_PORT()}/api{uri}"
@@ -44,4 +48,9 @@ class ApiClient(object):
 
 	def POST(c, uri: str, data: dict[str, str]):
 		log.debug('POST', uri)
+		if c._sess is not None:
+			data['session'] = str(c._sess).strip()
 		return urlopen(c._req(uri, data), context = c.ctx)
+
+	def parse(c, resp):
+		return json.load(resp)
