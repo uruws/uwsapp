@@ -14,7 +14,8 @@ from uwsapp import log
 
 _navbar = [
 	# title  name
-	('syslog', 'syslog'),
+	('syslog', 'appctl_logs'),
+	('uwsq',   'uwsq_logs'),
 	('apps',   'apps'),
 	('api',    'api'),
 ]

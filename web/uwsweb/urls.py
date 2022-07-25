@@ -28,7 +28,8 @@ from .views import User
 
 from .views_api import Api
 
-from .views_logs import Syslog
+from .views_logs import AppCtl
+from .views_logs import Uwsq
 
 from django.contrib.auth.views import LoginView
 
@@ -39,7 +40,9 @@ urlpatterns = [
 
 	path(URL('apps/'), include('uwsapps.urls')),
 
-	path(URL('logs'), Syslog.as_view(), name = 'syslog'),
+	path(URL('logs/uwsq'),    Uwsq.as_view(),   name = 'uwsq_logs'),
+	path(URL('logs/app-ctl'), AppCtl.as_view(), name = 'appctl_logs'),
+
 	path(URL('user'), User.as_view(),   name = 'user'),
 	path(URL('api'),  Api.as_view(),    name = 'api'),
 

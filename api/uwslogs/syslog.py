@@ -74,3 +74,31 @@ def uwsq() -> Syslog:
 			if e is not None:
 				d.append(e)
 	return d
+
+#
+# app-ctl
+#
+
+def _app_ctl(line) -> Optional[LogEntry]:
+	if line == '':
+		return None
+	e = LogEntry('app-ctl')
+
+	line_items = line.split('[', maxsplit = 1)
+	e.timestamp = line_items[0].strip()
+
+	line_items = line_items[1].split(' ', maxsplit = 1)
+	e.user = line_items[0][:-1]
+	e.message = line_items[1].strip().replace('/srv/uws/deploy/cli/', '', 1).replace('/srv/deploy/', '', 1)
+	return e
+
+def app_ctl() -> Syslog:
+	d = Syslog()
+	fn = config.CLI_LOGSDIR() / 'app-ctl.log'
+	log.debug('parse:', fn)
+	with fn.open() as fh:
+		for line in fh.readlines():
+			e = _app_ctl(line.strip())
+			if e is not None:
+				d.append(e)
+	return d

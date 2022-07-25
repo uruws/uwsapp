@@ -7,6 +7,8 @@
 	<div class="w3-bar-item w3-right w3-text-green w3-small">{% now 'DATETIME_FORMAT' %}</div>
 </div>
 
+<div class="w3-container">
+
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
@@ -38,6 +40,7 @@
 <input type="hidden" name="next" value="{{ next }}">
 </form>
 
+</div>
 <!-- uwsweb/auth/login.html -->
 {% include "uwsweb/footer.html" %}
 {% endblock %}
