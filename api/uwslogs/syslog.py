@@ -55,6 +55,13 @@ def _uwsq(line) -> Optional[LogEntry]:
 	line_items = line_items[1].split(' ', maxsplit = 1)
 	e.user = line_items[0][:-1]
 	e.message = line_items[1].strip().replace('/srv/uws/deploy/cli/', '', 1).replace('/srv/deploy/', '', 1)
+
+	if e.message.startswith('app-clean-build.sh'):
+		return None
+	if e.message.startswith('app-autobuild-deploy.sh'):
+		return None
+	if e.message.startswith('buildpack.sh'):
+		return None
 	return e
 
 def uwsq() -> Syslog:
