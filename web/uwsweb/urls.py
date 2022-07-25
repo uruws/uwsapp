@@ -23,13 +23,12 @@ from django.urls         import path
 
 from uwsapp.config import URL
 
+from .views import Index
 from .views import User
 
 from .views_api import Api
 
 from .views_logs import Syslog
-
-from uwslogs.views import Index
 
 from django.contrib.auth.views import LoginView
 
