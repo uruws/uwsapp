@@ -27,6 +27,8 @@ from .views import User
 
 from .views_api import Api
 
+from .views_logs import Syslog
+
 from uwslogs.views import Index
 
 from django.contrib.auth.views import LoginView
@@ -36,11 +38,11 @@ urlpatterns = [
 		LoginView.as_view(template_name = 'uwsweb/auth/login.html'),
 		name = 'login'),
 
-	path(URL('logs/'), include('uwslogs.urls')),
 	path(URL('apps/'), include('uwsapps.urls')),
 
-	path(URL('user'),   User.as_view(), name = 'user'),
-	path(URL('api'),    Api.as_view(),  name = 'api'),
+	path(URL('logs/<slug:name>'), Syslog.as_view(), name = 'syslog'),
+	path(URL('user'),             User.as_view(),   name = 'user'),
+	path(URL('api'),              Api.as_view(),    name = 'api'),
 
 	path(URL('admin/'), admin.site.urls, name = 'admin'),
 	path(URL(''),       Index.as_view(), name = 'index'),
