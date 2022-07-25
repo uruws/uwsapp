@@ -31,6 +31,7 @@ from .views import Ping
 urlpatterns = [
 	path(URL('exec/<slug:name>'), cmd.view, name = 'exec'),
 
+	path(URL('logs/'), include('uwslogs.urls')),
 	path(URL('auth/'), include('uwsauth.urls')),
 
 	path(URL('admin/'), admin.site.urls),

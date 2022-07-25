@@ -37,6 +37,7 @@ ALLOWED_HOSTS = config.ALLOWED_HOSTS()
 
 INSTALLED_APPS = [
 	'uwsauth.apps.AuthConfig',
+	'uwslogs.apps.LogsConfig',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
