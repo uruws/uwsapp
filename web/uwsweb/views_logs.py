@@ -4,6 +4,7 @@
 from django.shortcuts import render
 
 from uwsapp.api import ApiClient
+from uwsapp.api import ApiError
 
 from uwsweb.views import WebView
 
@@ -20,7 +21,10 @@ class AppCtl(WebView):
 		d = super().get_context_data(**kwargs)
 		d['title']      = 'syslog'
 		d['title_desc'] = 'app-ctl.log'
-		d['syslog']     = v._app_ctl()
+		try:
+			d['syslog']     = v._app_ctl()
+		except ApiError as err:
+			v.uwsweb_msg_error(str(err))
 		return v.uwsweb_data(d)
 
 	def _app_ctl(v):
@@ -40,7 +44,10 @@ class Uwsq(WebView):
 		d = super().get_context_data(**kwargs)
 		d['title']      = 'uwsq'
 		d['title_desc'] = 'uwsq.log'
-		d['syslog']     = v._uwsq()
+		try:
+			d['syslog']     = v._uwsq()
+		except ApiError as err:
+			v.uwsweb_msg_error(str(err))
 		return v.uwsweb_data(d)
 
 	def _uwsq(v):

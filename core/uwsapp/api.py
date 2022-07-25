@@ -13,6 +13,9 @@ from urllib.request import urlopen
 from uwsapp import config
 from uwsapp import log
 
+class ApiError(Exception):
+	pass
+
 class ApiClient(object):
 	_sess = None
 
@@ -50,7 +53,15 @@ class ApiClient(object):
 		log.debug('POST', uri)
 		if c._sess is not None:
 			data['session'] = str(c._sess).strip()
-		return urlopen(c._req(uri, data), context = c.ctx)
+		try:
+			return urlopen(c._req(uri, data), context = c.ctx)
+		except Exception as err:
+			log.error(err)
+			raise ApiError(str(err))
 
 	def parse(c, resp):
-		return json.load(resp)
+		try:
+			return json.load(resp)
+		except Exception as err:
+			log.error(err)
+			raise ApiError(str(err))
