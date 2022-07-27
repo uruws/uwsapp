@@ -8,5 +8,6 @@ from django.urls import path
 from .views import Index
 
 urlpatterns = [
-	path('<slug:name>', Index.as_view(), name = 'syslog'),
+	path('nq/<slug:jobid>', NQ.as_view(),    name = 'nqlog'),
+	path('<slug:name>',     Index.as_view(), name = 'syslog'),
 ]
