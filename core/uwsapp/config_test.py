@@ -31,5 +31,17 @@ class Test(unittest.TestCase):
 		finally:
 			config._url_base = ''
 
+	def test_api_defaults(t):
+		t.assertEqual(config.API_HOST(),     'localhost')
+		t.assertEqual(config.API_PORT(),     '443')
+		t.assertEqual(config.API_TIMEOUT(),  '15')
+		t.assertEqual(config.API_CERTFILE(), '')
+		t.assertEqual(config.API_KEYFILE(),  '')
+		t.assertEqual(config.API_KEYPASS(),  '')
+
+	def test_cli_defaults(t):
+		t.assertEqual(config.CLI_LOGSDIR().as_posix(), '/run/uwscli/logs')
+		t.assertEqual(config.CLI_NQDIR().as_posix(),   '/run/uwscli/nq')
+
 if __name__ == '__main__':
 	unittest.main()

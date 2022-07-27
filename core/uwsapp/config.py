@@ -90,3 +90,6 @@ def API_KEYPASS() -> str:
 
 def CLI_LOGSDIR() -> Path:
 	return Path(_getenv('UWSAPP_CLI_LOGSDIR', '/run/uwscli/logs'))
+
+def CLI_NQDIR() -> Path:
+	return Path(_getenv('UWSAPP_CLI_NQDIR', '/run/uwscli/nq'))
