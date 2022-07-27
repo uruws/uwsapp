@@ -45,6 +45,11 @@ class ApiView(View):
 		resp.status_code = HTTPStatus.BAD_REQUEST
 		return resp
 
+	def uwsapi_internal_error(v, data = {}) -> JsonResponse:
+		resp = JsonResponse(data)
+		resp.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+		return resp
+
 #
 # Index
 #
