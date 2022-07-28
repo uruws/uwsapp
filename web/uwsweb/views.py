@@ -4,6 +4,7 @@
 import json
 
 from django.contrib       import messages
+from django.shortcuts     import redirect
 from django.views.generic import TemplateView
 
 from pathlib import Path
@@ -14,7 +15,6 @@ from uwsapp import log
 
 _navbar = [
 	# title     url name
-	('index',   'index'),
 	('jobs',    'nq_logs'),
 	('app-ctl', 'appctl_logs'),
 	('uwsq',    'uwsq_logs'),
@@ -68,6 +68,9 @@ class WebView(TemplateView):
 		d['took'] = '%.6f' % (time() - v.__start)
 		return d
 
+	def uwsweb_redirect(v, to):
+		return redirect(to)
+
 	def uwsweb_msg(v, msg: str):
 		messages.success(v.__req, msg)
 
@@ -84,6 +87,9 @@ class Index(WebView):
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
 		return v.uwsweb_data(d)
+
+	def get(v, *args, **kwargs):
+		return v.uwsweb_redirect('nq_logs')
 
 #
 # User
