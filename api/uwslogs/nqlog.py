@@ -15,6 +15,10 @@ class JobEntry(object):
 	failed:    bool = False
 	start:     str  = ''
 	end:       str  = ''
+	command:   str  = ''
+
+	def __init__(e, jid: str):
+		e.jid = jid
 
 class JobsInfo(deque):
 
@@ -26,6 +30,7 @@ class JobsInfo(deque):
 			"failed":  i.failed,
 			"start":   i.start,
 			"end":     i.end,
+			"command": i.command,
 		}
 
 	def all(q):
@@ -37,11 +42,31 @@ class JobsInfo(deque):
 def _run(cmd) -> tuple[int, str]:
 	return getstatusoutput(cmd)
 
-def _jobs(j: JobsInfo, heads: list[str]) -> Optional[JobsInfo]:
+def _jobinfo(j: JobEntry):
+	log.debug('job info:', j.jid)
+
+def _jobs(i: JobsInfo, heads: list[str]) -> Optional[JobsInfo]:
+	j = None
 	for line in heads:
+		jid = ''
+		line = line.strip()
+		if line == '':
+			continue
 		if line.startswith('==> ,') and line.endswith(' <=='):
-			jid = line.split(',', maxsplit = 2)[1][:-4]
+			jid = line.split(',', maxsplit = 2)[1][:-4].strip()
 			log.debug('nq job id:', jid)
+			if jid != '':
+				if j is not None:
+					i.append(j)
+				j = None
+			else:
+				continue
+		if j is None:
+			j = JobEntry(jid)
+		else:
+			_jobinfo(j)
+	if j is not None:
+		i.append(j)
 
 def jobs() -> JobsInfo:
 	i = JobsInfo()
