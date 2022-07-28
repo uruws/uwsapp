@@ -21,6 +21,7 @@ services:
       - ./run/uwscli:/run/uwscli:ro
     entrypoint: /opt/uwsapp/_devel/run.sh api
     environment:
+      - UWSAPP_SECRET=${UWSAPP_SECRET}
       - UWSAPP_PORT=5100
       - UWSAPP_URL=api/
       - UWSAPP_HOST=localhost,nginx
@@ -43,6 +44,7 @@ services:
       - ../../run/uwsapp:/run/uwsapp
     entrypoint: /opt/uwsapp/_devel/run.sh web
     environment:
+      - UWSAPP_SECRET=${UWSAPP_SECRET}
       - UWSAPP_PORT=5000
       - UWSAPP_URL=web/
       - UWSAPP_API_HOST=nginx
