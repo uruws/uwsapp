@@ -25,7 +25,7 @@ class Api(WebView):
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
-		d['title_desc']   = 'Api Client'
+		d['title_desc']   = 'API Client'
 		d['api_endpoint'] = v.__endpoint.strip()
 		v.__endpoint = ''
 		d['api_params']   = v.__params.strip()

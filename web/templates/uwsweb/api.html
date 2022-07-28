@@ -3,6 +3,12 @@
 {% include "uwsweb/navbar.html" %}
 <!-- uwsweb/api.html -->
 
+<div class="w3-bar w3-text-blue w3-margin-top">
+	<div class="w3-bar-item w3-btn">
+		<a href="/help/" target="_blank">API help</a>
+	</div>
+</div>
+
 {% if api_response %}
 <pre class="w3-container w3-text-green">
 {{ api_response.url }}
