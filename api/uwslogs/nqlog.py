@@ -42,8 +42,14 @@ class JobsInfo(deque):
 def _run(cmd) -> tuple[int, str]:
 	return getstatusoutput(cmd)
 
-def _jobinfo(j: JobEntry):
+def _jobinfo(j: JobEntry, command: str):
 	log.debug('job info:', j.jid)
+	cmd = []
+	for a in command.strip().split(' '):
+		if a.startswith('-'):
+			continue
+		cmd.append(a)
+	j.command = ' '.join(cmd).replace('/srv/deploy/', '', 1)
 
 def _jobs(i: JobsInfo, heads: list[str]) -> Optional[JobsInfo]:
 	j = None
@@ -54,7 +60,6 @@ def _jobs(i: JobsInfo, heads: list[str]) -> Optional[JobsInfo]:
 			continue
 		if line.startswith('==> ,') and line.endswith(' <=='):
 			jid = line.split(',', maxsplit = 2)[1][:-4].strip()
-			log.debug('nq job id:', jid)
 			if jid != '':
 				if j is not None:
 					i.append(j)
@@ -64,7 +69,8 @@ def _jobs(i: JobsInfo, heads: list[str]) -> Optional[JobsInfo]:
 		if j is None:
 			j = JobEntry(jid)
 		else:
-			_jobinfo(j)
+			if line.startswith('exec nq'):
+				_jobinfo(j, line[7:])
 	if j is not None:
 		i.append(j)
 
