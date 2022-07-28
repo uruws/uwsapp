@@ -62,7 +62,7 @@ class Api(WebView):
 				v.uwsweb_msg_error(str(err))
 		# show response
 		if resp is not None:
-			log.debug('api response:', type(resp), resp)
+			log.debug('api response:', resp.getcode())
 			with resp:
 				v.__resp['url']            = resp.geturl()
 				v.__resp['protocol']       = 'HTTP/1.1'
