@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "uwsweb/navbar.html" %}
+<!-- uwslogs/nq.html -->
+
+<table class="w3-table">
+{% for idx, job in nqlog.items %}
+	{% if job.failed %}
+	<tr class="w3-text-red">
+	{% elif job.running %}
+	<tr class="w3-text-green">
+	{% else %}
+	<tr>
+	{% endif %}
+		<td class="w3-text-grey">{{ job.start }}</td>
+		<td>{{ job.command }}</td>
+	</tr>
+{% empty %}
+	<tr><td>no jobs</td></tr>
+{% endfor %}
+</table>
+
+<!-- uwslogs/nq.html -->
+{% include "uwsweb/footer.html" %}
+{% endblock %}
