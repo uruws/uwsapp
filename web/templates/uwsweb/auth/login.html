@@ -7,7 +7,7 @@
 	<div class="w3-bar-item w3-right w3-text-green w3-small">{% now 'DATETIME_FORMAT' %}</div>
 </div>
 
-<div class="w3-container">
+<div class="w3-container w3-center">
 
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
@@ -22,22 +22,19 @@
 	{% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'login' %}">
+<form class="w3-container" method="post" action="{% url 'login' %}">
 {% csrf_token %}
-<table>
-<tr>
-	<td>{{ form.username.label_tag }}</td>
-	<td>{{ form.username }}</td>
-</tr>
-<tr>
-	<td>{{ form.password.label_tag }}</td>
-	<td>{{ form.password }}</td>
-</tr>
-</table>
+	<input class="w3-input" type="text" name="username" autofocus
+		autocapitalize="none" autocomplete="username" required id="id_username"
+		placeholder="Email">
 
-<br>
-<input class="w3-btn w3-black w3-border w3-border-green w3-text-green" type="submit" value="login">
-<input type="hidden" name="next" value="{{ next }}">
+	<input class="w3-input" type="password" name="password" required
+		autocomplete="current-password" id="id_password"
+		placeholder="Password">
+
+	<input class="w3-btn w3-block w3-margin-top w3-black w3-border w3-border-green w3-text-green"
+		type="submit" value="login">
+	<input type="hidden" name="next" value="{{ next }}">
 </form>
 
 </div>
