@@ -1,10 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+import os
+
 from collections import deque
-from os          import chdir
 from subprocess  import getstatusoutput
-from typing      import Optional
 
 from uwsapp import config
 from uwsapp import log
@@ -42,6 +42,13 @@ class JobsInfo(deque):
 def _run(cmd) -> tuple[int, str]:
 	return getstatusoutput(cmd)
 
+def _jobstatus(j: JobEntry):
+	fn = config.CLI_NQDIR() / f",{j.jid}"
+	log.debug('fn:', fn)
+	if os.access(fn.as_posix(), os.X_OK):
+		log.debug(fn, 'running')
+		j.running = True
+
 def _jobinfo(j: JobEntry, command: str):
 	log.debug('job info:', j.jid)
 	cmd = []
@@ -50,8 +57,9 @@ def _jobinfo(j: JobEntry, command: str):
 			continue
 		cmd.append(a)
 	j.command = ' '.join(cmd).replace('/srv/deploy/', '', 1)
+	_jobstatus(j)
 
-def _jobs(i: JobsInfo, heads: list[str]) -> Optional[JobsInfo]:
+def _jobs(i: JobsInfo, heads: list[str]):
 	j = None
 	for line in heads:
 		jid = ''
@@ -78,7 +86,7 @@ def jobs() -> JobsInfo:
 	i = JobsInfo()
 	dn = config.CLI_NQDIR()
 	log.debug('nq dir:', dn)
-	chdir(dn)
+	os.chdir(dn)
 	st, heads = _run('/usr/bin/head -n1 ,*.*')
 	if st != 0:
 		log.error(f"jobs head: exit status {st}")
