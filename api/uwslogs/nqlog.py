@@ -5,6 +5,10 @@ import os
 
 from collections import deque
 from subprocess  import getstatusoutput
+from datetime    import datetime
+from time        import time
+
+from django.utils.timezone import make_aware
 
 from uwsapp import config
 from uwsapp import log
@@ -42,12 +46,24 @@ class JobsInfo(deque):
 def _run(cmd) -> tuple[int, str]:
 	return getstatusoutput(cmd)
 
+def _jobdate(jid: str) -> str:
+	# this is kind of ugly, truncating the string and all that...
+	# but well... I did not find anything better
+	ts_hex = jid.split('.')[0].strip()
+	ts_int = str(int(f"0x{ts_hex}", 0))
+	tlen = len(str(int(time())))
+	ts = make_aware(datetime.fromtimestamp(int(ts_int[:tlen])))
+	return str(ts)
+
 def _jobstatus(j: JobEntry):
 	fn = config.CLI_NQDIR() / f",{j.jid}"
 	log.debug('fn:', fn)
+	# running
 	if os.access(fn.as_posix(), os.X_OK):
 		log.debug(fn, 'running')
 		j.running = True
+	# start
+	j.start = _jobdate(j.jid)
 
 def _jobinfo(j: JobEntry, command: str):
 	log.debug('job info:', j.jid)
