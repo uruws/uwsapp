@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from os     import chdir
 from typing import Optional
 
 from collections import deque
@@ -43,4 +44,5 @@ def jobs() -> JobsInfo:
 	i = JobsInfo()
 	dn = config.CLI_NQDIR()
 	log.debug('nq dir:', dn)
+	chdir(dn)
 	return i
