@@ -27,7 +27,7 @@ class NQ(ApiView):
 
 	def post(v, req, jobid = '') -> JsonResponse:
 		try:
-			if name == 'index':
+			if jobid == 'index':
 				return v.uwsapi_resp(nqlog.jobs().all())
 		except Exception as err:
 			log.error(err)

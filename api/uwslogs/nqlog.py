@@ -33,10 +33,10 @@ class JobsInfo(deque):
 			d[i] = q._pop()
 		return d
 
-def _jobs(line) -> Optional[JobEntry]:
+def _jobs(line) -> Optional[JobsInfo]:
 	if line == '':
 		return None
-	i = JobInfo()
+	i = JobsInfo()
 	return i
 
 def jobs() -> JobsInfo:

@@ -6,6 +6,7 @@
 from django.urls import path
 
 from .views import Index
+from .views import NQ
 
 urlpatterns = [
 	path('nq/<slug:jobid>', NQ.as_view(),    name = 'nqlog'),
