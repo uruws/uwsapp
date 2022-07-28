@@ -60,16 +60,14 @@ def _jobfail(fn: str) -> bool:
 		return True
 	out = out.strip()
 	if out.startswith('[exited with status '):
-		log.debug(fn, 'failed:', out)
 		return True
 	return False
 
 def _jobstatus(j: JobEntry):
 	fn = config.CLI_NQDIR() / f",{j.jid}"
-	log.debug('fn:', fn)
+	log.debug(fn)
 	# running
 	if os.access(fn.as_posix(), os.X_OK):
-		log.debug(fn, 'running')
 		j.running = True
 	# start
 	j.start = _jobdate(j.jid)
@@ -78,7 +76,6 @@ def _jobstatus(j: JobEntry):
 		j.failed = _jobfail(fn.as_posix())
 
 def _jobinfo(j: JobEntry, command: str):
-	log.debug('job info:', j.jid)
 	cmd = []
 	for a in command.strip().split(' '):
 		if a.startswith('-'):
