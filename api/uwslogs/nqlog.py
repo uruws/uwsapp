@@ -18,7 +18,6 @@ class JobEntry(object):
 	running:   bool = False
 	failed:    bool = False
 	start:     str  = ''
-	end:       str  = ''
 	command:   str  = ''
 
 	def __init__(e, jid: str):
@@ -33,7 +32,6 @@ class JobsInfo(deque):
 			"running": i.running,
 			"failed":  i.failed,
 			"start":   i.start,
-			"end":     i.end,
 			"command": i.command,
 		}
 
