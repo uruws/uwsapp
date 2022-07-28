@@ -40,8 +40,8 @@ class AppCtl(WebView):
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
-		d['title']      = 'syslog'
-		d['title_desc'] = 'Apps Control'
+		d['title']      = 'app-ctl'
+		d['title_desc'] = 'App Control'
 		try:
 			d['syslog']     = v._app_ctl()
 		except ApiError as err:
