@@ -55,6 +55,17 @@ def _jobdate(jid: str) -> str:
 	ts = make_aware(datetime.fromtimestamp(int(ts_int[:tlen])))
 	return str(ts)
 
+def _jobfail(fn: str) -> bool:
+	st, out = _run(f"/usr/bin/tail -n1 {fn}")
+	if st != 0:
+		log.error('nq job fail check exit status:', st)
+		return True
+	out = out.strip()
+	if out.startswith('[exited with status '):
+		log.debug(fn, 'failed:', out)
+		return True
+	return False
+
 def _jobstatus(j: JobEntry):
 	fn = config.CLI_NQDIR() / f",{j.jid}"
 	log.debug('fn:', fn)
@@ -64,6 +75,9 @@ def _jobstatus(j: JobEntry):
 		j.running = True
 	# start
 	j.start = _jobdate(j.jid)
+	# failed
+	if not j.running:
+		j.failed = _jobfail(fn.as_posix())
 
 def _jobinfo(j: JobEntry, command: str):
 	log.debug('job info:', j.jid)
