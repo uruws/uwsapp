@@ -1,9 +1,8 @@
 #!/bin/sh
 set -eu
 
-app=${1:?'app name?'}
-appenv=${2:?'app env?'}
-appver=${3:?'app version?'}
+appenv=${1:?'app env?'}
+appver=${2:?'app version?'}
 
 CA='ops/210823'
 CANAME='ops'
@@ -116,12 +115,14 @@ fi
 
 # service restart
 
-export DOCKER_IMAGE="uwsapp/${app}"
+docker images 'uwsapp/*' | awk '{ print $1":"$2":"$3 }' |
+	${surun} tee "/srv/uwsapp/${appenv}/docker.images"
 
 ${surun} /uws/bin/service-restart.sh "uwsapp-${appenv}" \
 	"/etc/systemd/system/uwsapp-${appenv}.service" \
 	"/etc/nginx/snippets/uwsapp-${appenv}.conf" \
 	"/srv/uwsapp/${appenv}/docker-compose.yml" \
+	"/srv/uwsapp/${appenv}/docker.images" \
 	"/srv/uwsapp/${appenv}/start.sh" \
 	"/srv/uwsapp/${appenv}/stop.sh"
 

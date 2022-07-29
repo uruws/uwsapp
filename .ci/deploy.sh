@@ -1,30 +1,25 @@
 #!/bin/sh
 set -eu
 
-TAG=${UWSCLI_REPO_TAG}
-app='NONE'
+TAG="${UWSCLI_REPO_TAG}"
+VERSION='NONE'
 
 case "${TAG}" in
-	release/api-*)
-		app='api'
-	;;
-	release/web-*)
-		app='web'
+	release/*)
+		VERSION=$(echo "${TAG}" | cut -d '/' -f 2)
 	;;
 esac
 
-if test "X${app}" = 'NONE'; then
-	echo "${TAG}: unknown ${app} release, nothing to do!"
+if test "X${VERSION}" = 'NONE'; then
+	echo "${TAG}: unknown release, nothing to do!"
 	exit 0
 fi
 
-VERSION=$(echo "${TAG}" | cut -d '-' -f '2-')
+echo "*** deploy: tag ${TAG} (version ${VERSION})"
 
-echo "*** ${app}: deploy tag ${TAG} (version ${VERSION})"
+./setup/deploy.sh test "${VERSION}"
 
-./setup/deploy.sh "${app}" test "${VERSION}"
-
-if ! test -d "./tmp/htmlcov/${app}"; then
+if ! test -d "./tmp/htmlcov"; then
 	exit 0
 fi
 
@@ -33,9 +28,9 @@ surun='sudo -n'
 if test -d /srv/www/ssl/htmlcov; then
 	covd=/srv/www/ssl/htmlcov/uwsapp
 	${surun} install -v -d -o root -g www-data -m 0755 "${covd}"
-	${surun} rm -rf "${covd}/${app}"
-	${surun} cp -r "./tmp/htmlcov/${app}" "${covd}/${app}"
-	${surun} chown -R root:www-data "${covd}/${app}"
+	${surun} rm -rf "${covd}"
+	${surun} cp -r "./tmp/htmlcov" "${covd}"
+	${surun} chown -R root:www-data "${covd}"
 fi
 
 exit 0
