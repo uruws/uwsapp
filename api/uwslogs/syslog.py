@@ -1,9 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from typing import Optional
-
 from collections import deque
+from typing      import Optional
 
 from uwsapp import config
 from uwsapp import log
