@@ -12,7 +12,8 @@
 	{% else %}
 	<tr class="w3-text-green">
 	{% endif %}
-		<td class="w3-text-grey">{{ e.timestamp }} {{ e.user }}</td>
+		<td class="w3-text-grey">{{ e.timestamp }}</td>
+		<td class="w3-text-deep-purple">{{ e.user }}</td>
 		<td>{{ e.message }}</td>
 	</tr>
 {% empty %}
