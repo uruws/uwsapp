@@ -37,7 +37,7 @@ class Test(unittest.TestCase):
 		t.assertTrue(t.cli.ctx.check_hostname)
 		t.assertEqual(t.cli.ctx.verify_mode, ssl.CERT_REQUIRED)
 
-	def test_debug_defaults(t):
+	def test_debug_config(t):
 		bup = config.DEBUG
 		try:
 			config.DEBUG = MagicMock(return_value = True)
@@ -46,6 +46,14 @@ class Test(unittest.TestCase):
 			t.assertEqual(cli.ctx.verify_mode, ssl.CERT_NONE)
 		finally:
 			config.DEBUG = bup
+
+	def test_certfile_config(t):
+		bup = config.API_CERTFILE
+		try:
+			config.API_CERTFILE = MagicMock(return_value = 'lalala')
+			cli = api.ApiClient()
+		finally:
+			config.API_CERTFILE = bup
 
 	def test_POST(t):
 		t.cli.POST('/testing', {'test': 'ing'})
