@@ -50,10 +50,15 @@ class Test(unittest.TestCase):
 	def test_certfile_config(t):
 		bup = config.API_CERTFILE
 		try:
-			config.API_CERTFILE = MagicMock(return_value = 'lalala')
+			config.API_CERTFILE = MagicMock(return_value = 'testing')
 			cli = api.ApiClient()
 		finally:
 			config.API_CERTFILE = bup
+
+	def test_url(t):
+		t.assertEqual(config.API_HOST(), 'localhost')
+		t.assertEqual(config.API_PORT(), '443')
+		t.assertEqual(t.cli._url('/testing'), 'https://localhost:443/api/testing')
 
 	def test_session(t):
 		t.assertIsNone(t.cli._sess)
@@ -69,6 +74,14 @@ class Test(unittest.TestCase):
 			t.cli.POST('/testing', {'test': 'ing'})
 			api.urlopen.assert_called_once()
 			t.cli._req.assert_called_once_with('/testing', {'test': 'ing'})
+
+	def test_POST_session(t):
+		t.cli = api.ApiClient(session = 'testing')
+		with t.mock_req():
+			t.cli.POST('/testing', {'test': 'ing'})
+			api.urlopen.assert_called_once()
+			t.cli._req.assert_called_once_with('/testing',
+				{'test': 'ing', 'session': 'testing'})
 
 if __name__ == '__main__':
 	unittest.main()
