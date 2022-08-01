@@ -4,6 +4,7 @@
 from django.test import TestCase
 
 from http import HTTPStatus
+from io   import StringIO
 from time import time
 
 from django.contrib.auth.models          import User
@@ -11,6 +12,9 @@ from django.contrib.sessions.backends.db import SessionStore
 
 from uwsapp import config
 from uwsapp import log
+
+_bup_outfh = log._outfh
+_bup_errfh = log._errfh
 
 class ApiMock(object):
 	sess     = None
@@ -24,6 +28,9 @@ class ApiMock(object):
 		return user
 
 	def mock_login_setup(m):
+		if not config.DEBUG():
+			log._outfh = StringIO()
+			log._errfh = StringIO()
 		m.user = m.mock_user()
 		m.sess = SessionStore()
 		m.sess.create()
@@ -36,6 +43,9 @@ class ApiMock(object):
 		m.sess.delete()
 		if m.user.pk is not None:
 			m.user.delete()
+		if not config.DEBUG():
+			log._outfh = _bup_outfh
+			log._errfh = _bup_errfh
 
 class ApiViewsTests(TestCase):
 	api = ApiMock()
