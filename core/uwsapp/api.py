@@ -21,6 +21,8 @@ class ApiClient(object):
 
 	def __init__(c, session = None):
 		c.ctx = ssl.create_default_context()
+		c.ctx.check_hostname = True
+		c.ctx.verify_mode = ssl.CERT_REQUIRED
 		if config.DEBUG():
 			c.ctx.check_hostname = False
 			c.ctx.verify_mode = ssl.CERT_NONE
