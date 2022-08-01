@@ -17,9 +17,9 @@ from uwsapp import log
 # custom errors
 #
 
-def error404(req: HttpRequest, err: Exception) -> JsonResponse:
+def error404(req: HttpRequest, exception: Exception) -> JsonResponse:
 	log.debug('error 404:', req)
-	log.error(err)
+	log.error(exception)
 	resp = JsonResponse(dict())
 	resp.status_code = HTTPStatus.NOT_FOUND
 	return resp

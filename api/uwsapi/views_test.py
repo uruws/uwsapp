@@ -21,14 +21,10 @@ class ApiMock(object):
 
 	def mock_login_setup(m, session_key = None):
 		m.sess = SessionStore(session_key = session_key)
-		print('SESS:', m.sess.session_key)
 		m.sess.create()
-		print('SESS2:', m.sess.session_key)
 		m.sess['last_seen'] = time()
 		m.sess['username'] = m.username
-		print('SESS3:', m.sess.session_key)
 		m.sess.save()
-		print('SESS4:', m.sess.session_key)
 		m.sess_key = m.sess.session_key
 
 	def mock_login_teardown(m, session_key = None):
@@ -54,7 +50,6 @@ class ApiViewsTests(TestCase):
 		t.assertEqual(respdata, dict())
 
 	def test_error404(t):
-		print('POST:', t.api.sess_key)
 		resp = t.client.post('/notfound', data = {'session': t.api.sess_key})
 		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
 		respdata = resp.json()
