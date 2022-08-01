@@ -55,13 +55,12 @@ class ApiView(View):
 #
 
 class Index(ApiView):
-	http_method_names = ['get', 'head']
 
 	def get(v, req, *args, **kwargs) -> JsonResponse:
 		if config.DEBUG(): return v._debug(req)
 		return v.uwsapi_resp({}, status = HTTPStatus.NOT_FOUND)
 
-	def __debug(v, req: HttpRequest) -> JsonResponse:
+	def _debug(v, req: HttpRequest) -> JsonResponse:
 		d: dict[str, dict[str, Optional[str]]] = dict(
 			environ = dict(),
 			headers = dict(),
@@ -71,6 +70,9 @@ class Index(ApiView):
 		for k in sorted(req.headers.keys()):
 			d['headers'][k] = req.headers.get(k)
 		return v.uwsapi_resp(d)
+
+	def post(v, req, *args, **kwargs) -> JsonResponse:
+		return v.get(req, *args, **kwargs)
 
 #
 # Ping

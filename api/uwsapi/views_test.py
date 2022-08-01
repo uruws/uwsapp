@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from unittest.mock import MagicMock
+
 from django.test import TestCase
 
 from http import HTTPStatus
@@ -47,7 +49,7 @@ class ApiMock(object):
 			log._outfh = _bup_outfh
 			log._errfh = _bup_errfh
 
-class ApiViewsTests(TestCase):
+class ApiViewTests(TestCase):
 	api = ApiMock()
 
 	def setUp(t):
@@ -68,3 +70,29 @@ class ApiViewsTests(TestCase):
 		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
 		respdata = resp.json()
 		t.assertEqual(respdata, dict())
+
+class IndexTests(TestCase):
+	api = ApiMock()
+
+	def setUp(t):
+		t.api.mock_login_setup()
+
+	def tearDown(t):
+		t.api.mock_login_teardown()
+
+	def test_get(t):
+		resp = t.client.post('/', data = {'session': t.api.sess_key})
+		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
+		respdata = resp.json()
+		t.assertEqual(respdata, dict())
+
+	def test_debug(t):
+		bup = config.DEBUG
+		try:
+			config.DEBUG = MagicMock(return_value = True)
+			resp = t.client.post('/', data = {'session': t.api.sess_key})
+			t.assertEqual(resp.status_code, HTTPStatus.OK)
+			respdata = resp.json()
+			t.assertEqual(len(respdata), 2)
+		finally:
+			config.DEBUG = bup
