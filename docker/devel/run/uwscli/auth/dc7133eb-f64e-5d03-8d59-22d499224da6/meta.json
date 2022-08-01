@@ -1,0 +1,15 @@
+{
+  "uid": "dc7133eb-f64e-5d03-8d59-22d499224da6",
+  "name": "uwstest",
+  "username": "uwstest@localhost",
+  "is_operator": true,
+  "is_admin": true,
+  "apps": {
+    "build": {
+      "app": "App"
+    },
+    "deploy": {
+      "app-test": "App test"
+    }
+  }
+}

@@ -28,6 +28,7 @@ class ApiMiddleware:
 			sess_id = ''
 		log.debug('session:', sess_id)
 		if sess_id == '':
+			log.debug('empty session id')
 			return _unauth()
 		# clear expired sessions
 		log.debug('clear expired sessions')
@@ -41,7 +42,6 @@ class ApiMiddleware:
 		sess = SessionStore(session_key = sess_id)
 		if sess.is_empty():
 			# reject empty sessions
-			log.debug('empty session:', sess_id)
 			log.debug('delete empty session:', sess_id)
 			sess.delete()
 			return _unauth()
@@ -50,8 +50,8 @@ class ApiMiddleware:
 		# check for corrupted session (if settings.SECRET changed or similar)
 		try:
 			last_seen = req.session['last_seen']
-		except KeyError:
-			log.debug('corrupted session:', sess_id)
+		except KeyError as err:
+			log.error('session key not found:', err)
 			log.debug('delete corrupted session:', sess_id)
 			req.session.delete()
 			return _unauth()
