@@ -51,7 +51,7 @@ def _jobdate(jid: str) -> str:
 	ts_int = str(int(f"0x{ts_hex}", 0))
 	tlen = len(str(int(time())))
 	ts = make_aware(datetime.fromtimestamp(int(ts_int[:tlen])))
-	return ts.strftime('%a, %d %b %Y %T %z')
+	return str(ts.strftime('%a, %d %b %Y %T %z'))
 
 def _jobfail(fn: str) -> bool:
 	st, out = _run(f"/usr/bin/tail -n1 {fn}")
