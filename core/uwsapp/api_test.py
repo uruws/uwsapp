@@ -55,6 +55,11 @@ class Test(unittest.TestCase):
 		finally:
 			config.API_CERTFILE = bup
 
+	def test_session(t):
+		t.assertIsNone(t.cli._sess)
+		cli = api.ApiClient(session = 'testing')
+		t.assertEqual(cli._sess, 'testing')
+
 	def test_POST(t):
 		t.cli.POST('/testing', {'test': 'ing'})
 		api.urlopen.assert_called_once()
