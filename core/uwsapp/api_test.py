@@ -83,5 +83,12 @@ class Test(unittest.TestCase):
 			t.cli._req.assert_called_once_with('/testing',
 				{'test': 'ing', 'session': 'testing'})
 
+	def test_POST_error(t):
+		def _error(*args, **kwargs):
+			raise Exception('testing')
+		api.urlopen = MagicMock(side_effect = _error)
+		with t.assertRaises(api.ApiError):
+			t.cli.POST('/testing', {'test': 'ing'})
+
 if __name__ == '__main__':
 	unittest.main()
