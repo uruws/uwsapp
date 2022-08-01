@@ -13,10 +13,16 @@ class Test(unittest.TestCase):
 	def test_defaults(t):
 		t.assertNotEqual(config.SECRET_KEY(), '')
 		t.assertFalse(config.DEBUG())
+		t.assertTrue(config.TESTING())
 		t.assertListEqual(config.ALLOWED_HOSTS(), ['localhost'])
 		t.assertEqual(config.DBDIR().as_posix(), '/var/opt/uwsapp')
 		t.assertEqual(config.DBNAME(), 'app.db')
 		t.assertEqual(config._url_base, '')
+
+	def test_secrets(t):
+		t.assertEqual(len(config.SECRET_KEY()), 64)
+		t.assertEqual(config.AUTH_SECRET_KEY(), b'supersecret')
+		t.assertEqual(len(config.AUTH_SECRET_KEY()), 11)
 
 	def test_getenv_unset(t):
 		t.assertEqual(config._getenv('UWSAPP_TESTING_UNSET', 'testing'), 'testing')
