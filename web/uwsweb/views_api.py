@@ -14,7 +14,7 @@ class Api(WebView):
 	http_method_names      = ['get', 'head', 'post']
 	template_name          = 'uwsweb/api.html'
 	__cli                  = None
-	__endpoint             = ''
+	__endpoint             = '/api/ping'
 	__params               = '{"session": "XXXXXXX"}'
 	__resp: dict[str, str] = {}
 
