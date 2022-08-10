@@ -3,15 +3,10 @@
 {% include "uwsweb/navbar.html" %}
 <!-- uwsweb/api.html -->
 
-<div class="w3-bar w3-text-blue w3-margin-top">
-	<div class="w3-bar-item w3-btn">
-		<a href="/help/" target="_blank">API help</a>
-	</div>
-</div>
-
 {% if api_response %}
 <pre class="w3-container w3-text-green">
 {{ api_response.url }}
+
 {{ api_response.protocol }} {{ api_response.status }}
 Date: {{ api_response.date }}
 Content-Type: {{ api_response.content_type }}
@@ -35,7 +30,7 @@ Content-Type: {{ api_response.content_type }}
 		class="w3-padding w3-black w3-border w3-border-green w3-text-green"
 		style="display:block;width:100%;height:300px"
 		name="api_params">{{ api_params }}</textarea>
-	<span>*the session value will be added automatically</span><br>
+	<span>* session value will be added automatically</span><br>
 
 	<br>
 	<input
