@@ -3,28 +3,41 @@
 {% include "uwsweb/navbar.html" %}
 <!-- uwslogs/nq.html -->
 
-<table class="w3-table">
+<div class="w3-margin-top">
 {% for idx, job in nqlog.items %}
+<div class="w3-row">
+
 	{% if job.failed %}
-	<tr class="w3-text-red">
+	<div class="w3-quarter w3-text-red">
 	{% elif job.running %}
-	<tr class="w3-green w3-text-black">
+	<div class="w3-quarter w3-green w3-text-black">
 	{% else %}
-	<tr>
+	<div class="w3-quarter">
 	{% endif %}
 		{% if job.running %}
-		<td class="w3-text-black">
+		<span class="w3-text-black">
 		{% else %}
-		<td class="w3-text-grey">
+		<span class="w3-text-grey">
 		{% endif %}
 			{{ job.start }}
-		</td>
-		<td>{{ job.command }}</td>
-	</tr>
+		</span>
+	</div>
+
+	{% if job.failed %}
+	<div class="w3-treequarter w3-text-red">
+	{% elif job.running %}
+	<div class="w3-treequarter w3-green w3-text-black">
+	{% else %}
+	<div class="w3-treequarter">
+	{% endif %}
+		<span>{{ job.command }}</span>
+	</div>
+
+</div>
 {% empty %}
-	<tr><td>no jobs</td></tr>
+<div class="w3-row"><span>no jobs</span></div>
 {% endfor %}
-</table>
+</div>
 
 <!-- uwslogs/nq.html -->
 {% include "uwsweb/footer.html" %}
