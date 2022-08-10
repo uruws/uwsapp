@@ -3,23 +3,30 @@
 {% include "uwsweb/navbar.html" %}
 <!-- uwslogs/index.html -->
 
-<table class="w3-table">
+<div class="w3-margin-top">
 {% for idx, e in syslog.items %}
+<div class="w3-row">
+
+	<div class="w3-third">
+		<span class="w3-text-grey">{{ e.timestamp }}</span>
+		<span class="w3-text-deep-purple">{{ e.user }}</span>
+	</div>
+
 	{% if e.error %}
-	<tr class="w3-text-red">
+	<div class="w3-twothird w3-text-red">
 	{% elif e.warning %}
-	<tr class="w3-text-yellow">
+	<div class="w3-twothird w3-text-yellow">
 	{% else %}
-	<tr class="w3-text-green">
+	<div class="w3-twothird w3-text-green">
 	{% endif %}
-		<td class="w3-text-grey">{{ e.timestamp }}</td>
-		<td class="w3-text-deep-purple">{{ e.user }}</td>
-		<td>{{ e.message }}</td>
-	</tr>
+		<span>{{ e.message }}</span>
+	</div>
+
+</div>
 {% empty %}
-	<tr><td>no logs</td></tr>
+<div class="w3-row"><span>no logs</span></div>
 {% endfor %}
-</table>
+</div>
 
 <!-- uwslogs/index.html -->
 {% include "uwsweb/footer.html" %}
