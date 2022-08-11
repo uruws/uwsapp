@@ -5,10 +5,12 @@ import json
 
 from unittest.mock import MagicMock
 
-from contextlib  import contextmanager
-from django.test import TestCase
-from http        import HTTPStatus
-from io          import StringIO
+from contextlib import contextmanager
+from http       import HTTPStatus
+from io         import StringIO
+
+from django.test                import TestCase
+from django.contrib.auth.models import User
 
 from uwsapp import user
 
@@ -59,3 +61,11 @@ class AuthTests(AuthViewTestCase):
 		with t.uwsapi_user():
 			resp = t.client.get('/not.found')
 			t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
+
+	def test_auth_inactive_user(t):
+		with t.uwsapi_user():
+			u = User.objects.get(email = 'uwsdev@uwsapp.local')
+			u.is_active = False
+			u.save()
+			with t.uwsapi_mock_client():
+				t.assertIsNone(auth._check_credentials(None, 'uwsdev@uwsapp.local', 'supersecret'))
