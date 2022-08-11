@@ -77,3 +77,15 @@ class AuthTests(AuthViewTestCase):
 			u.save()
 			with t.uwsapi_mock_client():
 				t.assertIsNone(auth._check_credentials(None, 'uwsdev@uwsapp.local', 'supersecret'))
+
+	def test_backend_no_args(t):
+		b = auth.AuthBackend()
+		t.assertIsNone(b.authenticate(None))
+
+	def test_backend_empty_args(t):
+		b = auth.AuthBackend()
+		t.assertIsNone(b.authenticate(None, username = '', password = ''))
+
+	def test_backend_user_not_found(t):
+		b = auth.AuthBackend()
+		t.assertIsNone(b.get_user(999))
