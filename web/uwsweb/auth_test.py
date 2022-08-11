@@ -32,10 +32,11 @@ class AuthViewTestCase(TestCase):
 			auth._newApiClient = bup
 
 	def uwsapi_login(t):
-		pass
+		with t.uwsapi_mock_client():
+			t.assertTrue(t.client.login(username = 'uwsdev@uwsapp.local', password = 'supersecret'))
 
 	def uwsapi_logout(t):
-		pass
+		t.client.logout()
 
 	@contextmanager
 	def uwsapi_user(t):
@@ -47,9 +48,14 @@ class AuthViewTestCase(TestCase):
 
 class AuthTests(AuthViewTestCase):
 
-	def test_auth(t):
+	def test_auth_fail(t):
 		with t.uwsapi_mock_client():
 			t.assertFalse(t.client.login(username = 'uwsweb@uwsapp.test', password = 'supersecret'))
 			resp = t.client.get('/not.found')
 			t.assertEqual(resp.status_code, HTTPStatus.FOUND)
 			t.assertEqual(resp.headers['location'], '/auth/login?next=/not.found')
+
+	def test_auth(t):
+		with t.uwsapi_user():
+			resp = t.client.get('/not.found')
+			t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)

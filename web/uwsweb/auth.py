@@ -45,7 +45,8 @@ def _check_credentials(req, username: str, password: str) -> Optional[User]:
 	if not user.is_active:
 		log.error('%s: inactive user' % uid, username)
 		return None
-	req.session['user'] = u
+	if req is not None: # pragma: no cover
+		req.session['user'] = u
 	return user
 
 class AuthBackend(BaseBackend):
