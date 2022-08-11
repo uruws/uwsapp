@@ -6,10 +6,15 @@ from django.test import TestCase
 
 from uwsapp import config
 
+from django.contrib.auth.models import User
+
 class WebViewTestCase(TestCase):
 
 	def uwsweb_login(t):
-		t.client.login()
+		u = User(username = 'uwsweb', email = 'uwsweb@uwsapp.test')
+		u.set_password('supersecret')
+		u.save()
+		t.assertTrue(t.client.login(username = 'uwsweb', password = 'supersecret'))
 
 	def uwsweb_logout(t):
 		t.client.logout()
@@ -17,10 +22,9 @@ class WebViewTestCase(TestCase):
 	@contextmanager
 	def uwsweb_user(t):
 		try:
-			t.assertTrue(t.uwsweb_login())
-			yield
+			yield t.uwsweb_login()
 		finally:
-			t.assertTrue(t.uwsweb_logout())
+			t.uwsweb_logout()
 
 class WebViewsTests(WebViewTestCase):
 
