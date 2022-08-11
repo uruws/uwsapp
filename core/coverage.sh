@@ -7,7 +7,8 @@ rm -f .coverage
 python3-coverage erase
 
 for fn in ./core/*/*_test.py; do
-	python3-coverage run --append "${fn}"
+	echo "*** ${fn}"
+	python3-coverage run --append "${fn}" "$@"
 done
 
 covd=/opt/uwsapp/tmp/htmlcov/core

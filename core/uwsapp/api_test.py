@@ -13,17 +13,20 @@ from io         import StringIO
 
 from uwsapp import api
 from uwsapp import config
+from uwsapp import log_test
 
 bup_urlopen = api.urlopen
 
 class Test(unittest.TestCase):
 
 	def setUp(t):
+		log_test.mock_setup()
 		api.urlopen = MagicMock(return_value = None)
 		t.cli = api.ApiClient()
 
 	def tearDown(t):
 		api.urlopen = bup_urlopen
+		log_test.mock_teardown()
 
 	@contextmanager
 	def mock_req(t):
