@@ -6,13 +6,30 @@
 import unittest
 from unittest.mock import MagicMock
 
-from io import StringIO
+from contextlib import contextmanager
+from io         import StringIO
 
 from uwsapp import config
 from uwsapp import log
 
 _bup_outfh = log._outfh
 _bup_errfh = log._errfh
+
+@contextmanager
+def mock_log():
+	try:
+		mock_setup()
+	finally:
+		mock_teardown()
+
+def mock_setup():
+	if not config.DEBUG():
+		log._outfh = StringIO()
+		log._errfh = StringIO()
+
+def mock_teardown():
+	log._outfh = _bup_outfh
+	log._errfh = _bup_errfh
 
 class Test(unittest.TestCase):
 

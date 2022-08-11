@@ -12,6 +12,7 @@ from io         import StringIO
 from django.test                import TestCase
 from django.contrib.auth.models import User
 
+from uwsapp import log_test
 from uwsapp import user
 
 from uwsweb import auth
@@ -23,6 +24,13 @@ class ApiClientMock(object):
 		return StringIO(json.dumps(u))
 
 class AuthViewTestCase(TestCase):
+
+	def setUp(t):
+		log_test.mock_setup()
+
+	def tearDown(t):
+		t.uwslog = None
+		log_test.mock_teardown()
 
 	@contextmanager
 	def uwsapi_mock_client(t):
