@@ -81,7 +81,7 @@ def API_KEYPASS() -> str:
 	try:
 		k = Path(fn).read_text()
 	except Exception as err:
-		log.error('API_KEYPASS:', err)
+		log.debug('API_KEYPASS:', err)
 		k = ''
 	return k.strip()
 
