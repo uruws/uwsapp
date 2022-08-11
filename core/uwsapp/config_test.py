@@ -12,7 +12,6 @@ class Test(unittest.TestCase):
 
 	def test_defaults(t):
 		t.assertNotEqual(config.SECRET_KEY(), '')
-		t.assertFalse(config.DEBUG())
 		t.assertTrue(config.TESTING())
 		t.assertListEqual(config.ALLOWED_HOSTS(), ['localhost'])
 		t.assertEqual(config.DBDIR().as_posix(), '/var/opt/uwsapp')

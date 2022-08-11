@@ -35,8 +35,9 @@ class Test(unittest.TestCase):
 			t.cli._req = bup
 
 	def test_defaults(t):
-		t.assertTrue(t.cli.ctx.check_hostname)
-		t.assertEqual(t.cli.ctx.verify_mode, ssl.CERT_REQUIRED)
+		if not config.DEBUG():
+			t.assertTrue(t.cli.ctx.check_hostname)
+			t.assertEqual(t.cli.ctx.verify_mode, ssl.CERT_REQUIRED)
 
 	def test_debug_config(t):
 		bup = config.DEBUG

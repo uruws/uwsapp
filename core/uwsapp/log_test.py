@@ -8,6 +8,7 @@ from unittest.mock import MagicMock
 
 from io import StringIO
 
+from uwsapp import config
 from uwsapp import log
 
 _bup_outfh = log._outfh
@@ -41,10 +42,11 @@ class Test(unittest.TestCase):
 		t.assertEqual(t._err(), '')
 
 	def test_debug(t):
-		log.debug('t0')
-		t.assertEqual(t._out(), '')
-		t.assertEqual(t._err(), '')
-		log._debug = True
+		if not config.DEBUG():
+			log.debug('t0')
+			t.assertEqual(t._out(), '')
+			t.assertEqual(t._err(), '')
+			log._debug = True
 		log.debug('testing', '...')
 		t.assertEqual(t._err(), '')
 		t.assertTrue(t._out().startswith(f"{__file__}:test_debug:"))
