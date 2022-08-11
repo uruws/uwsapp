@@ -12,6 +12,9 @@ from uwsapp import log
 
 from uwsapp.api import ApiClient
 
+def _newApiClient(): # pragma: no cover
+	return ApiClient()
+
 def _get_resp_user(resp):
 	log.debug('get_resp_user:', resp)
 	with resp:
@@ -21,7 +24,7 @@ def _get_resp_user(resp):
 
 def _check_credentials(req, username: str, password: str) -> Optional[User]:
 	log.debug('username:', username)
-	cli = ApiClient()
+	cli = _newApiClient()
 	try:
 		resp = cli.POST('/auth/login', {
 			'username': username,

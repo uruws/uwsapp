@@ -22,5 +22,19 @@ class Test(unittest.TestCase):
 		t.assertEqual(user.password_hash('testing'),
 			'cb852aa8da335ac892f88adf4f8401f6f24f7640879163a41dca9f6ccdf54c70')
 
+	def test_user_load(t):
+		u = user.load('uwstest@localhost')
+		t.assertDictEqual(u, {
+			'apps': {
+				'build': {'app': 'App'},
+				'deploy': {'app-test': 'App test'},
+			},
+			'is_admin': True,
+			'is_operator': True,
+			'name': 'uwstest',
+			'uid': 'dc7133eb-f64e-5d03-8d59-22d499224da6',
+			'username': 'uwstest@localhost',
+		})
+
 if __name__ == '__main__':
 	unittest.main()

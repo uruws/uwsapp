@@ -3,10 +3,7 @@
 
 from uwsweb.views_test import WebViewTestCase
 
-from django.test import TestCase
-from http        import HTTPStatus
-
-from uwsapp import config
+from http import HTTPStatus
 
 class HelpViewsTests(WebViewTestCase):
 
@@ -16,7 +13,7 @@ class HelpViewsTests(WebViewTestCase):
 		t.assertEqual(resp.headers['location'], '/auth/login?next=/not.found')
 
 	def test_auth_login(t):
-		with t.uwsweb_user() as u:
+		with t.uwsweb_user():
 			resp = t.client.get('/api')
 			t.assertEqual(resp.status_code, HTTPStatus.OK)
 
