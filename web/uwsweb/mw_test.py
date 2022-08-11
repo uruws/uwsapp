@@ -11,14 +11,11 @@ from uwsapp import config
 class HelpViewsTests(WebViewTestCase):
 
 	def test_auth(t):
-		resp = t.client.get('/')
+		resp = t.client.get('/api')
 		t.assertEqual(resp.status_code, HTTPStatus.FOUND)
-		t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
-		t.assertEqual(resp.headers['location'], '/auth/login?next=/')
+		t.assertEqual(resp.headers['location'], '/auth/login?next=/api')
 
 	def test_auth_login(t):
 		with t.uwsweb_user() as u:
 			resp = t.client.get('/api')
-			t.assertEqual(resp.status_code, HTTPStatus.FOUND)
-			t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
-			t.assertEqual(resp.headers['location'], '/auth/login?next=/api')
+			t.assertEqual(resp.status_code, HTTPStatus.OK)
