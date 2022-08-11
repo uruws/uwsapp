@@ -5,8 +5,15 @@ from django.test import TestCase
 from http        import HTTPStatus
 
 from uwsapp import config
+from uwsapp import log_test
 
 class HelpViewsTests(TestCase):
+
+	def setUp(t):
+		log_test.mock_setup()
+
+	def tearDown(t):
+		log_test.mock_teardown()
 
 	def test_index(t):
 		resp = t.client.get('/')
