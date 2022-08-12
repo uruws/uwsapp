@@ -6,6 +6,8 @@ from unittest.mock import MagicMock
 
 from uwsapi.views_test import ApiViewTestCase
 
+from django.contrib.auth.models import User
+
 from http import HTTPStatus
 
 from uwsapi import mw
@@ -68,3 +70,11 @@ class ApiMiddlewareTest(ApiViewTestCase):
 			resp = t.uwsapi_post('/ping', {})
 			t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
 			t.assertDictEqual(resp.json(), {})
+
+	def test_check_user_not_active(t):
+		u = User.objects.get(pk = 1)
+		u.is_active = False
+		u.save()
+		resp = t.uwsapi_post('/ping', {})
+		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
+		t.assertDictEqual(resp.json(), {})
