@@ -56,6 +56,9 @@ class ApiViewTestCase(TestCase):
 		data['session'] = t.__api.sess_key
 		return t.client.post(uri, data = data)
 
+	def uwsapi_session(t):
+		return t.__api.sess
+
 class ApiViewTest(ApiViewTestCase):
 
 	def test_index_unauth(t):

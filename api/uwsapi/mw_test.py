@@ -65,6 +65,22 @@ class ApiMiddlewareTest(ApiViewTestCase):
 			resp = t.uwsapi_post('/ping', {})
 			t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
 
+	def test_session_last_seen(t):
+		sess = t.uwsapi_session()
+		sess.pop('last_seen')
+		sess.save()
+		resp = t.uwsapi_post('/ping', {})
+		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
+		t.assertDictEqual(resp.json(), {})
+
+	def test_session_username(t):
+		sess = t.uwsapi_session()
+		sess.pop('username')
+		sess.save()
+		resp = t.uwsapi_post('/ping', {})
+		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
+		t.assertDictEqual(resp.json(), {})
+
 	def test_check_user_error(t):
 		with mock_check_user():
 			resp = t.uwsapi_post('/ping', {})
