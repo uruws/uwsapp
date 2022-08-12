@@ -13,26 +13,21 @@ from django.contrib.auth.models          import User
 from django.contrib.sessions.backends.db import SessionStore
 
 from uwsapp import config
-from uwsapp import log
-
-_bup_outfh = log._outfh
-_bup_errfh = log._errfh
+from uwsapp import log_test
 
 class ApiMock(object):
 	sess     = None
 	sess_key = None
-	username = 'uwstest@localhost'
+	username = 'uwsdev@uwsapp.local'
 	user     = None
 
 	def mock_user(m):
-		user = User(username = 'uwstest', email = m.username)
+		user = User(username = 'uwsdev', email = m.username)
+		user.set_password('supersecret')
 		user.save()
 		return user
 
 	def mock_login_setup(m):
-		if not config.DEBUG():
-			log._outfh = StringIO()
-			log._errfh = StringIO()
 		m.user = m.mock_user()
 		m.sess = SessionStore()
 		m.sess.create()
@@ -45,18 +40,17 @@ class ApiMock(object):
 		m.sess.delete()
 		if m.user.pk is not None:
 			m.user.delete()
-		if not config.DEBUG():
-			log._outfh = _bup_outfh
-			log._errfh = _bup_errfh
 
 class ApiViewTestCase(TestCase):
 	__api = ApiMock()
 
 	def setUp(t):
+		log_test.mock_setup()
 		t.__api.mock_login_setup()
 
 	def tearDown(t):
 		t.__api.mock_login_teardown()
+		log_test.mock_teardown()
 
 	def uwsapi_post(t, uri, data):
 		data['session'] = t.__api.sess_key
@@ -80,10 +74,11 @@ class ApiViewTest(ApiViewTestCase):
 class IndexTest(ApiViewTestCase):
 
 	def test_get(t):
-		resp = t.uwsapi_post('/', {})
-		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
-		respdata = resp.json()
-		t.assertEqual(respdata, dict())
+		if not config.DEBUG():
+			resp = t.uwsapi_post('/', {})
+			t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
+			respdata = resp.json()
+			t.assertEqual(respdata, dict())
 
 	def test_debug(t):
 		bup = config.DEBUG
