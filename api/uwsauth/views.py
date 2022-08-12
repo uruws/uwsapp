@@ -11,7 +11,7 @@ from http    import HTTPStatus
 from time    import time
 
 from uwsapp import log
-from uwsapp import user
+from uwsapp import user as libuser
 
 def login(req):
 	if req.method == 'POST':
@@ -27,7 +27,7 @@ def login(req):
 			resp.status_code = HTTPStatus.UNAUTHORIZED
 			return resp
 		else:
-			u = user.load(username)
+			u = libuser.load(username)
 			sess = SessionStore()
 			sess.create()
 			sess['username'] = username
