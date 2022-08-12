@@ -8,4 +8,13 @@ from uwsapi.views_test import ApiViewTestCase
 class AuthBackendTest(ApiViewTestCase):
 
 	def test_login(t):
-		t.assertTrue(t.client.login(username = 'uwsdev@uwsapp.local', password = 'supersecret'))
+		t.assertTrue(t.client.login(username = 'uwsdev@uwsapp.local',
+			password = 'supersecret'))
+
+	def test_invalid_username(t):
+		t.assertFalse(t.client.login(username = 'invalid@uwsapp.local',
+			password = 'supersecret'))
+
+	def test_invalid_password(t):
+		t.assertFalse(t.client.login(username = 'uwsdev@uwsapp.local',
+			password = 'invalid'))
