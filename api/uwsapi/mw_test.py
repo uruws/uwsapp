@@ -27,3 +27,7 @@ class ApiMiddlewareTest(ApiViewTestCase):
 	def test_auth_ignore_admin(t):
 		resp = t.client.get('/admin/')
 		t.assertEqual(resp.status_code, HTTPStatus.FOUND)
+
+	def test_session_not_found(t):
+		resp = t.client.post('/', {'session': 'abcdef123456'})
+		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
