@@ -4,13 +4,16 @@
 from contextlib    import contextmanager
 from unittest.mock import MagicMock
 
-from http import HTTPStatus
+from http    import HTTPStatus
+from pathlib import Path
 
 from django.contrib.auth.models import User
 
 from uwsapi.views_test import ApiViewTestCase
 
 from uwsauth import backend
+
+_authd = Path('/run/uwscli/auth')
 
 @contextmanager
 def mock_check_password(status = True, fail = False):
@@ -74,6 +77,12 @@ class AuthBackendTest(ApiViewTestCase):
 		uid = backend.check_user('nopassword@localhost')
 		t.assertEqual(uid, '')
 
+	def test_check_credentials(t):
+		with mock_check_password():
+			uid = 'dc7133eb-f64e-5d03-8d59-22d499224da6'
+			u = backend._check_credentials(uid, 'uwstest@localhost', '')
+			t.assertEqual(u.username, 'uwstest')
+
 	def test_check_credentials_invalid(t):
 		uid = 'a9856e79-c3cd-55b6-89f6-762b8c2e388d'
 		u = backend._check_credentials(uid, 'invalid@uwsapp.local', '')
@@ -89,3 +98,37 @@ class AuthBackendTest(ApiViewTestCase):
 			uid = 'dc7133eb-f64e-5d03-8d59-22d499224da6'
 			u = backend._check_credentials(uid, 'uwstest@localhost', '')
 			t.assertIsNone(u)
+
+	def test_load_user(t):
+		uid = 'dc7133eb-f64e-5d03-8d59-22d499224da6'
+		fn = _authd / uid / 'meta.json'
+		u = backend._load_user(uid, fn, 'uwstest@localhost')
+		t.assertIsNotNone(u)
+		t.assertEqual(u.username, 'uwstest')
+
+	def test_load_user_not_active(t):
+		u = User.objects.get(pk = 1)
+		u.is_active = False
+		u.save()
+		uid = '7044e95f-e20e-54be-9ce1-efa08e2b5a11'
+		fn = _authd / uid / 'meta.json'
+		u = backend._load_user(uid, fn, 'uwsdev@uwsapp.local')
+		t.assertIsNone(u)
+
+	def test_load_user_invalid(t):
+		uid = 'a9856e79-c3cd-55b6-89f6-762b8c2e388d'
+		fn = _authd / uid / 'meta-empty.json'
+		u = backend._load_user(uid, fn, 'invalid@uwsapp.local')
+		t.assertIsNone(u)
+
+	def test_load_user_no_user(t):
+		uid = 'a9856e79-c3cd-55b6-89f6-762b8c2e388d'
+		fn = _authd / uid / 'meta-no-user.json'
+		u = backend._load_user(uid, fn, 'invalid@uwsapp.local')
+		t.assertIsNone(u)
+
+	def test_load_user_username_error(t):
+		uid = 'a9856e79-c3cd-55b6-89f6-762b8c2e388d'
+		fn = _authd / uid / 'meta-username-error.json'
+		u = backend._load_user(uid, fn, 'invalid@uwsapp.local')
+		t.assertIsNone(u)
