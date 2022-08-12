@@ -74,7 +74,7 @@ class ApiMiddleware:
 			log.debug('delete invalid session:', sess_id)
 			req.session.delete()
 			return _unauth()
-		# check it is an actived user
+		# check it is an active user
 		if not u.is_active:
 			log.error('invalid session:', sess_id, 'inactive user:', u)
 			log.debug('delete invalid session:', sess_id)
