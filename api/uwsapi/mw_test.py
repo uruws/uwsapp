@@ -21,6 +21,16 @@ def mock_session(is_empty = False):
 	finally:
 		mw.SessionStore = bup
 
+@contextmanager
+def mock_check_user():
+	bup = mw.backend
+	try:
+		mw.backend = MagicMock()
+		mw.backend.check_user = MagicMock(return_value = '')
+		yield
+	finally:
+		mw.backend = bup
+
 class ApiMiddlewareTest(ApiViewTestCase):
 
 	def test_unauth(t):
@@ -52,3 +62,9 @@ class ApiMiddlewareTest(ApiViewTestCase):
 		with mock_session(is_empty = True):
 			resp = t.uwsapi_post('/ping', {})
 			t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
+
+	def test_check_user_error(t):
+		with mock_check_user():
+			resp = t.uwsapi_post('/ping', {})
+			t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
+			t.assertDictEqual(resp.json(), {})
