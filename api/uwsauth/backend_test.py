@@ -45,3 +45,15 @@ class AuthBackendTest(ApiViewTestCase):
 		u.save()
 		b = backend.AuthBackend()
 		t.assertIsNone(b.get_user(1))
+
+	def test_check_user(t):
+		uid = backend.check_user('uwstest@localhost')
+		t.assertEqual(uid, 'dc7133eb-f64e-5d03-8d59-22d499224da6')
+
+	def test_check_user_invalid(t):
+		uid = backend.check_user('invalid@uwsapp.local')
+		t.assertEqual(uid, '')
+
+	def test_check_user_no_password(t):
+		uid = backend.check_user('nopassword@localhost')
+		t.assertEqual(uid, '')
