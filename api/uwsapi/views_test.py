@@ -49,39 +49,38 @@ class ApiMock(object):
 			log._outfh = _bup_outfh
 			log._errfh = _bup_errfh
 
-class ApiViewTests(TestCase):
-	api = ApiMock()
+class ApiViewTestCase(TestCase):
+	__api = ApiMock()
 
 	def setUp(t):
-		t.api.mock_login_setup()
+		t.__api.mock_login_setup()
 
 	def tearDown(t):
-		t.api.mock_login_teardown()
+		t.__api.mock_login_teardown()
+
+	def uwsapi_post(t, uri, data):
+		data['session'] = t.__api.sess_key
+		return t.client.post(uri, data = data)
+
+class ApiViewTest(ApiViewTestCase):
 
 	def test_index_unauth(t):
-		t.api.mock_login_teardown()
+		t.tearDown()
 		resp = t.client.get('/')
 		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
 		respdata = resp.json()
 		t.assertEqual(respdata, dict())
 
 	def test_error404(t):
-		resp = t.client.post('/notfound', data = {'session': t.api.sess_key})
+		resp = t.uwsapi_post('/notfound', {})
 		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
 		respdata = resp.json()
 		t.assertEqual(respdata, dict())
 
-class IndexTests(TestCase):
-	api = ApiMock()
-
-	def setUp(t):
-		t.api.mock_login_setup()
-
-	def tearDown(t):
-		t.api.mock_login_teardown()
+class IndexTest(ApiViewTestCase):
 
 	def test_get(t):
-		resp = t.client.post('/', data = {'session': t.api.sess_key})
+		resp = t.uwsapi_post('/', {})
 		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
 		respdata = resp.json()
 		t.assertEqual(respdata, dict())
@@ -90,7 +89,7 @@ class IndexTests(TestCase):
 		bup = config.DEBUG
 		try:
 			config.DEBUG = MagicMock(return_value = True)
-			resp = t.client.post('/', data = {'session': t.api.sess_key})
+			resp = t.uwsapi_post('/', {})
 			t.assertEqual(resp.status_code, HTTPStatus.OK)
 			respdata = resp.json()
 			t.assertEqual(len(respdata), 2)
