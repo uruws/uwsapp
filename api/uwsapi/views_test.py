@@ -15,6 +15,9 @@ from django.contrib.sessions.backends.db import SessionStore
 from uwsapp import config
 from uwsapp import log_test
 
+from uwsapi.views import ApiView
+
+
 class ApiMock(object):
 	sess     = None
 	sess_key = None
@@ -41,6 +44,7 @@ class ApiMock(object):
 		if m.user.pk is not None:
 			m.user.delete()
 
+
 class ApiViewTestCase(TestCase):
 	__api = ApiMock()
 
@@ -59,14 +63,8 @@ class ApiViewTestCase(TestCase):
 	def uwsapi_session(t):
 		return t.__api.sess
 
-class ApiViewTest(ApiViewTestCase):
 
-	def test_index_unauth(t):
-		t.tearDown()
-		resp = t.client.get('/')
-		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
-		respdata = resp.json()
-		t.assertEqual(respdata, dict())
+class ApiViewTest(ApiViewTestCase):
 
 	def test_error404(t):
 		resp = t.uwsapi_post('/notfound', {})
@@ -74,7 +72,30 @@ class ApiViewTest(ApiViewTestCase):
 		respdata = resp.json()
 		t.assertEqual(respdata, dict())
 
+	def test_response(t):
+		resp = t.uwsapi_post('/ping', {})
+		t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.assertDictEqual(resp.json(), {'ping': 'pong'})
+
+	def test_bad_request(t):
+		v = ApiView()
+		resp = v.uwsapi_bad_request({})
+		t.assertEqual(resp.status_code, HTTPStatus.BAD_REQUEST)
+
+	def test_internal_server_error(t):
+		v = ApiView()
+		resp = v.uwsapi_internal_error({})
+		t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
 class IndexTest(ApiViewTestCase):
+
+	def test_index_unauth(t):
+		t.tearDown()
+		resp = t.client.get('/')
+		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
+		respdata = resp.json()
+		t.assertEqual(respdata, dict())
 
 	def test_get(t):
 		if not config.DEBUG():
