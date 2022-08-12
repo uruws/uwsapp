@@ -78,3 +78,10 @@ class ApiMiddlewareTest(ApiViewTestCase):
 		resp = t.uwsapi_post('/ping', {})
 		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
 		t.assertDictEqual(resp.json(), {})
+
+	def test_check_user_not_found(t):
+		u = User.objects.get(pk = 1)
+		u.delete()
+		resp = t.uwsapi_post('/ping', {})
+		t.assertEqual(resp.status_code, HTTPStatus.UNAUTHORIZED)
+		t.assertDictEqual(resp.json(), {})
