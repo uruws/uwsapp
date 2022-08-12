@@ -1,6 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from contextlib    import contextmanager
+from unittest.mock import MagicMock
+
 from http import HTTPStatus
 
 from django.contrib.auth.models import User
@@ -8,6 +11,19 @@ from django.contrib.auth.models import User
 from uwsapi.views_test import ApiViewTestCase
 
 from uwsauth import backend
+
+@contextmanager
+def mock_check_password(status = True, fail = False):
+	def _chk(*args, **kwargs):
+		if fail:
+			raise Exception('mock_check_password_error')
+		return status
+	bup = backend._check_password
+	try:
+		backend._check_password = MagicMock(side_effect = _chk)
+		yield
+	finally:
+		backend._check_password = bup
 
 class AuthBackendTest(ApiViewTestCase):
 
@@ -57,3 +73,19 @@ class AuthBackendTest(ApiViewTestCase):
 	def test_check_user_no_password(t):
 		uid = backend.check_user('nopassword@localhost')
 		t.assertEqual(uid, '')
+
+	def test_check_credentials_invalid(t):
+		uid = 'a9856e79-c3cd-55b6-89f6-762b8c2e388d'
+		u = backend._check_credentials(uid, 'invalid@uwsapp.local', '')
+		t.assertIsNone(u)
+
+	def test_check_credentials_no_password(t):
+		uid = '40ef0316-91d2-5654-99b2-fcf60b707d8f'
+		u = backend._check_credentials(uid, 'nopassword@localhost', '')
+		t.assertIsNone(u)
+
+	def test_check_credentials_error(t):
+		with mock_check_password(fail = True):
+			uid = 'dc7133eb-f64e-5d03-8d59-22d499224da6'
+			u = backend._check_credentials(uid, 'uwstest@localhost', '')
+			t.assertIsNone(u)
