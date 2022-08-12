@@ -5,7 +5,7 @@ from uwsweb.views_test import WebViewTestCase
 
 from http import HTTPStatus
 
-class HelpViewsTests(WebViewTestCase):
+class WebMiddlewareTest(WebViewTestCase):
 
 	def test_auth(t):
 		resp = t.client.get('/not.found')
