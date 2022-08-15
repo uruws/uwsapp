@@ -40,3 +40,8 @@ class LogsViewsTest(ApiViewTestCase):
 			t.assertDictEqual(resp.json(), {})
 		finally:
 			views.syslog = bup
+
+	def test_nq_index(t):
+		resp = t.uwsapi_post('/logs/nq/index', {})
+		t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.assertIsInstance(resp.json(), dict)
