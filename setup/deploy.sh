@@ -4,13 +4,13 @@ set -eu
 appenv=${1:?'app env?'}
 appver=${2:?'app version?'}
 
-CA='ops/210823'
-CANAME='ops'
+CA='opstest/220414'
+CANAME='opstest'
 CASRC=/srv/uws/deploy/secret/ca/uws
 
-if test "X${appenv}" = 'Xtest'; then
-	CA='opstest/220414'
-	CANAME='opstest'
+if test "X${appenv}" = 'Xprod'; then
+	CA='ops/210823'
+	CANAME='ops'
 fi
 
 surun='sudo -n'

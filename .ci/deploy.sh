@@ -2,10 +2,13 @@
 set -eu
 
 TAG="${UWSCLI_REPO_TAG}"
-VERSION='NONE'
+
+APPENV='test'
+VERSION=$(cat ./VERSION)
 
 case "${TAG}" in
 	release/*)
+		APPENV='prod'
 		VERSION=$(echo "${TAG}" | cut -d '/' -f 2)
 	;;
 esac
@@ -15,9 +18,9 @@ if test "X${VERSION}" = 'NONE'; then
 	exit 0
 fi
 
-echo "*** deploy: tag ${TAG} (version ${VERSION})"
+echo "*** deploy: tag ${TAG} (version ${VERSION} - ${APPENV} env)"
 
-./setup/deploy.sh test "${VERSION}"
+./setup/deploy.sh "${APPENV}" "${VERSION}"
 
 if ! test -d "./tmp/htmlcov"; then
 	exit 0
