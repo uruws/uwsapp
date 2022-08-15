@@ -27,13 +27,11 @@ class LogsViewsTest(ApiViewTestCase):
 		t.assertDictEqual(resp.json(), {})
 
 	def test_index_error(t):
-		def _err(*args, **kwargs):
-			raise Exception('mock_index_error')
 		bup = views.syslog
 		try:
 			# mock
 			views.syslog = MagicMock()
-			views.syslog.app_ctl = MagicMock(side_effect = _err)
+			views.syslog.app_ctl = MagicMock(return_value = None)
 			# test
 			resp = t.uwsapi_post('/logs/uwsq', {})
 			t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
@@ -52,13 +50,11 @@ class LogsViewsTest(ApiViewTestCase):
 		t.assertIsInstance(resp.json(), dict)
 
 	def test_nq_error(t):
-		def _err(*args, **kwargs):
-			raise Exception('mock_nq_error')
 		bup = views.nqlog
 		try:
 			# mock
 			views.nqlog = MagicMock()
-			views.nqlog.jobs = MagicMock(side_effect = _err)
+			views.nqlog.jobs = MagicMock(return_value = None)
 			# test
 			resp = t.uwsapi_post('/logs/nq/index', {})
 			t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
