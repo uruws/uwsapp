@@ -63,15 +63,19 @@ def _uwsq(line) -> Optional[LogEntry]:
 		return None
 	return e
 
-def uwsq() -> Syslog:
+def uwsq(filename = 'uwsq.log') -> Syslog:
+	log.debug('uwsq:', filename)
 	d = Syslog()
-	fn = config.CLI_LOGSDIR() / 'uwsq.log'
+	fn = config.CLI_LOGSDIR() / filename
 	log.debug('parse:', fn)
-	with fn.open() as fh:
-		for line in fh.readlines():
-			e = _uwsq(line.strip())
-			if e is not None:
-				d.append(e)
+	try:
+		with fn.open() as fh:
+			for line in fh.readlines():
+				e = _uwsq(line.strip())
+				if e is not None:
+					d.append(e)
+	except FileNotFoundError as err:
+		log.error(err)
 	return d
 
 #
@@ -91,13 +95,17 @@ def _app_ctl(line) -> Optional[LogEntry]:
 	e.message = line_items[1].strip().replace('/srv/uws/deploy/cli/', '', 1).replace('/srv/deploy/', '', 1)
 	return e
 
-def app_ctl() -> Syslog:
+def app_ctl(filename = 'app-ctl.log') -> Syslog:
+	log.debug('app-ctl:', filename)
 	d = Syslog()
-	fn = config.CLI_LOGSDIR() / 'app-ctl.log'
+	fn = config.CLI_LOGSDIR() / filename
 	log.debug('parse:', fn)
-	with fn.open() as fh:
-		for line in fh.readlines():
-			e = _app_ctl(line.strip())
-			if e is not None:
-				d.append(e)
+	try:
+		with fn.open() as fh:
+			for line in fh.readlines():
+				e = _app_ctl(line.strip())
+				if e is not None:
+					d.append(e)
+	except FileNotFoundError as err:
+		log.error(err)
 	return d

@@ -28,6 +28,10 @@ class SyslogTest(ApiViewTestCase):
 	def test_uwsq_empty_line(t):
 		t.assertIsNone(syslog._uwsq(''))
 
+	def test_uwsq_file_not_found(t):
+		d = syslog.uwsq(filename = 'not.found')
+		t.assertEqual(len(d), 0)
+
 	def test_appctl(t):
 		resp = t.uwsapi_post('/logs/app-ctl', {})
 		t.assertEqual(resp.status_code, HTTPStatus.OK)
@@ -44,3 +48,7 @@ class SyslogTest(ApiViewTestCase):
 
 	def test_appctl_empty_line(t):
 		t.assertIsNone(syslog._app_ctl(''))
+
+	def test_appctl_file_not_found(t):
+		d = syslog.app_ctl(filename = 'not.found')
+		t.assertEqual(len(d), 0)
