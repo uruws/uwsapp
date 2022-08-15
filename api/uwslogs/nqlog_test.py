@@ -41,3 +41,7 @@ class NqlogTest(ApiViewTestCase):
 		h = ['==> , <==']
 		nqlog._jobs(i, h)
 		t.assertEqual(len(i), 0)
+
+	def test_jobs_chdir_error(t):
+		i = nqlog.jobs(nqdir = '/not.found')
+		t.assertEqual(len(i), 0)

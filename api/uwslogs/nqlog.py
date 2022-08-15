@@ -109,11 +109,19 @@ def _jobs(i: JobsInfo, heads: list[str]):
 	if j is not None:
 		i.append(j)
 
-def jobs() -> JobsInfo:
+def jobs(nqdir: str = '') -> JobsInfo:
 	i = JobsInfo()
-	dn = config.CLI_NQDIR()
+	dn = None
+	if nqdir != '':
+		dn = nqdir.strip()
+	else:
+		dn = config.CLI_NQDIR().as_posix()
 	log.debug('nq dir:', dn)
-	os.chdir(dn)
+	try:
+		os.chdir(dn)
+	except FileNotFoundError as err:
+		log.error(err)
+		return i
 	st, heads = _run('/usr/bin/head -n1 ,*.*')
 	if st != 0:
 		log.error(f"jobs head: exit status {st}")
