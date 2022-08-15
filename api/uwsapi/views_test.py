@@ -88,7 +88,7 @@ class ApiViewTest(ApiViewTestCase):
 		t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-class IndexTest(ApiViewTestCase):
+class ApiIndexTest(ApiViewTestCase):
 
 	def test_index_unauth(t):
 		t.tearDown()
