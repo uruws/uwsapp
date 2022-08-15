@@ -24,7 +24,6 @@ class JobEntry(object):
 		e.jid = jid
 
 class JobsInfo(deque):
-
 	def _pop(q):
 		i = q.pop()
 		return {

@@ -35,3 +35,9 @@ class NqlogTest(ApiViewTestCase):
 	def test_jobinfo_error(t):
 		e = nqlog.JobEntry('invalid.id')
 		nqlog._jobinfo(e, 'testing')
+
+	def test_jobs_invalid_id(t):
+		i = nqlog.JobsInfo()
+		h = ['==> , <==']
+		nqlog._jobs(i, h)
+		t.assertEqual(len(i), 0)
