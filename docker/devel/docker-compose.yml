@@ -22,6 +22,7 @@ services:
     entrypoint: /opt/uwsapp/_devel/run.sh api
     environment:
       - UWSAPP_SECRET=${UWSAPP_SECRET}
+      - UWSAPP_AUTH_SECRET=supersecret
       - UWSAPP_PORT=5100
       - UWSAPP_URL=api/
       - UWSAPP_HOST=localhost,nginx
