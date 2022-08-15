@@ -45,3 +45,23 @@ class LogsViewsTest(ApiViewTestCase):
 		resp = t.uwsapi_post('/logs/nq/index', {})
 		t.assertEqual(resp.status_code, HTTPStatus.OK)
 		t.assertIsInstance(resp.json(), dict)
+
+	def test_nq_bad_request(t):
+		resp = t.uwsapi_post('/logs/nq/invalid', {})
+		t.assertEqual(resp.status_code, HTTPStatus.BAD_REQUEST)
+		t.assertIsInstance(resp.json(), dict)
+
+	def test_nq_error(t):
+		def _err(*args, **kwargs):
+			raise Exception('mock_nq_error')
+		bup = views.nqlog
+		try:
+			# mock
+			views.nqlog = MagicMock()
+			views.nqlog.jobs = MagicMock(side_effect = _err)
+			# test
+			resp = t.uwsapi_post('/logs/nq/index', {})
+			t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+			t.assertDictEqual(resp.json(), {})
+		finally:
+			views.nqlog = bup
