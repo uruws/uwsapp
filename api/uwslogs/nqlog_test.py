@@ -31,3 +31,7 @@ class NqlogTest(ApiViewTestCase):
 			t.assertTrue(nqlog._jobfail('/run/uwscli/nq/,1823af52ff8.17752'))
 		with mock_run(status = 99):
 			t.assertIsNotNone(nqlog.jobs())
+
+	def test_jobinfo_error(t):
+		e = nqlog.JobEntry('invalid.id')
+		nqlog._jobinfo(e, 'testing')

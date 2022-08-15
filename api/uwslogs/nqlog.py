@@ -84,7 +84,7 @@ def _jobinfo(j: JobEntry, command: str):
 	j.command = ' '.join(cmd).replace('/srv/deploy/', '', 1)
 	try:
 		_jobstatus(j)
-	except OSError as err:
+	except Exception as err:
 		log.error('nq job info:', err)
 
 def _jobs(i: JobsInfo, heads: list[str]):
