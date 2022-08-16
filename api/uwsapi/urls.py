@@ -23,16 +23,13 @@ from django.urls    import path
 
 from uwsapp.config import URL
 
-from . import cmd
-
 from .views import Index
 from .views import Ping
 
 urlpatterns = [
-	path(URL('exec/<slug:name>'), cmd.view, name = 'exec'),
-
-	path(URL('logs/'), include('uwslogs.urls')),
 	path(URL('auth/'), include('uwsauth.urls')),
+	path(URL('logs/'), include('uwslogs.urls')),
+	path(URL('exec/'), include('uwscmd.urls')),
 
 	path(URL('admin/'), admin.site.urls),
 
