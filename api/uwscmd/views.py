@@ -7,5 +7,5 @@ from uwsapi.views import ApiView
 
 class Index(ApiView):
 
-	def post(v, req) -> JsonResponse:
-		return v.uwsapi_resp({})
+	def post(v, req, name) -> JsonResponse:
+		return v.uwsapi_resp({'command': name})
