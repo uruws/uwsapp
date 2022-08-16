@@ -5,22 +5,25 @@
 
 <div class="w3-margin-top">
 {% for idx, e in syslog.items %}
-<div class="w3-row w3-margin-left w3-margin-right w3-border-dark-grey w3-hover-white">
 
+{% if e.error %}
+<div class="w3-row w3-text-red    w3-hover-text-black w3-hover-white">
+{% elif e.warning %}
+<div class="w3-row w3-text-yellow w3-hover-text-black w3-hover-white">
+{% else %}
+<div class="w3-row w3-text-green  w3-hover-text-black w3-hover-white">
+{% endif %}
+
+<div class="w3-margin-left w3-margin-right">
 	<div class="w3-third">
-		<span class="w3-text-grey w3-hover-text-black">{{ e.timestamp }}</span>
+		<span class="w3-text-grey        w3-hover-text-black">{{ e.timestamp }}</span>
 		<span class="w3-text-deep-purple w3-hover-text-black">{{ e.user }}</span>
 	</div>
 
-	{% if e.error %}
-	<div class="w3-twothird w3-text-red w3-hover-text-black">
-	{% elif e.warning %}
-	<div class="w3-twothird w3-text-yellow w3-hover-text-black">
-	{% else %}
-	<div class="w3-twothird w3-text-green w3-hover-text-black">
-	{% endif %}
+	<div class="w3-twothird">
 		<span>{{ e.message }}</span>
 	</div>
+</div>
 
 </div>
 {% empty %}

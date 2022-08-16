@@ -5,17 +5,19 @@
 
 <div class="w3-margin-top">
 {% for idx, job in nqlog.items %}
-<div class="w3-row w3-margin-left w3-border-dark-grey w3-hover-white">
 
-	{% if job.failed %}
-	<div class="w3-quarter w3-text-red">
-	{% elif job.running %}
-	<div class="w3-quarter w3-green w3-text-black">
-	{% else %}
+{% if job.failed %}
+<div class="w3-row w3-text-red w3-hover-text-black w3-hover-white">
+{% elif job.running %}
+<div class="w3-row w3-green w3-text-black">
+{% else %}
+<div class="w3-row w3-hover-text-black w3-hover-white">
+{% endif %}
+
+<div class="w3-margin-left w3-margin-right">
 	<div class="w3-quarter">
-	{% endif %}
 		{% if job.running %}
-		<span class="w3-text-black w3-hover-text-black">
+		<span class="w3-text-black">
 		{% else %}
 		<span class="w3-text-grey w3-hover-text-black">
 		{% endif %}
@@ -23,15 +25,10 @@
 		</span>
 	</div>
 
-	{% if job.failed %}
-	<div class="w3-treequarter w3-text-red w3-hover-text-black">
-	{% elif job.running %}
-	<div class="w3-treequarter w3-green w3-text-black w3-hover-text-black">
-	{% else %}
-	<div class="w3-treequarter w3-hover-text-black">
-	{% endif %}
+	<div class="w3-treequarter">
 		<span>{{ job.command }}</span>
 	</div>
+</div>
 
 </div>
 {% empty %}
