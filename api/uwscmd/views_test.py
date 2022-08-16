@@ -5,9 +5,12 @@ from http import HTTPStatus
 
 from uwsapi.views_test import ApiViewTestCase
 
-class CmdIndexTest(ApiViewTestCase):
+class CmdViewsTest(ApiViewTestCase):
 
 	def test_index(t):
-		resp = t.uwsapi_post('/exec/index', {})
+		resp = t.uwsapi_post('/exec/', {'command': 'testing', 'app': 'apptest'})
 		t.assertEqual(resp.status_code, HTTPStatus.OK)
-		t.assertEqual(resp.json(), {'command': 'index'})
+		t.assertEqual(resp.json(), {
+			'command': '/opt/uwsapp/api/libexec/apicmd.sh uwsdev testing apptest',
+			'output': '',
+		})

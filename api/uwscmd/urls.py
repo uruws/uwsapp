@@ -8,5 +8,5 @@ from django.urls import path
 from .views import Index
 
 urlpatterns = [
-	path('<slug:name>', Index.as_view(), name = 'exec'),
+	path('', Index.as_view(), name = 'exec'),
 ]
