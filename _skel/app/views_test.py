@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from http import HTTPStatus
+
 from uwsapi.views_test import ApiViewTestCase
 
 class SkelIndexTest(ApiViewTestCase):
