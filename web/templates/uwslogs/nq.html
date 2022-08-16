@@ -14,21 +14,21 @@
 <div class="w3-row w3-hover-text-black w3-hover-white">
 {% endif %}
 
-<div class="w3-margin-left w3-margin-right">
-	<div class="w3-quarter">
-		{% if job.running %}
-		<span class="w3-text-black">
-		{% else %}
-		<span class="w3-text-grey w3-hover-text-black">
-		{% endif %}
-			{{ job.start }}
-		</span>
-	</div>
+	<div class="w3-margin-left w3-margin-right">
+		<div class="w3-quarter">
+			{% if job.running %}
+			<span class="w3-text-black">
+			{% else %}
+			<span class="w3-text-grey w3-hover-text-black">
+			{% endif %}
+				{{ job.start }}
+			</span>
+		</div>
 
-	<div class="w3-treequarter">
-		<span>{{ job.command }}</span>
+		<div class="w3-threequarter">
+			<span>{{ job.command }}</span>
+		</div>
 	</div>
-</div>
 
 </div>
 {% empty %}
