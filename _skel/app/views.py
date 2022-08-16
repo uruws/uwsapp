@@ -1,6 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from django.shortcuts import render
+from django.http import JsonResponse
 
-# Create your views here.
+from uwsapi.views import ApiView
+
+class Index(ApiView):
+
+	def post(v, req) -> JsonResponse:
+		return v.uwsapi_resp({})
