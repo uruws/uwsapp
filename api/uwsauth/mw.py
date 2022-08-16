@@ -15,7 +15,7 @@ from uwsapp import log
 
 from uwsauth import backend
 
-class ApiMiddleware:
+class AuthMiddleware:
 
 	def __init__(mw, get_resp):
 		mw.get_resp = get_resp

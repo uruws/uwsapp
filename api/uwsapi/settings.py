@@ -54,7 +54,7 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'uwsapi.mw.ApiMiddleware',
+	'uwsauth.mw.AuthMiddleware',
 ]
 
 ROOT_URLCONF = 'uwsapi.urls'

@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 from http import HTTPStatus
 
-from uwsapi import mw
+from uwsauth import mw
 
 @contextmanager
 def mock_session(is_empty = False):
@@ -33,7 +33,7 @@ def mock_check_user():
 	finally:
 		mw.backend = bup
 
-class ApiMiddlewareTest(ApiViewTestCase):
+class AuthMiddlewareTest(ApiViewTestCase):
 
 	def test_unauth(t):
 		resp = t.client.get('/not.found')
