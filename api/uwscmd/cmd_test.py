@@ -29,3 +29,13 @@ class ApiCmdTest(TestCase):
 		with t.assertRaises(CalledProcessError):
 			out = cmd._check_output('testing', '/bin/false')
 			t.assertEqual(out, '')
+
+	def test_execute(t):
+		d = cmd.execute('testing', 'test', 'appt', command = '/bin/true')
+		t.assertDictEqual(d,
+			{'command': '/bin/true', 'output': '', 'status': 'ok'})
+
+	def test_execute_error(t):
+		d = cmd.execute('testing', 'test', 'appt', command = '/bin/false')
+		t.assertDictEqual(d,
+			{'command': '/bin/false', 'output': '', 'status': 'error'})

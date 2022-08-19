@@ -3,6 +3,7 @@
 
 from os         import environ
 from pathlib    import Path
+from subprocess import CalledProcessError
 from subprocess import check_output
 
 from uwsapp import log
@@ -25,10 +26,18 @@ def _setenv(user: str) -> dict[str, str]:
 def _check_output(user: str, cmd: str) -> str:
 	return check_output(cmd, shell = True, env = _setenv(user)).decode('utf-8').strip()
 
-def execute(user: str, name: str, app: str) -> dict[str, str]:
+def execute(user: str, name: str, app: str, command: str = '') -> dict[str, str]:
 	log.debug('user:', user)
 	cmd = f"/opt/uwsapp/api/libexec/apicmd.sh {user} {name} {app}"
+	if command != '':
+		cmd = command
 	log.debug(cmd)
 	st = 'ok'
-	out = _check_output(user, cmd)
+	out = '__ERROR__'
+	try:
+		out = _check_output(user, cmd)
+	except CalledProcessError as err:
+		log.error(err)
+		st = 'error'
+		out = err.output.decode()
 	return {'command': cmd, 'output': out, 'status': st}
