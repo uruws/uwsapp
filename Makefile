@@ -24,7 +24,7 @@ clean:
 
 .PHONY: distclean
 distclean: clean
-	@rm -rf ./data ./run ./tmp
+	@rm -rf ./data ./run ./tmp ./.mypy_cache
 
 .PHONY: prune
 prune:
