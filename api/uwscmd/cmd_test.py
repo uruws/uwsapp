@@ -3,6 +3,8 @@
 
 from django.test import TestCase
 
+from subprocess import CalledProcessError
+
 from uwscmd import cmd
 
 class ApiCmdTest(TestCase):
@@ -18,3 +20,12 @@ class ApiCmdTest(TestCase):
 			'UWSAPP_LOG':   '',
 			'UWSAPP_USER':  'testing',
 		})
+
+	def test_check_output(t):
+		out = cmd._check_output('testing', '/bin/true')
+		t.assertEqual(out, '')
+
+	def test_check_output_error(t):
+		with t.assertRaises(CalledProcessError):
+			out = cmd._check_output('testing', '/bin/false')
+			t.assertEqual(out, '')
