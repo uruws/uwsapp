@@ -92,3 +92,6 @@ def CLI_LOGSDIR() -> Path:
 
 def CLI_NQDIR() -> Path:
 	return Path(_getenv('UWSAPP_CLI_NQDIR', '/run/uwscli/nq'))
+
+def CLI_SSHCMD() -> str:
+	return _getenv('UWSAPP_CLI_SSHCMD', '/usr/bin/ssh')

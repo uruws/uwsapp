@@ -47,6 +47,7 @@ class Test(unittest.TestCase):
 	def test_cli_defaults(t):
 		t.assertEqual(config.CLI_LOGSDIR().as_posix(), '/run/uwscli/logs')
 		t.assertEqual(config.CLI_NQDIR().as_posix(),   '/run/uwscli/nq')
+		t.assertEqual(config.CLI_SSHCMD().as_posix(),  '/usr/bin/ssh')
 
 if __name__ == '__main__':
 	unittest.main()

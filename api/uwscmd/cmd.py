@@ -6,21 +6,23 @@ from pathlib    import Path
 from subprocess import CalledProcessError
 from subprocess import check_output
 
+from uwsapp import config
 from uwsapp import log
 
 __env: dict[str, str] = {
 	'PATH':         '/usr/local/bin:/usr/bin:/bin',
-	'HOME':         environ.get('HOME', ''),
-	'HOSTNAME':     environ.get('HOSTNAME', ''),
-	'USER':         environ.get('USER', ''),
-	'UWSAPP_DEBUG': environ.get('UWSAPP_DEBUG', ''),
-	'UWSAPP_HOME':  environ.get('UWSAPP_HOME', ''),
-	'UWSAPP_LOG':   environ.get('UWSAPP_LOG', ''),
+	'HOME':         environ.get('HOME',          ''),
+	'HOSTNAME':     environ.get('HOSTNAME',      ''),
+	'USER':         environ.get('USER',          ''),
+	'UWSAPP_DEBUG': environ.get('UWSAPP_DEBUG',  ''),
+	'UWSAPP_HOME':  environ.get('UWSAPP_HOME',   ''),
+	'UWSAPP_LOG':   environ.get('UWSAPP_LOG',    ''),
 }
 
 def _setenv(user: str) -> dict[str, str]:
 	e = __env.copy()
-	e['UWSAPP_USER'] = user
+	e['UWSAPP_SSHCMD'] = config.CLI_SSHCMD()
+	e['UWSAPP_USER']   = user
 	return e
 
 def _check_output(user: str, cmd: str) -> str:
