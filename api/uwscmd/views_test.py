@@ -14,3 +14,8 @@ class CmdViewsTest(ApiViewTestCase):
 			'command': '/opt/uwsapp/api/libexec/apicmd.sh uwsdev testing apptest',
 			'output': '',
 		})
+
+	def test_index_missing_args(t):
+		resp = t.uwsapi_post('/exec/', {})
+		t.assertEqual(resp.status_code, HTTPStatus.BAD_REQUEST)
+		t.assertEqual(resp.json(), {})
