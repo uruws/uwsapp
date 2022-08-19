@@ -29,5 +29,6 @@ def execute(user: str, name: str, app: str) -> dict[str, str]:
 	log.debug('user:', user)
 	cmd = f"/opt/uwsapp/api/libexec/apicmd.sh {user} {name} {app}"
 	log.debug(cmd)
+	st = 'ok'
 	out = _check_output(user, cmd)
-	return {'command': cmd, 'output': out}
+	return {'command': cmd, 'output': out, 'status': st}
