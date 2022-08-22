@@ -42,3 +42,9 @@ class WebViewsTests(WebViewTestCase):
 			t.assertEqual(resp.status_code, HTTPStatus.FOUND)
 			t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
 			t.assertEqual(resp.headers['location'], '/logs/nq')
+
+	def test_invalid_method(t):
+		with t.uwsweb_user():
+			resp = t.client.post('/', {})
+			t.assertEqual(resp.status_code, HTTPStatus.METHOD_NOT_ALLOWED)
+			t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
