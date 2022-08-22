@@ -13,6 +13,11 @@ if test "X${UWSAPP_DEBUG}" = 'Xon'; then
 fi
 sshopts="${sshopts} -n -x"
 
+sshuser=${1:?'ssh user?'}
+app_action=${2:?'app action?'}
+app_name=${3:?'app name?'}
+
 exec "${sshcmd}" ${sshopts} \
-	-l "${UWSAPP_USER}" \
+	-l "${sshuser}" \
 	"${UWSAPP_CLI_HOST}" \
+	"${app_action}" "${app_name}"
