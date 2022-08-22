@@ -32,9 +32,9 @@ def mock_execute():
 class ApiCmdTest(TestCase):
 
 	def test_setenv(t):
-		dbg = 'off'
-		if config.DEBUG():
-			dbg = 'on'
+		dbg = 'on'
+		if not config.DEBUG():
+			dbg = 'off'
 		t.assertDictEqual(cmd._setenv('testing'), {
 			'HOME':              '/home/uws',
 			'HOSTNAME':          'devel.uwsapp.local',
@@ -50,13 +50,16 @@ class ApiCmdTest(TestCase):
 		})
 
 	def test_check_output(t):
-		out = cmd._check_output('testing', '/bin/true')
+		st, out = cmd._check_output('testing', '/bin/true')
+		t.assertEqual(st, 'ok')
 		t.assertEqual(out, '')
 
 	def test_check_output_error(t):
-		with t.assertRaises(CalledProcessError):
-			out = cmd._check_output('testing', '/bin/false')
-			t.assertEqual(out, '')
+		st = '__ERROR__'
+		out = '__FAIL__'
+		st, out = cmd._check_output('testing', '/bin/false')
+		t.assertEqual(st, 'error')
+		t.assertEqual(out, '')
 
 	def test_execute(t):
 		d = cmd.execute('testing', 'test', 'appt', command = '/bin/true')

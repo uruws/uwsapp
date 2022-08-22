@@ -30,8 +30,15 @@ def _setenv(user: str) -> dict[str, str]:
 	e['UWSAPP_USER']       = user
 	return e
 
-def _check_output(user: str, cmd: str) -> str:
-	return check_output(cmd, shell = True, env = _setenv(user)).decode('utf-8').strip()
+def _check_output(user: str, cmd: str) -> (str, str):
+	st = 'ok'
+	try:
+		out = check_output(cmd, shell = True, env = _setenv(user)).decode('utf-8').strip()
+	except CalledProcessError as err:
+		log.error(err)
+		st = 'error'
+		out = err.output.decode()
+	return (st, out)
 
 def execute(user: str, action: str, app: str, command: str = '') -> dict[str, str]:
 	log.debug('user:', user, 'action:', action, 'app:', app)
@@ -39,13 +46,6 @@ def execute(user: str, action: str, app: str, command: str = '') -> dict[str, st
 	if command != '':
 		cmd = command
 	log.debug('cmd:', cmd)
-	st = 'ok'
-	out = '__ERROR__'
-	try:
-		out = _check_output(user, cmd)
-	except CalledProcessError as err:
-		log.error(err)
-		st = 'error'
-		out = err.output.decode()
+	st, out = _check_output(user, cmd)
 	log.debug('status:', st)
 	return {'command': cmd, 'output': out, 'status': st}
