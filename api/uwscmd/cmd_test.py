@@ -6,10 +6,17 @@ from django.test import TestCase
 from subprocess import CalledProcessError
 
 from uwsapp import config
+from uwsapp import log_test
 
 from uwscmd import cmd
 
 class ApiCmdTest(TestCase):
+
+	def setUp(t):
+		log_test.mock_setup()
+
+	def tearDown(t):
+		log_test.mock_teardown()
 
 	def test_setenv(t):
 		dbg = 'off'
