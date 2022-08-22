@@ -1,19 +1,24 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from contextlib  import contextmanager
-from django.test import TestCase
-from subprocess  import CalledProcessError
+from contextlib    import contextmanager
+from django.test   import TestCase
+from subprocess    import CalledProcessError
+from unittest.mock import MagicMock
 
 from uwsapp import config
 from uwsapp import log_test
 
 from uwscmd import cmd
 
+__bup_sshcmd = cmd._sshcmd
+
 def mock_setup():
 	log_test.mock_setup()
+	cmd._sshcmd = MagicMock(return_value = '/opt/uwsapp/_devel/api/uwscmd/sshcmd.sh')
 
 def mock_teardown():
+	cmd._sshcmd = __bup_sshcmd
 	log_test.mock_teardown()
 
 @contextmanager

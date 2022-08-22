@@ -15,6 +15,8 @@ from django.contrib.sessions.backends.db import SessionStore
 from uwsapp import config
 from uwsapp import log_test
 
+from uwscmd import cmd_test
+
 from uwsapi.views import ApiView
 
 
@@ -50,10 +52,12 @@ class ApiViewTestCase(TestCase):
 
 	def setUp(t):
 		log_test.mock_setup()
+		cmd_test.mock_setup()
 		t.__api.mock_login_setup()
 
 	def tearDown(t):
 		t.__api.mock_login_teardown()
+		cmd_test.mock_teardown()
 		log_test.mock_teardown()
 
 	def uwsapi_post(t, uri, data):

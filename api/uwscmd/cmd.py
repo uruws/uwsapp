@@ -20,10 +20,13 @@ __env: dict[str, str] = {
 	'UWSAPP_LOG':   environ.get('UWSAPP_LOG',    ''),
 }
 
+def _sshcmd() -> str:
+	return config.CLI_SSHCMD().strip()
+
 def _setenv(user: str) -> dict[str, str]:
 	e = __env.copy()
 	e['UWSAPP_CLI_HOST']   = config.CLI_HOST()
-	e['UWSAPP_CLI_SSHCMD'] = config.CLI_SSHCMD()
+	e['UWSAPP_CLI_SSHCMD'] = _sshcmd()
 	e['UWSAPP_USER']       = user
 	return e
 
