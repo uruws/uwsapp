@@ -57,7 +57,8 @@ class ApiCmdTest(TestCase):
 	def test_check_output_error(t):
 		st = '__ERROR__'
 		out = '__FAIL__'
-		st, out = cmd._check_output('testing', '/bin/false')
+		with log_test.mock():
+			st, out = cmd._check_output('testing', '/bin/false')
 		t.assertEqual(st, 'error')
 		t.assertEqual(out, '')
 

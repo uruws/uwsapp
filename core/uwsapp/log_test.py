@@ -3,6 +3,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from contextlib import contextmanager
+
 import unittest
 from unittest.mock import MagicMock
 
@@ -23,6 +25,14 @@ def mock_teardown():
 	if not config.DEBUG():
 		log._outfh = _bup_outfh
 		log._errfh = _bup_errfh
+
+@contextmanager
+def mock():
+	try:
+		mock_setup()
+		yield
+	finally:
+		mock_teardown()
 
 class Test(unittest.TestCase):
 
