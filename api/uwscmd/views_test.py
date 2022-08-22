@@ -13,6 +13,7 @@ class CmdViewsTest(ApiViewTestCase):
 		t.assertEqual(resp.json(), {
 			'command': '/opt/uwsapp/api/libexec/apicmd.sh uwsdev testing apptest',
 			'output': '',
+			'status': 'ok',
 		})
 
 	def test_index_missing_args(t):
