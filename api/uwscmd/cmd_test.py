@@ -5,17 +5,22 @@ from django.test import TestCase
 
 from subprocess import CalledProcessError
 
+from uwsapp import config
+
 from uwscmd import cmd
 
 class ApiCmdTest(TestCase):
 
 	def test_setenv(t):
+		dbg = 'off'
+		if config.DEBUG():
+			dbg = 'on'
 		t.assertDictEqual(cmd._setenv('testing'), {
 			'HOME':          '/home/uws',
 			'HOSTNAME':      'devel.uwsapp.local',
 			'PATH':          '/usr/local/bin:/usr/bin:/bin',
 			'USER':          'uws',
-			'UWSAPP_DEBUG':  'off',
+			'UWSAPP_DEBUG':  dbg,
 			'UWSAPP_HOME':   '/opt/uwsapp',
 			'UWSAPP_LOG':    '',
 			'UWSAPP_SSHCMD': '/usr/bin/ssh',
