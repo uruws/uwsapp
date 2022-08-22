@@ -87,6 +87,9 @@ def API_KEYPASS() -> str:
 
 # cli
 
+def CLI_HOST() -> str:
+	return _getenv('UWSAPP_CLI_HOST', 'localhost')
+
 def CLI_LOGSDIR() -> Path:
 	return Path(_getenv('UWSAPP_CLI_LOGSDIR', '/run/uwscli/logs'))
 

@@ -45,6 +45,7 @@ class Test(unittest.TestCase):
 		t.assertEqual(config.API_KEYPASS(),  '')
 
 	def test_cli_defaults(t):
+		t.assertEqual(config.CLI_HOST(),               'localhost')
 		t.assertEqual(config.CLI_LOGSDIR().as_posix(), '/run/uwscli/logs')
 		t.assertEqual(config.CLI_NQDIR().as_posix(),   '/run/uwscli/nq')
 		t.assertEqual(config.CLI_SSHCMD(),             '/usr/bin/ssh')
