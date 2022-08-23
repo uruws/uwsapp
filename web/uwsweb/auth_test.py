@@ -29,7 +29,6 @@ class AuthViewTestCase(TestCase):
 		log_test.mock_setup()
 
 	def tearDown(t):
-		t.uwslog = None
 		log_test.mock_teardown()
 
 	@contextmanager
