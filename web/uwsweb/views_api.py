@@ -36,7 +36,7 @@ class Api(WebView):
 
 	def post(v, req):
 		# load params
-		v.__endpoint = req.POST.get('api_endpoint', '')
+		v.__endpoint = req.POST.get('api_endpoint', '/api/ping')
 		v.__params   = req.POST.get('api_params',   '{}')
 		log.debug(v.__endpoint)
 		data_error = False
