@@ -49,8 +49,7 @@ class WebView(TemplateView):
 
 	def uwsapi_session(v):
 		try:
-			u = v.__req.session.get('user', {})
-			return str(u.get('session', 'NOSESSION'))
+			return str(v.__req.session.get('user', {}).get('session', 'NOSESSION'))
 		except AttributeError as err:
 			log.debug(err)
 		return 'NOSESSION'
