@@ -30,7 +30,7 @@ def _setenv(user: str) -> dict[str, str]:
 	e['UWSAPP_USER']       = user
 	return e
 
-def _check_output(user: str, cmd: str) -> (str, str):
+def _check_output(user: str, cmd: str) -> tuple[str, str]:
 	st = 'ok'
 	try:
 		out = check_output(cmd, shell = True, env = _setenv(user)).decode('utf-8').strip()
