@@ -30,3 +30,13 @@ class WebApiViewsTest(AuthViewTestCase):
 		t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
 		t.assertEqual(resp.context_data['api_endpoint'], '/api/ping')
 		t.assertDictEqual(resp.context_data['api_response'], {})
+
+	def test_post_params_error(t):
+		resp = None
+		with t.uwsapi_user():
+			resp = t.client.post('/api', {'api_params': ''})
+		t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.assertEqual(resp.template_name[0], 'uwsweb/api.html')
+		t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
+		t.assertEqual(resp.context_data['api_endpoint'], '/api/ping')
+		t.assertDictEqual(resp.context_data['api_response'], {})

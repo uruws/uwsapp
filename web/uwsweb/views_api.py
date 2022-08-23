@@ -42,15 +42,15 @@ class Api(WebView):
 		data_error = False
 		try:
 			data = json.loads(v.__params)
-		except Exception as err:
+		except json.JSONDecodeError as err:
 			log.error(err)
 			v.uwsweb_msg_error(str(err))
 			data_error = True
-		# set data api session
-		data['session'] = v.uwsapi_session()
 		# get response
 		resp = None
 		if not data_error:
+			# set data api session
+			data['session'] = v.uwsapi_session()
 			try:
 				ep = v.__endpoint.strip()
 				if ep.startswith('/api/'):
