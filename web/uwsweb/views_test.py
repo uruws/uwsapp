@@ -28,7 +28,7 @@ class WebViewTestCase(TestCase):
 		finally:
 			t.uwsweb_logout()
 
-class WebViewsTests(WebViewTestCase):
+class WebViewsTest(WebViewTestCase):
 
 	def test_index_nologin(t):
 		resp = t.client.get('/')
@@ -48,3 +48,11 @@ class WebViewsTests(WebViewTestCase):
 			resp = t.client.post('/', {})
 			t.assertEqual(resp.status_code, HTTPStatus.METHOD_NOT_ALLOWED)
 			t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
+
+	def test_user(t):
+		with t.uwsweb_user():
+			resp = t.client.get('/user')
+			t.assertEqual(resp.status_code, HTTPStatus.OK)
+			t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
+			t.assertEqual(resp.template_name[0], 'uwsweb/user.html')
+			t.assertEqual(resp.context_data['title'], 'user')
