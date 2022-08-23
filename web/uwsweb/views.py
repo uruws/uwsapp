@@ -48,7 +48,12 @@ class WebView(TemplateView):
 		return d
 
 	def uwsapi_session(v):
-		return v.__req.session['user'].get('session', 'NOSESSION')
+		try:
+			u = v.__req.session.get('user', {})
+			return str(u.get('session', 'NOSESSION'))
+		except AttributeError as err:
+			log.debug(err)
+		return 'NOSESSION'
 
 	def uwsweb_title(v):
 		return Path(v.template_name).stem

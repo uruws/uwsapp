@@ -5,9 +5,12 @@ from contextlib  import contextmanager
 from django.test import TestCase
 from http        import HTTPStatus
 
+from django.contrib.auth.models import User
+from unittest.mock              import MagicMock
+
 from uwsapp import config
 
-from django.contrib.auth.models import User
+from uwsweb import views
 
 class WebViewTestCase(TestCase):
 
@@ -28,7 +31,45 @@ class WebViewTestCase(TestCase):
 		finally:
 			t.uwsweb_logout()
 
+class MockMessages(object):
+	__bup_messages = views.messages
+	mock = None
+
+	def setup(m):
+		m.mock = MagicMock()
+		views.messages = m.mock
+
+	def teardown(m):
+		views.messages = m.__bup_messages
+		m.mock = None
+
+@contextmanager
+def mock_messages():
+	try:
+		m = MockMessages()
+		m.setup()
+		yield m
+	finally:
+		m.teardown()
+		m = None
+
 class WebViewsTest(WebViewTestCase):
+
+	def test_base_session(t):
+		v = views.WebView()
+		t.assertEqual(v.uwsapi_session(), 'NOSESSION')
+
+	def test_base_msg(t):
+		with mock_messages() as m:
+			v = views.WebView()
+			v.uwsweb_msg('testing')
+			m.mock.success.assert_called_once_with(None, 'testing')
+
+	def test_base_msg_error(t):
+		with mock_messages() as m:
+			v = views.WebView()
+			v.uwsweb_msg_error('testing_error')
+			m.mock.error.assert_called_once_with(None, 'testing_error')
 
 	def test_index_nologin(t):
 		resp = t.client.get('/')
