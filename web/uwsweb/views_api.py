@@ -6,6 +6,7 @@ import json
 from http import HTTPStatus
 
 from uwsapp.api import ApiClient
+from uwsapp.api import ApiError
 from uwsapp     import log
 
 from .views import WebView
@@ -57,7 +58,7 @@ class Api(WebView):
 					ep = ep[4:]
 				log.debug(ep)
 				resp = v.__cli.POST(ep, data)
-			except Exception as err:
+			except ApiError as err:
 				log.error(err)
 				v.uwsweb_msg_error(str(err))
 		# show response
