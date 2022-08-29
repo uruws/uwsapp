@@ -5,6 +5,8 @@ from http import HTTPStatus
 
 from uwsweb.auth_test import AuthViewTestCase
 
+from uwsweb import views_api
+
 class WebApiViewsTest(AuthViewTestCase):
 
 	def test_get(t):
@@ -40,3 +42,8 @@ class WebApiViewsTest(AuthViewTestCase):
 		t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
 		t.assertEqual(resp.context_data['api_endpoint'], '/api/ping')
 		t.assertDictEqual(resp.context_data['api_response'], {})
+
+	def test_resp_status_code(t):
+		t.assertEqual(views_api._resp_status(200), '200 OK')
+		t.assertEqual(views_api._resp_status(400), '400 BAD REQUEST')
+		t.assertEqual(views_api._resp_status(499), '499 INVALID STATUS')

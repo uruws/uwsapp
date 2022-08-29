@@ -62,7 +62,7 @@ class Api(WebView):
 				log.error(err)
 				v.uwsweb_msg_error(str(err))
 		# show response
-		if resp is not None:
+		if resp is not None: # pragma: no coverage
 			log.debug('api response:', resp.getcode())
 			with resp:
 				v.__resp['url']            = resp.geturl()
@@ -84,6 +84,10 @@ class Api(WebView):
 					v.__resp['content'] = ''
 		return v.get(req)
 
-def _resp_status(code) -> str:
-	desc = str(HTTPStatus(code)).replace('HTTPStatus.', '', 1).replace('_', ' ')
+def _resp_status(code: int) -> str:
+	try:
+		desc = str(HTTPStatus(code)).replace('HTTPStatus.', '', 1).replace('_', ' ')
+	except ValueError as err:
+		log.debug(err)
+		desc = 'INVALID STATUS'
 	return f"{code} {desc}"
