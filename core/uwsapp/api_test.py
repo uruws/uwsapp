@@ -8,8 +8,9 @@ from unittest.mock import MagicMock
 
 import ssl
 
-from contextlib import contextmanager
-from io         import StringIO
+from contextlib   import contextmanager
+from io           import StringIO
+from urllib.error import URLError
 
 from uwsapp import api
 from uwsapp import config
@@ -90,7 +91,7 @@ class Test(unittest.TestCase):
 
 	def test_POST_error(t):
 		def _error(*args, **kwargs):
-			raise Exception('testing')
+			raise URLError('testing')
 		api.urlopen = MagicMock(side_effect = _error)
 		with t.assertRaises(api.ApiError):
 			t.cli.POST('/testing', {'test': 'ing'})
