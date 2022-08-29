@@ -50,6 +50,10 @@ class Test(unittest.TestCase):
 		t.assertTrue(log._log)
 		t.assertFalse(log._debug)
 
+	def test_mock(t):
+		with mock():
+			log.print('test mock')
+
 	def _out(t):
 		return log._outfh.getvalue().strip()
 
