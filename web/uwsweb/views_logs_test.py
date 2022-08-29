@@ -26,3 +26,13 @@ class WebLogsViewsTest(AuthViewTestCase):
 		t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
 		t.assertEqual(resp.context_data['title'], 'app-ctl')
 		t.assertDictEqual(resp.context_data['syslog'], {})
+
+	def test_uwsq_index(t):
+		resp = None
+		with t.uwsapi_user():
+			resp = t.client.get('/logs/uwsq')
+		t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.assertEqual(resp.template_name[0], 'uwslogs/index.html')
+		t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
+		t.assertEqual(resp.context_data['title'], 'uwsq')
+		t.assertDictEqual(resp.context_data['syslog'], {})

@@ -68,11 +68,12 @@ class Uwsq(WebView):
 		d['title']      = 'uwsq'
 		d['title_desc'] = 'Build Queue'
 		try:
-			d['syslog']     = v._uwsq()
+			d['syslog'] = v._uwsq()
 		except ApiError as err:
 			v.uwsweb_msg_error(str(err))
+			d['syslog'] = {}
 		return v.uwsweb_data(d)
 
-	def _uwsq(v):
+	def _uwsq(v): # pragma: no cover
 		resp = v._cli.POST('/logs/uwsq', {})
 		return v._cli.parse(resp)
