@@ -44,12 +44,13 @@ class AppCtl(WebView):
 		d['title']      = 'app-ctl'
 		d['title_desc'] = 'App Control'
 		try:
-			d['syslog']     = v._app_ctl()
+			d['syslog'] = v._app_ctl()
 		except ApiError as err:
 			v.uwsweb_msg_error(str(err))
+			d['syslog'] = {}
 		return v.uwsweb_data(d)
 
-	def _app_ctl(v):
+	def _app_ctl(v): # pragma: no cover
 		resp = v._cli.POST('/logs/app-ctl', {})
 		return v._cli.parse(resp)
 
