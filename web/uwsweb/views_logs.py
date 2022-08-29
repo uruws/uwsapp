@@ -20,12 +20,13 @@ class NQ(WebView):
 		d['title']      = 'jobs'
 		d['title_desc'] = 'Jobs Queue'
 		try:
-			d['nqlog']     = v._jobs()
+			d['nqlog'] = v._jobs()
 		except ApiError as err:
 			v.uwsweb_msg_error(str(err))
+			d['nqlog'] = {}
 		return v.uwsweb_data(d)
 
-	def _jobs(v):
+	def _jobs(v): # pragma: no cover
 		resp = v._cli.POST('/logs/nq/index', {})
 		return v._cli.parse(resp)
 
