@@ -7,11 +7,11 @@
 {% for idx, e in syslog.items %}
 
 {% if e.error %}
-<div class="w3-row w3-text-red    w3-hover-text-black w3-hover-white">
+<div class="w3-row w3-text-red    w3-hover-text-black w3-hover-pale-yellow">
 {% elif e.warning %}
-<div class="w3-row w3-text-yellow w3-hover-text-black w3-hover-white">
+<div class="w3-row w3-text-yellow w3-hover-text-black w3-hover-pale-yellow">
 {% else %}
-<div class="w3-row w3-text-green  w3-hover-text-black w3-hover-white">
+<div class="w3-row w3-text-green  w3-hover-text-black w3-hover-pale-yellow">
 {% endif %}
 
 <div class="w3-margin-left w3-margin-right">
