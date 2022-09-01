@@ -1,19 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from uwsapp.api import ApiClient
-from uwsapp.api import ApiError
-
+from uwsweb.views import ApiError
 from uwsweb.views import WebView
 
 class NQ(WebView):
 	template_name = 'uwslogs/nq.html'
-	_cli          = None
-
-	def setup(v, req, *args, **kwargs):
-		super().setup(req, *args, **kwargs)
-		if v._cli is None:
-			v._cli = ApiClient(session = v.uwsapi_session())
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -27,17 +19,11 @@ class NQ(WebView):
 		return v.uwsweb_data(d)
 
 	def _jobs(v): # pragma: no cover
-		resp = v._cli.POST('/logs/nq/index', {})
-		return v._cli.parse(resp)
+		resp = v.uwsapi_post('/logs/nq/index', {})
+		return v.uwsapi_parse_response(resp)
 
 class AppCtl(WebView):
 	template_name = 'uwslogs/index.html'
-	_cli          = None
-
-	def setup(v, req, *args, **kwargs):
-		super().setup(req, *args, **kwargs)
-		if v._cli is None:
-			v._cli = ApiClient(session = v.uwsapi_session())
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -51,17 +37,11 @@ class AppCtl(WebView):
 		return v.uwsweb_data(d)
 
 	def _app_ctl(v): # pragma: no cover
-		resp = v._cli.POST('/logs/app-ctl', {})
-		return v._cli.parse(resp)
+		resp = v.uwsapi_post('/logs/app-ctl', {})
+		return v.uwsapi_parse_response(resp)
 
 class Uwsq(WebView):
 	template_name = 'uwslogs/index.html'
-	_cli          = None
-
-	def setup(v, req, *args, **kwargs):
-		super().setup(req, *args, **kwargs)
-		if v._cli is None:
-			v._cli = ApiClient(session = v.uwsapi_session())
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -75,5 +55,5 @@ class Uwsq(WebView):
 		return v.uwsweb_data(d)
 
 	def _uwsq(v): # pragma: no cover
-		resp = v._cli.POST('/logs/uwsq', {})
-		return v._cli.parse(resp)
+		resp = v.uwsapi_post('/logs/uwsq', {})
+		return v.uwsapi_parse_response(resp)

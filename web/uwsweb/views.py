@@ -65,6 +65,13 @@ class WebView(TemplateView):
 			data['session'] = v.uwsapi_session()
 		return v.__cli.POST(uri, data)
 
+	def uwsapi_parse_response(c, resp):
+		try:
+			return json.load(resp)
+		except Exception as err:
+			log.error(err)
+			raise ApiError(str(err))
+
 	def uwsweb_title(v):
 		return Path(v.template_name).stem
 

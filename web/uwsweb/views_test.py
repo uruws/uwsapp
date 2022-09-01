@@ -4,15 +4,23 @@
 from contextlib  import contextmanager
 from django.test import TestCase
 from http        import HTTPStatus
+from io          import StringIO
 
 from django.contrib.auth.models import User
 from unittest.mock              import MagicMock
 
 from uwsapp import config
+from uwsapp import log_test
 
 from uwsweb import views
 
 class WebViewTestCase(TestCase):
+
+	def setUp(t):
+		log_test.mock_setup()
+
+	def tearDown(t):
+		log_test.mock_teardown()
 
 	def uwsweb_login(t):
 		u = User(username = 'uwsweb', email = 'uwsweb@uwsapp.test')
@@ -55,9 +63,22 @@ def mock_messages():
 
 class WebViewsTest(WebViewTestCase):
 
-	def test_base_session(t):
+	def test_api_session(t):
 		v = views.WebView()
 		t.assertEqual(v.uwsapi_session(), 'NOUSER')
+
+	def test_api_parse_response(t):
+		v = views.WebView()
+		resp = StringIO('{}')
+		d = v.uwsapi_parse_response(resp)
+		t.assertTrue(isinstance(d, dict))
+		t.assertEqual(d, {})
+
+	def test_api_parse_resp_error(t):
+		v = views.WebView()
+		resp = StringIO()
+		with t.assertRaises(views.ApiError):
+			v.uwsapi_parse_response(resp)
 
 	def test_base_msg(t):
 		with mock_messages() as m:

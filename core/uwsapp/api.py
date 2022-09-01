@@ -1,11 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from typing import Optional
-
-import json
 import ssl
 
+from typing         import Optional
 from urllib.error   import URLError
 from urllib.parse   import urlencode
 from urllib.request import Request
@@ -60,11 +58,4 @@ class ApiClient(object):
 			return urlopen(c._req(uri, data), context = c.ctx)
 		except URLError as err:
 			log.debug(err)
-			raise ApiError(str(err))
-
-	def parse(c, resp):
-		try:
-			return json.load(resp)
-		except Exception as err:
-			log.error(err)
 			raise ApiError(str(err))
