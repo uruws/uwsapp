@@ -4,7 +4,7 @@
 <!-- uwsweb/api.html -->
 
 {% if api_response %}
-<p class="w3-center">Response</p>
+<p class="w3-center"><b>Response</b></p>
 <pre class="w3-container w3-text-green">
 <span class="w3-hover-pale-yellow">{{ api_response.url }}</span>
 
@@ -18,7 +18,7 @@
 {% endif %}
 
 {% if api_response %}
-<p class="w3-center">Request</p>
+<p class="w3-center"><b>Request</b></p>
 {% endif %}
 <form class="w3-panel" method="post" action="{% url 'api' %}">
 	{% csrf_token %}
