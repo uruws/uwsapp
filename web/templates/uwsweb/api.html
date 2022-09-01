@@ -4,18 +4,22 @@
 <!-- uwsweb/api.html -->
 
 {% if api_response %}
+<p class="w3-center">Response</p>
 <pre class="w3-container w3-text-green">
-{{ api_response.url }}
+<span class="w3-hover-pale-yellow">{{ api_response.url }}</span>
 
-{{ api_response.protocol }} {{ api_response.status }}
-Date: {{ api_response.date }}
-Content-Type: {{ api_response.content_type }}
+<span class="w3-hover-pale-yellow">{{ api_response.protocol }} {{ api_response.status }}</span>
+<span class="w3-hover-pale-yellow">Date: {{ api_response.date }}</span>
+<span class="w3-hover-pale-yellow">Content-Type: {{ api_response.content_type }}</span>
 
-{{ api_response.content }}
+<span class="w3-hover-pale-yellow">{{ api_response.content }}</span>
 </pre>
 <hr class="w3-border-dark-grey">
 {% endif %}
 
+{% if api_response %}
+<p class="w3-center">Request</p>
+{% endif %}
 <form class="w3-panel" method="post" action="{% url 'api' %}">
 	{% csrf_token %}
 
