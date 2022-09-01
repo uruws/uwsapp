@@ -30,6 +30,7 @@ urlpatterns = [
 	path(URL('auth/'), include('uwsauth.urls')),
 	path(URL('logs/'), include('uwslogs.urls')),
 	path(URL('exec/'), include('uwscmd.urls')),
+	path(URL('apps/'), include('uwsapps.urls')),
 
 	path(URL('admin/'), admin.site.urls),
 

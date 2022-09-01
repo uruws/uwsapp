@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 	'uwsauth.apps.AuthConfig',
 	'uwslogs.apps.LogsConfig',
 	'uwscmd.apps.CmdConfig',
+	'uwsapps.apps.AppsConfig',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
