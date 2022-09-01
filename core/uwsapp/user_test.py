@@ -6,6 +6,9 @@
 import unittest
 from unittest.mock import MagicMock
 
+from os import environ
+environ['UWSAPP_AUTH_SECRET'] = 'supersecret'
+
 from uwsapp import config
 from uwsapp import user
 
@@ -30,6 +33,25 @@ class Test(unittest.TestCase):
 			'name':        'uwstest',
 			'uid':         'dc7133eb-f64e-5d03-8d59-22d499224da6',
 			'username':    'uwstest@localhost',
+		})
+
+	def test_user_apps(t):
+		apps = user.apps('uwstest@localhost')
+		t.assertDictEqual(apps, {
+			'build': {'app': 'App'},
+			'build_command': 'app-build',
+			'commands': [
+				'app-deploy',
+				'app-events',
+				'app-logs',
+				'app-restart',
+				'app-rollin',
+				'app-scale',
+				'app-status',
+				'app-top',
+			],
+			'deploy': {'app-test': 'App test'},
+			'uid': 'dc7133eb-f64e-5d03-8d59-22d499224da6',
 		})
 
 if __name__ == '__main__':

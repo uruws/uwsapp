@@ -19,11 +19,23 @@ def uuid(username: str) -> str:
 def password_hash(pw: str) -> str:
 	return pbkdf2_hmac('sha256', pw.encode(), __salt, 100000).hex()
 
+def _authpath(uid: str, filename: str) -> Path:
+	return Path('/run/uwscli/auth/%s/%s' % (uid, filename))
+
 def load(username: str) -> dict[str, str]:
 	uid = uuid(username)
 	log.debug('load_user:', uid, username)
 	u = {}
-	with Path('/run/uwscli/auth/%s/meta.json' % uid).open() as fh:
+	with _authpath(uid, 'meta.json').open() as fh:
 		u = json.load(fh)
 	u['uid'] = uid
 	return u
+
+def apps(username: str) -> dict[str, str]:
+	uid = uuid(username)
+	log.debug(uid, username)
+	apps = {}
+	with _authpath(uid, 'apps.json').open() as fh:
+		apps = json.load(fh)
+	apps['uid'] = uid
+	return apps
