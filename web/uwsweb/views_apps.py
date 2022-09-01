@@ -4,6 +4,8 @@
 from uwsweb.views import ApiError
 from uwsweb.views import WebView
 
+from uwsapp import log
+
 class Apps(WebView):
 	template_name = 'uwsapps/index.html'
 
@@ -19,5 +21,5 @@ class Apps(WebView):
 		return v.uwsweb_data(d)
 
 	def _apps(v):
-		# FIXME
-		return {}
+		resp = v.uwsapi_post('/apps/', {})
+		return v.uwsapi_parse_response(resp)
