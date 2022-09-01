@@ -18,7 +18,7 @@ _navbar = [
 	('jobs',    'nq_logs'),
 	('app-ctl', 'appctl_logs'),
 	('uwsq',    'uwsq_logs'),
-	# ~ ('apps',    'apps'),
+	('apps',    'apps'),
 	('api',     'api'),
 ]
 
