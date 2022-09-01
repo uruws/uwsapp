@@ -30,10 +30,16 @@ def error404(req: HttpRequest, exception: Exception) -> JsonResponse:
 
 class ApiView(View):
 	http_method_names = ['post']
+	__req             = None
 
 	def setup(v, req, *args, **kwargs):
 		super().setup(req, *args, **kwargs)
-		log.debug('username:', req.user)
+		v.__req = req
+		log.debug('username:', v.__req.user)
+
+	def uwsapi_username(v):
+		log.debug(v.__req.user.email)
+		return v.__req.user.email
 
 	def uwsapi_resp(v, data, status = HTTPStatus.OK) -> JsonResponse:
 		resp = JsonResponse(data)

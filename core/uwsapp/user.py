@@ -11,6 +11,9 @@ from uuid    import uuid5
 from uwsapp import config
 from uwsapp import log
 
+class Error(Exception):
+	pass
+
 __salt: bytes = config.AUTH_SECRET_KEY()
 
 def uuid(username: str) -> str:
@@ -35,7 +38,11 @@ def apps(username: str) -> dict[str, str]:
 	uid = uuid(username)
 	log.debug(uid, username)
 	apps = {}
-	with _authpath(uid, 'apps.json').open() as fh:
-		apps = json.load(fh)
+	try:
+		with _authpath(uid, 'apps.json').open() as fh:
+			apps = json.load(fh)
+	except Exception as err:
+		log.debug(err)
+		raise Error(str(err))
 	apps['uid'] = uid
 	return apps
