@@ -1,14 +1,4 @@
 <!-- uwsweb/navbar.html -->
-
-<!-- header -->
-<div class="w3-bar w3-text-blue">
-	<div class="w3-bar-item w3-right w3-text-green w3-small">{% now 'DATETIME_FORMAT' %}</div>
-	<div class="w3-bar-item w3-right w3-btn {% if title == 'user' %}w3-blue{% endif %}">
-		<a href="{% url 'user' %}">{{ user.name }}</a>
-	</div>
-</div>
-
-<!-- navbar -->
 <div class="w3-bar w3-text-blue">
 	{% for i_title, i_name in navbar %}
 	<div class="w3-bar-item w3-btn {% if i_title == title %}w3-blue{% endif %}">
@@ -19,25 +9,4 @@
 		<a href="/help/" target="_blank">help</a>
 	</div>
 </div>
-
-<!-- page title -->
-<div class="w3-container w3-blue w3-text-black w3-center w3-padding">
-	<b>{{ title_desc }}</b>
-</div>
-
-<!-- user messages -->
-{% if messages %}
-<ul class="w3-ul w3-margin-top">
-{% for msg in messages %}
-	<li
-	{% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-		class="w3-red"
-	{% else %}
-		class="w3-green"
-	{% endif %}
-	>{{ msg }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-
 <!-- uwsweb/navbar.html -->
