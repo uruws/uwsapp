@@ -57,7 +57,7 @@ class WebViewsTest(WebViewTestCase):
 
 	def test_base_session(t):
 		v = views.WebView()
-		t.assertEqual(v.uwsapi_session(), 'NOSESSION')
+		t.assertEqual(v.uwsapi_session(), 'NOUSER')
 
 	def test_base_msg(t):
 		with mock_messages() as m:

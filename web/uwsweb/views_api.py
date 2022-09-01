@@ -5,24 +5,17 @@ import json
 
 from http import HTTPStatus
 
-from uwsapp.api import ApiClient
-from uwsapp.api import ApiError
-from uwsapp     import log
+from uwsapp import log
 
+from .views import ApiError
 from .views import WebView
 
 class Api(WebView):
 	http_method_names      = ['get', 'head', 'post']
 	template_name          = 'uwsweb/api.html'
-	__cli                  = None
 	__endpoint             = '/api/ping'
 	__params               = '{"session": "XXXXXXX"}'
 	__resp: dict[str, str] = {}
-
-	def setup(v, req, *args, **kwargs):
-		super().setup(req, *args, **kwargs)
-		if v.__cli is None:
-			v.__cli = ApiClient()
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -50,14 +43,12 @@ class Api(WebView):
 		# get response
 		resp = None
 		if not data_error:
-			# set data api session
-			data['session'] = v.uwsapi_session()
 			try:
 				ep = v.__endpoint.strip()
 				if ep.startswith('/api/'):
 					ep = ep[4:]
 				log.debug(ep)
-				resp = v.__cli.POST(ep, data)
+				resp = v.uwsapi_post(ep, data)
 			except ApiError as err:
 				log.error(err)
 				v.uwsweb_msg_error(str(err))

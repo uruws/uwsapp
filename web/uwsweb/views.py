@@ -13,6 +13,9 @@ from time    import time
 from uwsapp import config
 from uwsapp import log
 
+from uwsapp.api import ApiClient
+from uwsapp.api import ApiError
+
 _navbar = [
 	# title     url name
 	('jobs',    'nq_logs'),
@@ -30,11 +33,14 @@ class WebView(TemplateView):
 	http_method_names = ['get', 'head']
 	__start = None
 	__req   = None
+	__cli   = None
 
 	def setup(v, req, *args, **kwargs):
 		super().setup(req, *args, **kwargs)
 		v.__start = time()
 		v.__req   = req
+		if v.__cli is None:
+			v.__cli = ApiClient()
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -52,7 +58,12 @@ class WebView(TemplateView):
 			return str(v.__req.session.get('user', {}).get('session', 'NOSESSION'))
 		except AttributeError as err:
 			log.debug(err)
-		return 'NOSESSION'
+		return 'NOUSER'
+
+	def uwsapi_post(v, uri, data, session = True):
+		if session:
+			data['session'] = v.uwsapi_session()
+		return v.__cli.POST(uri, data)
 
 	def uwsweb_title(v):
 		return Path(v.template_name).stem
