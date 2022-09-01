@@ -3,13 +3,5 @@
   "name": "uwstest",
   "username": "nopassword@localhost",
   "is_operator": true,
-  "is_admin": true,
-  "apps": {
-    "build": {
-      "app": "App"
-    },
-    "deploy": {
-      "app-test": "App test"
-    }
-  }
+  "is_admin": true
 }

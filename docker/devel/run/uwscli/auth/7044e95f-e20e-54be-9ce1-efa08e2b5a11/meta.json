@@ -3,27 +3,5 @@
   "name": "uwsdev",
   "username": "uwsdev@uwsapp.local",
   "is_operator": false,
-  "is_admin": true,
-  "apps": {
-    "build": {
-      "app": "App web and workers",
-      "cs": "Crowdsourcing",
-      "infra-ui": "Infra-UI",
-      "nlpsvc": "NLPService"
-    },
-    "deploy": {
-      "app-east": "App web, east cluster",
-      "app-west": "App web, west cluster",
-      "apptest-east": "App web, test cluster (east)",
-      "apptest-west": "App web, test cluster (west)",
-      "cs": "Crowdsourcing",
-      "cs-test": "Crowdsourcing test",
-      "infra-ui-prod": "Infra-UI production",
-      "infra-ui-test": "Infra-UI testing",
-      "nlp-category": "NLPService - Category",
-      "nlp-sentiment-twitter": "NLPService - Sentiment Twitter",
-      "worker": "App worker",
-      "worker-test": "App worker test"
-    }
-  }
+  "is_admin": true
 }
