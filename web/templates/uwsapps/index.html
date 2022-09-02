@@ -4,23 +4,38 @@
 <!-- uwsapps/index.html -->
 
 {% if apps %}
-<table class="w3-table">
-
-	{% if apps.build %}
-	<tr class="w3-green w3-text-black"><td>Build</td><td></td></tr>
+<div class="w3-margin-top">
+{% if apps.build %}
+	<p class="w3-center w3-hover-green"><b>Build</b></p>
 	{% for app, desc in apps.build.items %}
-	<tr><td>{{ app }}</td><td>{{ desc }}</td></tr>
+	<div class="w3-row w3-hover-pale-yellow">
+		<div class="w3-margin-left w3-margin-right">
+			<div class="w3-third">
+				<span>{{ app }}</span>
+			</div>
+			<div class="w3-twothird">
+				<span>{{ desc }}</span>
+			</div>
+		</div>
+	</div>
 	{% endfor %}
-	{% endif %}
-
-	{% if apps.deploy %}
-	<tr class="w3-green w3-text-black"><td>Deploy</td><td></td></tr>
+{% endif %}
+{% if apps.deploy %}
+	<p class="w3-center w3-hover-green"><b>Deploy</b></p>
 	{% for app, desc in apps.deploy.items %}
-	<tr><td>{{ app }}</td><td>{{ desc }}</td></tr>
+	<div class="w3-row w3-hover-pale-yellow">
+		<div class="w3-margin-left w3-margin-right">
+			<div class="w3-third">
+				<span>{{ app }}</span>
+			</div>
+			<div class="w3-twothird">
+				<span>{{ desc }}</span>
+			</div>
+		</div>
+	</div>
 	{% endfor %}
-	{% endif %}
-
-</table>
+{% endif %}
+</div>
 {% endif %}
 
 <!-- uwsapps/index.html -->
