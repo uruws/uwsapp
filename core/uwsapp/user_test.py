@@ -12,7 +12,7 @@ environ['UWSAPP_AUTH_SECRET'] = 'supersecret'
 from uwsapp import config
 from uwsapp import user
 
-class Test(unittest.TestCase):
+class UserTest(unittest.TestCase):
 
 	def test_defaults(t):
 		t.assertNotEqual(config.AUTH_SECRET_KEY(), '')
@@ -53,6 +53,17 @@ class Test(unittest.TestCase):
 			'deploy': {'app-test': 'App test'},
 			'uid': 'dc7133eb-f64e-5d03-8d59-22d499224da6',
 		})
+
+	def test_user_apps_json_error(t):
+		bup = user.json.load
+		def _json_error(*args, **kwargs):
+			raise Exception('testing')
+		try:
+			user.json.load = MagicMock(side_effect = _json_error)
+			with t.assertRaises(user.Error):
+				user.apps('uwstest@localhost')
+		finally:
+			user.json.load = bup
 
 if __name__ == '__main__':
 	unittest.main()
