@@ -23,3 +23,14 @@ class Apps(WebView):
 	def _apps(v): # pragma: no cover
 		resp = v.uwsapi_post('/apps/', {})
 		return v.uwsapi_parse_response(resp)
+
+class AppBuild(WebView):
+	template_name = 'uwsapps/build.html'
+
+	def get_context_data(v, **kwargs):
+		appname = kwargs.get('name', '')
+		log.debug('app build:', appname)
+		d = super().get_context_data(**kwargs)
+		d['title'] = f"app build: {appname}"
+		d['title_desc'] = f"App Build: {appname}"
+		return v.uwsweb_data(d)

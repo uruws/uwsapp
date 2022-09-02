@@ -33,6 +33,7 @@ from .views_logs import NQ
 from .views_logs import Uwsq
 
 from .views_apps import Apps
+from .views_apps import AppBuild
 
 from django.contrib.auth.views import LoginView
 
@@ -41,7 +42,11 @@ urlpatterns = [
 		LoginView.as_view(template_name = 'uwsweb/auth/login.html'),
 		name = 'login'),
 
-	path(URL('apps'),         Apps.as_view(),   name = 'apps'),
+	path(URL('apps'),
+		Apps.as_view(), name = 'apps'),
+	path(URL('app/<slug:name>/build'),
+		AppBuild.as_view(), name = 'app_build'),
+
 	path(URL('logs/nq'),      NQ.as_view(),     name = 'nq_logs'),
 	path(URL('logs/uwsq'),    Uwsq.as_view(),   name = 'uwsq_logs'),
 	path(URL('logs/app-ctl'), AppCtl.as_view(), name = 'appctl_logs'),
