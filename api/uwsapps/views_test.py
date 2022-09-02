@@ -1,9 +1,14 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from http import HTTPStatus
+from http          import HTTPStatus
+from unittest.mock import MagicMock
+
+from uwsapp import user
 
 from uwsapi.views_test import ApiViewTestCase
+
+from . import views
 
 class AppsIndexTest(ApiViewTestCase):
 
@@ -36,3 +41,14 @@ class AppsIndexTest(ApiViewTestCase):
 			},
 			'uid': '7044e95f-e20e-54be-9ce1-efa08e2b5a11',
 		})
+
+	def test_user_error(t):
+		def _user_error(*args, **kwargs):
+			raise user.Error('testing')
+		bup = views.user.apps
+		try:
+			views.user.apps = MagicMock(side_effect = _user_error)
+			resp = t.uwsapi_post('/apps/', {})
+			t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+		finally:
+			views.user.apps = bup
