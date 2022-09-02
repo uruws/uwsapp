@@ -20,6 +20,6 @@ class Apps(WebView):
 			d['apps'] = {}
 		return v.uwsweb_data(d)
 
-	def _apps(v):
+	def _apps(v): # pragma: no cover
 		resp = v.uwsapi_post('/apps/', {})
 		return v.uwsapi_parse_response(resp)
