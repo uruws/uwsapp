@@ -2,20 +2,19 @@
 {% block title %}uwsweb - /auth/login{% endblock %}
 {% block content %}
 <!-- uwsweb/auth/login.html -->
-
-<div class="w3-container w3-center">
+<div class="w3-container w3-center w3-margin-top">
 
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
 {% if next %}
-	{% if user.is_authenticated %}
-	<p>Your account doesn't have access to this page. To proceed,
-	please login with an account that has access.</p>
-	{% else %}
-	<p>Please login to see this page.</p>
-	{% endif %}
+{% if user.is_authenticated %}
+<p>Your account doesn't have access to this page. To proceed, please login with
+an account that has access.</p>
+{% else %}
+<p>Please login to see this page.</p>
+{% endif %}
 {% endif %}
 
 <form class="w3-container" method="post" action="{% url 'login' %}">
@@ -35,5 +34,4 @@
 
 </div>
 <!-- uwsweb/auth/login.html -->
-{% include "uwsweb/footer.html" %}
 {% endblock %}
