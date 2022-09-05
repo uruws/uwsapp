@@ -5,3 +5,18 @@ html, body {
 h1, h2, h3, h4, h5, h6 {
   font-family: monospace;
 }
+
+.uws-black-1, .uws-hover-black-1:hover {
+  color: #eee!important;
+  background-color:#111!important;
+}
+
+.uws-black-2, .uws-hover-black-2:hover {
+  color: #ddd!important;
+  background-color:#222!important;
+}
+
+.uws-black-3, .uws-hover-black-3:hover {
+  color: #ccc!important;
+  background-color:#333!important;
+}
