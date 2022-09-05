@@ -8,9 +8,9 @@
 	<p class="w3-center"><b>Build</b></p>
 	{% for app, desc in apps.build.items %}
 	<div class="w3-row w3-hover-pale-yellow">
-		<div class="w3-margin-left w3-margin-right">
-			<div class="w3-third">
-				<span>{{ app }}</span>
+		<div class="w3-padding">
+			<div class="w3-third w3-text-blue">
+				<a href="{% url 'app-build' app %}">{{ app }}</span>
 			</div>
 			<div class="w3-twothird">
 				<span>{{ desc }}</span>
@@ -23,9 +23,9 @@
 	<p class="w3-center"><b>Deploy</b></p>
 	{% for app, desc in apps.deploy.items %}
 	<div class="w3-row w3-hover-pale-yellow">
-		<div class="w3-margin-left w3-margin-right">
-			<div class="w3-third">
-				<span>{{ app }}</span>
+		<div class="w3-padding">
+			<div class="w3-third w3-text-blue">
+				<a href="{% url 'app-control' app 'status' %}">{{ app }}</span>
 			</div>
 			<div class="w3-twothird">
 				<span>{{ desc }}</span>
