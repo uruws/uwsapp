@@ -1,15 +1,15 @@
-<!-- uwsweb/footer.html -->
+<!-- uwsweb/footer.html START -->
+{% if template_name %}
 <hr class="w3-border-dark-grey">
 <div class="w3-container w3-text-dark-grey w3-hover-text-green">
 <div class="w3-small w3-margin-bottom">
-	{% if template_name %}
 	<a href="https://github.com/TalkingPts/InfraApp/blob/master/web/templates/{{ template_name }}" target="_blank">{{ template_name }}</a>
 	- took {{ took }}s<br>
-	{% endif %}
 	<!--
 	Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>.
 	See https://github.com/TalkingPts/InfraApp/blob/master/LICENSE file.
 	-->
 </div>
 </div>
-<!-- uwsweb/footer.html -->
+{% endif %}
+<!-- uwsweb/footer.html END -->

@@ -34,6 +34,7 @@ from .views_logs import Uwsq
 
 from .views_apps import Apps
 from .views_apps import AppBuild
+from .views_apps import AppControl
 
 from django.contrib.auth.views import LoginView
 
