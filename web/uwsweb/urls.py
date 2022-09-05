@@ -46,6 +46,8 @@ urlpatterns = [
 		Apps.as_view(), name = 'apps'),
 	path(URL('app/<slug:name>/build'),
 		AppBuild.as_view(), name = 'app_build'),
+	path(URL('app/<slug:name>/<slug:action>'),
+		AppControl.as_view(), name = 'app_control'),
 
 	path(URL('logs/nq'),      NQ.as_view(),     name = 'nq_logs'),
 	path(URL('logs/uwsq'),    Uwsq.as_view(),   name = 'uwsq_logs'),

@@ -6,6 +6,10 @@ from uwsweb.views import WebView
 
 from uwsapp import log
 
+#
+# Apps
+#
+
 class Apps(WebView):
 	template_name = 'uwsapps/index.html'
 
@@ -24,6 +28,10 @@ class Apps(WebView):
 		resp = v.uwsapi_post('/apps/', {})
 		return v.uwsapi_parse_response(resp)
 
+#
+# App Build
+#
+
 class AppBuild(WebView):
 	template_name = 'uwsapps/build.html'
 
@@ -33,4 +41,20 @@ class AppBuild(WebView):
 		d = super().get_context_data(**kwargs)
 		d['title'] = f"app build: {appname}"
 		d['title_desc'] = f"App Build: {appname}"
+		return v.uwsweb_data(d)
+
+#
+# App Control
+#
+
+class AppControl(WebView):
+	template_name = 'uwsapps/control.html'
+
+	def get_context_data(v, **kwargs):
+		appname = kwargs.get('name', '')
+		action = kwargs.get('action', '')
+		log.debug('app:', appname, '- action:', action)
+		d = super().get_context_data(**kwargs)
+		d['title'] = f"app {action}: {appname}"
+		d['title_desc'] = f"App {action.title()}: {appname}"
 		return v.uwsweb_data(d)

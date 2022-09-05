@@ -9,7 +9,7 @@ from uwsweb import views_api
 
 class WebAppsViewsTest(AuthViewTestCase):
 
-	def test_get(t):
+	def test_apps(t):
 		resp = None
 		with t.uwsapi_user():
 			resp = t.client.get('/apps')
