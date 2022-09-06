@@ -67,17 +67,25 @@ class WebView(TemplateView):
 		return 'NOUSER'
 
 	def uwsapi_post(v, uri, data, session = True):
+		cid = -1
+		start = 0
 		if v.uwsapi_calls:
+			cid = v.__next_call
 			if session:
 				data['session'] = 'XXXXXXX'
-			v.__api_calls[v.__next_call] = {
+			v.__api_calls[cid] = {
 				'uri':  f"/api{uri}",
 				'data': b64encode(json.dumps(data).encode()).decode(),
 			}
 			v.__next_call += 1
 		if session:
 			data['session'] = v.uwsapi_session()
-		return v.__cli.POST(uri, data)
+		if v.uwsapi_calls:
+			start = time()
+		resp = v.__cli.POST(uri, data)
+		if v.uwsapi_calls:
+			v.__api_calls[cid]['took'] = '%.6f' % (time() - start)
+		return resp
 
 	def uwsapi_parse_response(c, resp):
 		try:
