@@ -5,13 +5,13 @@
 {% if api_response %}
 <p class="w3-center"><b>Response</b></p>
 <pre class="w3-container w3-text-green">
-<span class="w3-hover-pale-yellow">{{ api_response.url }}</span>
+{{ api_response.url }}
 
-<span class="w3-hover-pale-yellow">{{ api_response.protocol }} {{ api_response.status }}</span>
-<span class="w3-hover-pale-yellow">Date: {{ api_response.date }}</span>
-<span class="w3-hover-pale-yellow">Content-Type: {{ api_response.content_type }}</span>
+{{ api_response.protocol }} {{ api_response.status }}
+Date: {{ api_response.date }}
+Content-Type: {{ api_response.content_type }}
 
-<span class="w3-hover-pale-yellow">{{ api_response.content }}</span>
+{{ api_response.content }}
 </pre>
 <hr class="w3-border-dark-grey">
 {% endif %}

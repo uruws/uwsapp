@@ -3,7 +3,8 @@
 
 import json
 
-from http import HTTPStatus
+from base64 import b64decode
+from http   import HTTPStatus
 
 from uwsapp import log
 
@@ -13,6 +14,7 @@ from .views import WebView
 class Api(WebView):
 	http_method_names      = ['get', 'head', 'post']
 	template_name          = 'uwsweb/api.html'
+	uwsapi_calls           = False
 	__endpoint             = '/api/ping'
 	__params               = '{"session": "XXXXXXX"}'
 	__resp: dict[str, str] = {}
@@ -30,9 +32,13 @@ class Api(WebView):
 
 	def post(v, req):
 		# load params
-		v.__endpoint = req.POST.get('api_endpoint', '/api/ping')
-		v.__params   = req.POST.get('api_params',   '{}')
+		v.__endpoint = req.POST.get('api_endpoint',   '/api/ping')
 		log.debug(v.__endpoint)
+		v.__params   = req.POST.get('api_params',     '{}')
+		params_b64   = req.POST.get('api_params_b64', '')
+		if v.__params == '{}' and params_b64 != '':
+			log.debug('params_b64:', params_b64)
+			v.__params = b64decode(params_b64).decode()
 		data_error = False
 		try:
 			data = json.loads(v.__params)

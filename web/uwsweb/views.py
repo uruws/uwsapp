@@ -7,6 +7,7 @@ from django.contrib       import messages
 from django.shortcuts     import redirect
 from django.views.generic import TemplateView
 
+from base64  import b64encode
 from pathlib import Path
 from time    import time
 
@@ -31,9 +32,12 @@ _navbar = [
 
 class WebView(TemplateView):
 	http_method_names = ['get', 'head']
-	__start = None
-	__req   = None
-	__cli   = None
+	__start           = None
+	__req             = None
+	__cli             = None
+	uwsapi_calls      = True
+	__api_calls       = {}
+	__next_call       = 0
 
 	def setup(v, req, *args, **kwargs):
 		super().setup(req, *args, **kwargs)
@@ -41,6 +45,8 @@ class WebView(TemplateView):
 		v.__req   = req
 		if v.__cli is None:
 			v.__cli = ApiClient()
+		v.__api_calls.clear()
+		v.__next_call = 0
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -61,6 +67,14 @@ class WebView(TemplateView):
 		return 'NOUSER'
 
 	def uwsapi_post(v, uri, data, session = True):
+		if v.uwsapi_calls:
+			if session:
+				data['session'] = 'XXXXXXX'
+			v.__api_calls[v.__next_call] = {
+				'uri':  f"/api{uri}",
+				'data': b64encode(json.dumps(data).encode()).decode(),
+			}
+			v.__next_call += 1
 		if session:
 			data['session'] = v.uwsapi_session()
 		return v.__cli.POST(uri, data)
@@ -81,12 +95,14 @@ class WebView(TemplateView):
 		log.debug('session.keys:', sorted(v.__req.session.keys()))
 		u = v.__req.session.get('user', {})
 		u['web'] = {
-			'name': v.__req.user.username,
+			'name':        v.__req.user.username,
 			'session_key': v.__req.session.session_key,
 		}
 		return u
 
 	def uwsweb_data(v, d):
+		if v.uwsapi_calls:
+			d['apicalls'] = v.__api_calls
 		d['took'] = '%.6f' % (time() - v.__start)
 		return d
 
