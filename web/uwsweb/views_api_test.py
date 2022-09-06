@@ -43,6 +43,13 @@ class WebApiViewsTest(AuthViewTestCase):
 		t.assertEqual(resp.context_data['api_endpoint'], '/api/ping')
 		t.assertDictEqual(resp.context_data['api_response'], {})
 
+	def test_post_params_b64(t):
+		resp = None
+		with t.uwsapi_user():
+			resp = t.client.post('/api', {'api_params_b64':
+				'eyJzZXNzaW9uIjogIjhzOGZ5ZTQzYWVkMzRmdjJ2MXl0dWVpMDY5OTR6Y3l1In0='})
+		t.assertEqual(resp.status_code, HTTPStatus.OK)
+
 	def test_resp_status_code(t):
 		t.assertEqual(views_api._resp_status(200), '200 OK')
 		t.assertEqual(views_api._resp_status(400), '400 BAD REQUEST')
