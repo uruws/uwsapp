@@ -6,17 +6,17 @@
 {% for idx, e in syslog.items %}
 
 {% if e.error %}
-<div class="w3-row w3-text-red    w3-hover-text-black w3-hover-pale-yellow">
+<div class="w3-row w3-text-red uws-hover-black">
 {% elif e.warning %}
-<div class="w3-row w3-text-yellow w3-hover-text-black w3-hover-pale-yellow">
+<div class="w3-row w3-text-yellow uws-hover-black">
 {% else %}
-<div class="w3-row w3-text-green  w3-hover-text-black w3-hover-pale-yellow">
+<div class="w3-row w3-text-green uws-hover-black">
 {% endif %}
 
 <div class="w3-margin-left w3-margin-right">
 	<div class="w3-third">
-		<span class="w3-text-grey        w3-hover-text-black">{{ e.timestamp }}</span>
-		<span class="w3-text-deep-purple w3-hover-text-black">{{ e.user }}</span>
+		<span class="w3-text-grey">{{ e.timestamp }}</span>
+		<span class="w3-text-deep-purple">{{ e.user }}</span>
 	</div>
 
 	<div class="w3-twothird">

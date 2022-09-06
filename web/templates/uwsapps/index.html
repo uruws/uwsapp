@@ -7,7 +7,7 @@
 {% if apps.build %}
 	<p class="w3-center"><b>Build</b></p>
 	{% for app, desc in apps.build.items %}
-	<div class="w3-row uws-hover-black-2">
+	<div class="w3-row uws-hover-black">
 		<div class="w3-padding">
 			<div class="w3-third w3-text-blue">
 				<a href="{% url 'app-build' app %}">{{ app }}</a>
@@ -22,7 +22,7 @@
 {% if apps.deploy %}
 	<p class="w3-center"><b>Deploy</b></p>
 	{% for app, desc in apps.deploy.items %}
-	<div class="w3-row uws-hover-black-2">
+	<div class="w3-row uws-hover-black">
 		<div class="w3-padding">
 			<div class="w3-third w3-text-blue">
 				<a href="{% url 'app-control' app 'status' %}">{{ app }}</a>
