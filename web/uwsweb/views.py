@@ -31,13 +31,13 @@ _navbar = [
 #
 
 class WebView(TemplateView):
-	http_method_names = ['get', 'head']
-	__start           = None
-	__req             = None
-	__cli             = None
-	uwsapi_calls      = True
-	__api_calls       = {}
-	__next_call       = 0
+	http_method_names           = ['get', 'head']
+	__start                     = None
+	__req                       = None
+	__cli                       = None
+	uwsapi_calls                = True
+	__api_calls: dict[str, str] = {}
+	__next_call                 = 0
 
 	def setup(v, req, *args, **kwargs):
 		super().setup(req, *args, **kwargs)
