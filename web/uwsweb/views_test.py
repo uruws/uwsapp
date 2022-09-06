@@ -61,6 +61,17 @@ def mock_messages():
 		m.teardown()
 		m = None
 
+@contextmanager
+def mock_api_client(v, req):
+	bup = views.ApiClient
+	try:
+		cli = MagicMock()
+		views.ApiClient = cli
+		v.setup(req)
+		yield
+	finally:
+		views.ApiClient = bup
+
 class WebViewsTest(WebViewTestCase):
 
 	def test_api_session(t):
@@ -79,6 +90,12 @@ class WebViewsTest(WebViewTestCase):
 		resp = StringIO()
 		with t.assertRaises(views.ApiError):
 			v.uwsapi_parse_response(resp)
+
+	def test_api_post(t):
+		req = MagicMock()
+		v = views.WebView()
+		with mock_api_client(v, req):
+			v.uwsapi_post('/ping', {})
 
 	def test_base_msg(t):
 		with mock_messages() as m:
