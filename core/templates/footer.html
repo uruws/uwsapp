@@ -16,7 +16,7 @@
 		{% csrf_token %}
 		<input type="hidden" name="api_endpoint" value="{{ call.uri }}">
 		<input type="hidden" name="api_params_b64" value="{{ call.data }}">
-		<input class="w3-button" type="submit" value="{{ call.uri }}">
+		<input class="w3-button w3-round-xlarge" type="submit" value="{{ call.uri }}">
 		<span>{{ call.took }}s</span>
 	</form>
 	{% endfor %}

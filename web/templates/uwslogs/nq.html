@@ -6,11 +6,11 @@
 {% for idx, job in nqlog.items %}
 
 {% if job.failed %}
-<div class="w3-row w3-text-red uws-hover-black">
+<div class="w3-row w3-round-xlarge w3-text-red uws-hover-black">
 {% elif job.running %}
-<div class="w3-row w3-text-green uws-hover-black">
+<div class="w3-row w3-round-xlarge w3-text-green uws-hover-black">
 {% else %}
-<div class="w3-row uws-hover-black">
+<div class="w3-row w3-round-xlarge uws-hover-black">
 {% endif %}
 
 	<div class="w3-margin-left w3-margin-right">
