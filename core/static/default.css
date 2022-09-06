@@ -6,6 +6,18 @@ h1, h2, h3, h4, h5, h6 {
   font-family: monospace;
 }
 
-.uws-hover-black:hover {
+.uws-grey {
+  color:#222!important;
+}
+
+.uws-bg-grey {
   background-color:#222!important;
+}
+
+.uws-hover-grey:hover {
+  background-color:#222!important;
+}
+
+.uws-bg-dark-grey {
+  background-color:#111!important;
 }
