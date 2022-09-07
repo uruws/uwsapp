@@ -5,6 +5,7 @@ import json
 
 from base64 import b64decode
 from http   import HTTPStatus
+from time   import time
 
 from uwsapp import log
 
@@ -48,12 +49,14 @@ class Api(WebView):
 			data_error = True
 		# get response
 		resp = None
+		req_start = time()
 		if not data_error:
 			try:
 				ep = v.__endpoint.strip()
 				if ep.startswith('/api/'):
 					ep = ep[4:]
 				log.debug(ep)
+				req_start = time()
 				resp = v.uwsapi_post(ep, data)
 			except ApiError as err:
 				log.error(err)
@@ -79,6 +82,7 @@ class Api(WebView):
 					log.error(err)
 					v.uwsweb_msg_error(str(err))
 					v.__resp['content'] = ''
+			v.__resp['took'] = '%0.6f' % (time() - req_start)
 		return v.get(req)
 
 def _resp_status(code: int) -> str:
