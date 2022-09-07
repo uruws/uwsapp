@@ -38,7 +38,13 @@ class UserTest(unittest.TestCase):
 	def test_user_apps(t):
 		apps = user.apps('uwstest@localhost')
 		t.assertDictEqual(apps, {
-			'build': {'app': 'App'},
+			'build': {
+				'app': {
+					'desc': 'App',
+					'cluster': '',
+					'pod': '',
+				},
+			},
 			'build_command': 'app-build',
 			'commands': [
 				'app-deploy',
