@@ -1,7 +1,7 @@
 <!-- footer.html START -->
 {% if template_name %}
 <hr class="w3-border-dark-grey">
-<div class="w3-container w3-text-dark-grey w3-hover-text-sand">
+<div class="w3-container w3-text-dark-grey">
 <div class="w3-small w3-margin-bottom">
 
 	<a href="https://github.com/TalkingPts/InfraApp/blob/master/web/templates/{{ template_name }}" target="_blank">{{ template_name }}</a>
@@ -16,7 +16,7 @@
 		{% csrf_token %}
 		<input type="hidden" name="api_endpoint" value="{{ call.uri }}">
 		<input type="hidden" name="api_params_b64" value="{{ call.data }}">
-		<input class="w3-button w3-round-xlarge w3-hover-sand" type="submit" value="{{ call.uri }}">
+		<input class="w3-button w3-round-xlarge w3-hover-dark-grey" type="submit" value="{{ call.uri }}">
 		<span>{{ call.took }}s</span>
 	</form>
 	{% endfor %}
