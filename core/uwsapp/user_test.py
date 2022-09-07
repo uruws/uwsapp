@@ -37,6 +37,7 @@ class UserTest(unittest.TestCase):
 
 	def test_user_apps(t):
 		apps = user.apps('uwstest@localhost')
+		t.maxDiff = None
 		t.assertDictEqual(apps, {
 			'build': {
 				'app': {

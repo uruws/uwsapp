@@ -23,11 +23,11 @@ from uwsapi.views import ApiView
 class ApiMock(object):
 	sess     = None
 	sess_key = None
-	username = 'uwsdev@uwsapp.local'
+	username = 'uwstest@localhost'
 	user     = None
 
 	def mock_user(m):
-		user = User(username = 'uwsdev', email = m.username)
+		user = User(username = 'uwstest', email = m.username)
 		user.set_password('supersecret')
 		user.save()
 		return user

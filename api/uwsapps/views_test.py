@@ -10,7 +10,7 @@ from uwsapi.views_test import ApiViewTestCase
 
 from . import views
 
-class AppsIndexTest(ApiViewTestCase):
+class AppsViewsTest(ApiViewTestCase):
 
 	def test_index(t):
 		resp = t.uwsapi_post('/apps/', {})
@@ -24,7 +24,7 @@ class AppsIndexTest(ApiViewTestCase):
 			'uid',
 		])
 
-	def test_user_error(t):
+	def test_index_user_error(t):
 		def _user_error(*args, **kwargs):
 			raise user.Error('testing')
 		bup = views.user.apps
@@ -34,3 +34,20 @@ class AppsIndexTest(ApiViewTestCase):
 			t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 		finally:
 			views.user.apps = bup
+
+	def test_app_info(t):
+		resp = t.uwsapi_post('/apps/app-test/info', {})
+		# ~ t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.maxDiff = None
+		t.assertDictEqual(resp.json(), {})
+
+	# ~ def test_index_user_error(t):
+		# ~ def _user_error(*args, **kwargs):
+			# ~ raise user.Error('testing')
+		# ~ bup = views.user.apps
+		# ~ try:
+			# ~ views.user.apps = MagicMock(side_effect = _user_error)
+			# ~ resp = t.uwsapi_post('/apps/', {})
+			# ~ t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+		# ~ finally:
+			# ~ views.user.apps = bup

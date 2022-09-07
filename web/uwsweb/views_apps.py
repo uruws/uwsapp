@@ -49,20 +49,17 @@ class AppBuild(WebView):
 
 class AppView(WebView):
 
-	def __apps(v): # pragma: no cover
-		resp = v.uwsapi_post('/apps/', {})
+	def __app(v, name): # pragma: no cover
+		resp = v.uwsapi_post(f"/apps/{name}/info", {})
 		return v.uwsapi_parse_response(resp)
 
 	def uwsapp_data(v, d, appname, action):
 		try:
-			apps = v.__apps()
+			d['app'] = v.__app(appname)
 		except ApiError as err:
 			v.uwsweb_msg_error(str(err))
-			apps = {}
-		d['app'] = apps.get(appname, {})
-		d['app']['name']  = appname
+			d['app'] = {'name': appname}
 		d['app_action']   = action
-		d['app_commands'] = [cmd.replace('app-', '') for cmd in apps.get('commands', [])]
 		return v.uwsweb_data(d)
 
 #

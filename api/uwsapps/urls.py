@@ -5,8 +5,10 @@
 
 from django.urls import path
 
+from .views import AppInfo
 from .views import Index
 
 urlpatterns = [
-	path('', Index.as_view(), name='apps'),
+	path('<slug:name>/info', AppInfo.as_view(), name='app-info'),
+	path('',                 Index.as_view(),   name='apps'),
 ]
