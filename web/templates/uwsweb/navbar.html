@@ -1,11 +1,11 @@
 <!-- uwsweb/navbar.html START -->
 <div class="w3-bar w3-text-blue">
 	{% for i_title, i_name in navbar %}
-	<div class="w3-bar-item w3-btn {% if i_title == title %}w3-blue{% endif %}">
+	<div class="w3-bar-item w3-btn w3-padding {% if i_title == title %}w3-blue{% endif %}">
 		<a href="{% url i_name %}">{{ i_title }}</a>
 	</div>
 	{% endfor %}
-	<div class="w3-bar-item w3-btn">
+	<div class="w3-bar-item w3-btn w3-padding">
 		<a href="/help/" target="_blank">help</a>
 	</div>
 </div>

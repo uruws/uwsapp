@@ -22,20 +22,20 @@
 
 {% if title_desc %}
 <!-- page title -->
-<div class="w3-container w3-blue w3-text-black w3-center w3-padding">
+<div class="w3-padding-small w3-blue w3-text-black w3-center">
 	<b>{{ title_desc }}</b>
 </div>
 {% endif %}
 
 {% if messages %}
 <!-- user messages -->
-<ul class="w3-ul w3-margin-top">
+<ul class="w3-ul">
 {% for msg in messages %}
 	<li
 	{% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-		class="w3-red"
+		class="w3-padding w3-red"
 	{% else %}
-		class="w3-green"
+		class="w3-padding w3-green"
 	{% endif %}
 	>{{ msg }}</li>
 {% endfor %}

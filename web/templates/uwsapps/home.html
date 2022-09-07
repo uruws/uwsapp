@@ -2,6 +2,9 @@
 {% block content %}
 <!-- uwsapps/home.html -->
 {% include "uwsapps/navbar.html" %}
-<p>Cluster: {{ app.cluster }}</p>
+<p class="w3-center"><b>{{ app.desc }}</b></p>
+<div class="w3-padding">
+	<span>Cluster: {{ app.cluster }}</span>
+</div>
 <!-- uwsapps/home.html -->
 {% endblock %}
