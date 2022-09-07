@@ -1,0 +1,12 @@
+<!-- uwsapps/navbar.html START -->
+<div class="w3-bar w3-text-blue">
+	<div class="w3-bar-item w3-btn {% if app_action == 'home' %}w3-blue{% endif %}">
+		<a href="{% url 'app-home' app.name %}">home</a>
+	</div>
+	{% for cmd in app_commands %}
+	<div class="w3-bar-item w3-btn {% if app_action == cmd %}w3-blue{% endif %}">
+		<a href="{% url 'app-control' app.name cmd %}">{{ cmd }}</a>
+	</div>
+	{% endfor %}
+</div>
+<!-- uwsapps/navbar.html END -->

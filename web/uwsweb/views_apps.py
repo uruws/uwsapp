@@ -44,10 +44,47 @@ class AppBuild(WebView):
 		return v.uwsweb_data(d)
 
 #
+# App View
+#
+
+class AppView(WebView):
+
+	def __apps(v): # pragma: no cover
+		resp = v.uwsapi_post('/apps/', {})
+		return v.uwsapi_parse_response(resp)
+
+	def uwsapp_data(v, d, appname, action):
+		try:
+			apps = v.__apps()
+		except ApiError as err:
+			v.uwsweb_msg_error(str(err))
+			apps = {}
+		d['app'] = apps.get(appname, {})
+		d['app']['name']  = appname
+		d['app_action']   = action
+		d['app_commands'] = [cmd.replace('app-', '') for cmd in apps.get('commands', [])]
+		return v.uwsweb_data(d)
+
+#
+# App Home
+#
+
+class AppHome(AppView):
+	template_name = 'uwsapps/home.html'
+
+	def get_context_data(v, **kwargs):
+		appname = kwargs.get('name', '')
+		log.debug('app:', appname)
+		d = super().get_context_data(**kwargs)
+		d['title'] = f"app: {appname}"
+		d['title_desc'] = f"App: {appname}"
+		return v.uwsapp_data(d, appname, 'home')
+
+#
 # App Control
 #
 
-class AppControl(WebView):
+class AppControl(AppView):
 	template_name = 'uwsapps/control.html'
 
 	def get_context_data(v, **kwargs):
@@ -57,20 +94,4 @@ class AppControl(WebView):
 		d = super().get_context_data(**kwargs)
 		d['title'] = f"app {action}: {appname}"
 		d['title_desc'] = f"App {action.title()}: {appname}"
-		return v.uwsweb_data(d)
-
-#
-# App Home
-#
-
-class AppHome(WebView):
-	template_name = 'uwsapps/home.html'
-
-	def get_context_data(v, **kwargs):
-		appname = kwargs.get('name', '')
-		action = kwargs.get('action', '')
-		log.debug('app:', appname, '- action:', action)
-		d = super().get_context_data(**kwargs)
-		d['title'] = f"app: {appname}"
-		d['title_desc'] = f"App: {appname}"
-		return v.uwsweb_data(d)
+		return v.uwsapp_data(d, appname, action)
