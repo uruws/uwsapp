@@ -58,3 +58,19 @@ class AppControl(WebView):
 		d['title'] = f"app {action}: {appname}"
 		d['title_desc'] = f"App {action.title()}: {appname}"
 		return v.uwsweb_data(d)
+
+#
+# App Home
+#
+
+class AppHome(WebView):
+	template_name = 'uwsapps/home.html'
+
+	def get_context_data(v, **kwargs):
+		appname = kwargs.get('name', '')
+		action = kwargs.get('action', '')
+		log.debug('app:', appname, '- action:', action)
+		d = super().get_context_data(**kwargs)
+		d['title'] = f"app: {appname}"
+		d['title_desc'] = f"App: {appname}"
+		return v.uwsweb_data(d)

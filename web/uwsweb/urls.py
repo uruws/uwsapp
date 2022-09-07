@@ -35,6 +35,7 @@ from .views_logs import Uwsq
 from .views_apps import Apps
 from .views_apps import AppBuild
 from .views_apps import AppControl
+from .views_apps import AppHome
 
 from django.contrib.auth.views import LoginView
 
@@ -45,17 +46,20 @@ urlpatterns = [
 
 	path(URL('apps'),
 		Apps.as_view(), name = 'apps'),
+
 	path(URL('app/<slug:name>/build'),
 		AppBuild.as_view(), name = 'app-build'),
 	path(URL('app/<slug:name>/<slug:action>'),
 		AppControl.as_view(), name = 'app-control'),
+	path(URL('app/<slug:name>'),
+		AppHome.as_view(), name = 'app-home'),
 
 	path(URL('logs/nq'),      NQ.as_view(),     name = 'nq_logs'),
 	path(URL('logs/uwsq'),    Uwsq.as_view(),   name = 'uwsq_logs'),
 	path(URL('logs/app-ctl'), AppCtl.as_view(), name = 'appctl_logs'),
 
-	path(URL('user'), User.as_view(),   name = 'user'),
-	path(URL('api'),  Api.as_view(),    name = 'api'),
+	path(URL('user'), User.as_view(), name = 'user'),
+	path(URL('api'),  Api.as_view(),  name = 'api'),
 
 	path(URL('admin/'), admin.site.urls, name = 'admin'),
 	path(URL(''),       Index.as_view(), name = 'index'),
