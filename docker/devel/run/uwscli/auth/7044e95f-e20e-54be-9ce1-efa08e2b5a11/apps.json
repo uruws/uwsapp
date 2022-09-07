@@ -1,10 +1,18 @@
 {
   "uid": "7044e95f-e20e-54be-9ce1-efa08e2b5a11",
   "build": {
-    "app": "App web and workers",
-    "cs": "Crowdsourcing",
-    "infra-ui": "Infra-UI",
-    "nlpsvc": "NLPService"
+    "app": {
+      "desc": "App web and workers"
+    },
+    "cs": {
+      "desc": "Crowdsourcing"
+    },
+    "infra-ui": {
+      "desc": "Infra-UI"
+    },
+    "nlpsvc": {
+      "desc": "NLPService"
+    }
   },
   "build_command": "app-build",
   "commands": [
@@ -14,17 +22,45 @@
     "app-top"
   ],
   "deploy": {
-    "app-east": "App web, east cluster",
-    "app-west": "App web, west cluster",
-    "apptest-east": "App web, test cluster (east)",
-    "apptest-west": "App web, test cluster (west)",
-    "cs": "Crowdsourcing",
-    "cs-test": "Crowdsourcing test",
-    "infra-ui-prod": "Infra-UI production",
-    "infra-ui-test": "Infra-UI testing",
-    "nlp-category": "NLPService - Category",
-    "nlp-sentiment-twitter": "NLPService - Sentiment Twitter",
-    "worker": "App worker",
-    "worker-test": "App worker test"
+    "app-east": {
+      "desc": "App web, east cluster",
+      "cluster": "app-east",
+      "pod": "meteor/web"
+    },
+    "app-west": {
+      "desc": "App web, west cluster",
+      "cluster": "app-west",
+      "pod": "meteor/web"
+    },
+    "apptest-east": {
+      "desc": "App web, test cluster (east)",
+      "cluster": "apptest-east",
+      "pod": "meteor/web"
+    },
+    "apptest-west": {
+      "desc": "App web, test cluster (west)",
+      "cluster": "apptest-west",
+      "pod": "meteor/web"
+    },
+    "cs": {
+      "desc": "Crowdsourcing",
+      "cluster": "panoramix-2206",
+      "pod": "meteor/cs"
+    },
+    "cs-test": {
+      "desc": "Crowdsourcing test",
+      "cluster": "panoramix-2206",
+      "pod": "meteor/cs"
+    },
+    "worker": {
+      "desc": "App worker",
+      "cluster": "worker-2206",
+      "pod": "meteor/worker"
+    },
+    "worker-test": {
+      "desc": "App worker test",
+      "cluster": "apptest-east",
+      "pod": "meteor/worker"
+    }
   }
 }

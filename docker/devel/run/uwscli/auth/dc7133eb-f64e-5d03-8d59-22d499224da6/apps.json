@@ -1,7 +1,11 @@
 {
   "uid": "dc7133eb-f64e-5d03-8d59-22d499224da6",
   "build": {
-    "app": "App"
+    "app": {
+      "desc": "App",
+      "cluster": "",
+      "pod": ""
+    }
   },
   "build_command": "app-build",
   "commands": [
@@ -15,6 +19,10 @@
     "app-top"
   ],
   "deploy": {
-    "app-test": "App test"
+    "app-test": {
+      "desc": "App test",
+      "cluster": "ktest",
+      "pod": "pod/test"
+    }
   }
 }

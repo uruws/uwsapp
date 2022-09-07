@@ -6,14 +6,14 @@
 <div class="w3-margin-top">
 {% if apps.build %}
 	<p class="w3-center"><b>Build</b></p>
-	{% for app, desc in apps.build.items %}
+	{% for name, app in apps.build.items %}
 	<div class="w3-row w3-round-xlarge uws-hover-grey">
 		<div class="w3-padding">
 			<div class="w3-third w3-text-blue">
-				<a href="{% url 'app-build' app %}">{{ app }}</a>
+				<a href="{% url 'app-build' name %}">{{ name }}</a>
 			</div>
 			<div class="w3-twothird">
-				<span>{{ desc }}</span>
+				<span>{{ app.desc }}</span>
 			</div>
 		</div>
 	</div>
@@ -21,14 +21,14 @@
 {% endif %}
 {% if apps.deploy %}
 	<p class="w3-center"><b>Deploy</b></p>
-	{% for app, desc in apps.deploy.items %}
+	{% for name, app in apps.deploy.items %}
 	<div class="w3-row w3-round-xlarge uws-hover-grey">
 		<div class="w3-padding">
 			<div class="w3-third w3-text-blue">
-				<a href="{% url 'app-control' app 'status' %}">{{ app }}</a>
+				<a href="{% url 'app-control' name 'status' %}">{{ name }}</a>
 			</div>
 			<div class="w3-twothird">
-				<span>{{ desc }}</span>
+				<span>{{ app.desc }}</span>
 			</div>
 		</div>
 	</div>

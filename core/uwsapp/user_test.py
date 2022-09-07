@@ -50,7 +50,13 @@ class UserTest(unittest.TestCase):
 				'app-status',
 				'app-top',
 			],
-			'deploy': {'app-test': 'App test'},
+			'deploy': {
+				'app-test': {
+					'desc': 'App test',
+					'cluster': 'ktest',
+					'pod': 'pod/test',
+				},
+			},
 			'uid': 'dc7133eb-f64e-5d03-8d59-22d499224da6',
 		})
 
