@@ -112,7 +112,7 @@ class AuthBackendTest(ApiViewTestCase):
 		u.save()
 		uid = 'dc7133eb-f64e-5d03-8d59-22d499224da6'
 		fn = _authd / uid / 'meta.json'
-		u = backend._load_user(uid, fn, 'uwstest@uwsapp.localhost')
+		u = backend._load_user(uid, fn, 'uwstest@localhost')
 		t.assertIsNone(u)
 
 	def test_load_user_invalid(t):
