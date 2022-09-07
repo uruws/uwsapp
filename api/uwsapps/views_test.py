@@ -37,7 +37,7 @@ class AppsViewsTest(ApiViewTestCase):
 
 	def test_app_info(t):
 		resp = t.uwsapi_post('/apps/app-test/info', {})
-		# ~ t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.assertEqual(resp.status_code, HTTPStatus.OK)
 		t.maxDiff = None
 		t.assertDictEqual(resp.json(), {
 			'cluster': 'ktest',
@@ -56,3 +56,9 @@ class AppsViewsTest(ApiViewTestCase):
 			t.assertEqual(resp.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 		finally:
 			views.user.apps = bup
+
+	def test_app_info_app_not_found(t):
+		resp = t.uwsapi_post('/apps/invalid/info', {})
+		t.assertEqual(resp.status_code, HTTPStatus.BAD_REQUEST)
+		t.maxDiff = None
+		t.assertDictEqual(resp.json(), {})
