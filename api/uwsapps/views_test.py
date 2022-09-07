@@ -39,7 +39,12 @@ class AppsViewsTest(ApiViewTestCase):
 		resp = t.uwsapi_post('/apps/app-test/info', {})
 		# ~ t.assertEqual(resp.status_code, HTTPStatus.OK)
 		t.maxDiff = None
-		t.assertDictEqual(resp.json(), {})
+		t.assertDictEqual(resp.json(), {
+			'cluster': 'ktest',
+			'desc': 'App test',
+			'name': 'app-test',
+			'pod': 'pod/test',
+		})
 
 	# ~ def test_index_user_error(t):
 		# ~ def _user_error(*args, **kwargs):
