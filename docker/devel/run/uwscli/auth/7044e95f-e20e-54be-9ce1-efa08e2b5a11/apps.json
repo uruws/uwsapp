@@ -2,16 +2,24 @@
   "uid": "7044e95f-e20e-54be-9ce1-efa08e2b5a11",
   "build": {
     "app": {
-      "desc": "App web and workers"
+      "desc": "App web and workers",
+      "cluster": "None",
+      "pod": "None"
     },
     "cs": {
-      "desc": "Crowdsourcing"
+      "desc": "Crowdsourcing",
+      "cluster": "None",
+      "pod": "None"
     },
     "infra-ui": {
-      "desc": "Infra-UI"
+      "desc": "Infra-UI",
+      "cluster": "None",
+      "pod": "None"
     },
     "nlpsvc": {
-      "desc": "NLPService"
+      "desc": "NLPService",
+      "cluster": "None",
+      "pod": "None"
     }
   },
   "build_command": "app-build",

@@ -41,8 +41,8 @@ class UserTest(unittest.TestCase):
 			'build': {
 				'app': {
 					'desc': 'App',
-					'cluster': '',
-					'pod': '',
+					'cluster': 'None',
+					'pod': 'None',
 				},
 			},
 			'build_command': 'app-build',
