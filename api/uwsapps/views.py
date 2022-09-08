@@ -28,15 +28,21 @@ class Index(ApiView):
 class AppInfo(ApiView):
 
 	def post(v, req, name):
+		username = v.uwsapi_username()
 		log.debug('app:', name)
+		log.debug('username:', username)
 		try:
-			apps = user.apps(v.uwsapi_username())
+			apps = user.apps(username)
 		except user.Error as err:
-			log.error(err)
+			log.error(username, err)
 			return v.uwsapi_internal_error()
 		d = apps.get('deploy', {}).get(name, {})
 		if not d:
-			log.error(f"app {name}: not found")
+			log.error(f"{username} app {name}: not found")
 			return v.uwsapi_bad_request({})
 		d['name'] = name
+		d['commands'] = []
+		for cmd in apps.get('commands', []):
+			if cmd.startswith('app-'):
+				d['commands'].append(cmd[4:])
 		return v.uwsapi_resp(d)
