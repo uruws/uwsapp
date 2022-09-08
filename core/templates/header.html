@@ -9,7 +9,7 @@
 	<div class="w3-bar-item w3-right w3-text-green">
 		<span class="w3-small">{% now 'DATETIME_FORMAT' %}</span>
 	</div>
-	<div class="w3-bar-item w3-right w3-btn {% if title == 'user' %}w3-blue{% endif %}">
+	<div class="w3-bar-item w3-right w3-btn {% if navbar_id == 'user' %}w3-blue{% endif %}">
 		<a href="{% url 'user' %}">{{ user.name }}</a>
 	</div>
 </div>
@@ -22,7 +22,7 @@
 
 {% if title_desc %}
 <!-- page title -->
-<div class="w3-padding-small w3-blue w3-text-black w3-center">
+<div class="w3-padding-small w3-blue w3-center">
 	<b>{{ title_desc }}</b>
 </div>
 {% endif %}

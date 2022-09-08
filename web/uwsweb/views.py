@@ -109,6 +109,8 @@ class WebView(TemplateView):
 		return u
 
 	def uwsweb_data(v, d):
+		if d.get('navbar_id', '') == '':
+			d['navbar_id'] = d['title'].strip()
 		if v.uwsapi_calls:
 			d['apicalls'] = v.__api_calls
 		d['took'] = '%.6f' % (time() - v.__start)

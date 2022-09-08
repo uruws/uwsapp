@@ -54,6 +54,7 @@ class AppView(WebView):
 		return v.uwsapi_parse_response(resp)
 
 	def uwsapp_data(v, d, appname, action):
+		d['navbar_id'] = 'apps'
 		try:
 			d['app'] = v.__app(appname)
 		except ApiError as err:
