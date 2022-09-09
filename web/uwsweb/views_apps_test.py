@@ -24,6 +24,20 @@ class WebAppsViewsTest(AuthViewTestCase):
 		t.assertDictEqual(resp.context_data['apps'], {})
 
 	#
+	# Apps Build
+	#
+
+	def test_apps_build(t):
+		resp = None
+		with t.uwsapi_user():
+			resp = t.client.get('/apps/build')
+		t.assertEqual(resp.status_code,              HTTPStatus.OK)
+		t.assertEqual(resp.template_name[0],         'uwsapps/build-index.html')
+		t.assertEqual(resp.headers['content-type'],  'text/html; charset=utf-8')
+		t.assertEqual(resp.context_data['title'],    'apps build')
+		t.assertDictEqual(resp.context_data['apps'], {})
+
+	#
 	# App Build
 	#
 
@@ -48,7 +62,7 @@ class WebAppsViewsTest(AuthViewTestCase):
 		t.assertEqual(resp.status_code,                HTTPStatus.OK)
 		t.assertEqual(resp.template_name[0],           'uwsapps/control.html')
 		t.assertEqual(resp.headers['content-type'],    'text/html; charset=utf-8')
-		t.assertEqual(resp.context_data['title'],      'app status: testing')
+		t.assertEqual(resp.context_data['title'],      'app-status testing')
 		t.assertEqual(resp.context_data['title_desc'], 'App Status: testing')
 
 	#
