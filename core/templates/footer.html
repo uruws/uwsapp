@@ -2,26 +2,28 @@
 {% if template_name %}
 <hr class="w3-border-dark-grey">
 <div class="w3-padding w3-text-dark-grey">
-<div class="w3-small w3-margin-bottom">
-
-	<a href="https://github.com/TalkingPts/InfraApp/blob/master/web/templates/{{ template_name }}" target="_blank">{{ template_name }}</a>
+<div class="w3-small">
+	<div class="w3-hover-text-grey">
+		<a  target="_blank"
+			href="https://github.com/TalkingPts/InfraApp/blob/master/web/templates/{{ template_name }}">{{ template_name }}</a>
 	- took {{ took }}s<br>
-
+	</div>
 	{% if apicalls %}
 	<!-- api calls -->
-	<br>
-	<span><b>API calls:</b></span>
+	<div class="w3-margin-top w3-hover-text-grey">
+		<span><b>API calls:</b></span>
 	{% for idx, call in apicalls.items %}
-	<form method="post" action="{% url 'api' %}">
-		{% csrf_token %}
-		<input type="hidden" name="api_endpoint" value="{{ call.uri }}">
-		<input type="hidden" name="api_params_b64" value="{{ call.data }}">
-		<input class="w3-button w3-round-xlarge w3-hover-dark-grey" type="submit" value="{{ call.uri }}">
-		<span>{{ call.took }}s</span>
-	</form>
+		<form method="post" action="{% url 'api' %}">
+			{% csrf_token %}
+			<input type="hidden" name="api_endpoint" value="{{ call.uri }}">
+			<input type="hidden" name="api_params_b64" value="{{ call.data }}">
+			<input class="w3-button w3-round-xlarge w3-hover-dark-grey"
+				type="submit" value="{{ call.uri }}">
+			<span>{{ call.took }}s</span>
+		</form>
 	{% endfor %}
+	</div>
 	{% endif %}
-
 	<!--
 	Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>.
 	See https://github.com/TalkingPts/InfraApp/blob/master/LICENSE file.
