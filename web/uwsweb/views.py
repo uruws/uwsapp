@@ -18,12 +18,13 @@ from uwsapp.api import ApiClient
 from uwsapp.api import ApiError
 
 _navbar = [
-	# title     url name
-	('jobs',    'nq_logs'),
-	('app-ctl', 'appctl_logs'),
-	('uwsq',    'uwsq_logs'),
-	('apps',    'apps'),
-	('api',     'api'),
+	# title   url name
+	('jobs',  'nq_logs'),
+	('ctl',   'appctl_logs'),
+	('uwsq',  'uwsq_logs'),
+	('apps',  'apps'),
+	('build', 'apps-build'),
+	('api',   'api'),
 ]
 
 #

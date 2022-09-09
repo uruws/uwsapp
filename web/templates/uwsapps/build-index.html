@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<!-- uwsapps/index.html -->
+<!-- uwsapps/build-index.html -->
 
 {% if apps %}
 <div class="w3-margin-top">
-{% if apps.deploy %}
-	{% for name, app in apps.deploy.items %}
+{% if apps.build %}
+	{% for name, app in apps.build.items %}
 	<div class="w3-row w3-round-xlarge uws-hover-grey">
 		<div class="w3-padding">
 			<div class="w3-third w3-text-blue">
-				<a href="{% url 'app-home' name %}">{{ name }}</a>
+				<a href="{% url 'app-build' name %}">{{ name }}</a>
 			</div>
 			<div class="w3-twothird">
 				<span>{{ app.desc }}</span>
@@ -21,5 +21,5 @@
 </div>
 {% endif %}
 
-<!-- uwsapps/index.html -->
+<!-- uwsapps/build-index.html -->
 {% endblock %}

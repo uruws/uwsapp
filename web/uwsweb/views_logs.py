@@ -27,6 +27,7 @@ class AppCtl(WebView):
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
+		d['navbar_id']  = 'ctl'
 		d['title']      = 'app-ctl'
 		d['title_desc'] = 'App Control'
 		try:
