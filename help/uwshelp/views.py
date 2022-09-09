@@ -9,10 +9,11 @@ from django.views.decorators.cache import cache_control
 
 from markdown2 import markdown_path # type: ignore
 
+from uwsapp import config
 from uwsapp import log
 
 @method_decorator(
-	cache_control(max_age = 5, must_revalidate = True, private = True, stale_if_error = True),
+	cache_control(**config.CACHE_CONTROL()),
 	name = 'dispatch',
 )
 class HelpView(TemplateView):

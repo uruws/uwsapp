@@ -4,6 +4,7 @@
 from os           import getenv
 from pathlib      import Path
 from subprocess   import getoutput
+from typing       import Union
 from urllib.parse import urljoin
 
 from uwsapp import log
@@ -57,6 +58,14 @@ def URL(path: str = '') -> str:
 	if _url_base == '':
 		return path
 	return urljoin(_url_base, path)
+
+def CACHE_CONTROL() -> dict[str, Union[bool, int]]:
+	return {
+		'max_age':         int(_getenv('UWSAPP_CACHE_MAX_AGE', '5')),
+		'must_revalidate': _getenv('UWSAPP_CACHE_REVALIDATE',  'on') == 'on',
+		'private':         _getenv('UWSAPP_CACHE_PRIVATE',     'on') == 'on',
+		'stale_if_error':  _getenv('UWSAPP_CACHE_ERROR_STALE', 'on') == 'on',
+	}
 
 # api
 
