@@ -41,6 +41,16 @@ class AppsViewsTest(ApiViewTestCase):
 		t.maxDiff = None
 		t.assertDictEqual(resp.json(), {
 			'cluster': 'ktest',
+			'commands': [
+				'deploy',
+				'events',
+				'logs',
+				'restart',
+				'rollin',
+				'scale',
+				'status',
+				'top',
+			],
 			'desc': 'App test',
 			'name': 'app-test',
 			'pod': 'pod/test',
