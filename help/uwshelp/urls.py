@@ -17,7 +17,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.contrib import admin
+# ~ from django.contrib import admin
 from django.urls    import include
 from django.urls    import path
 
@@ -26,7 +26,7 @@ from uwsapp.config import URL
 from . import views
 
 urlpatterns = [
-	path(URL('admin/'), admin.site.urls),
+	# ~ path(URL('admin/'), admin.site.urls),
 	path(URL('<path:path>'), views.Help.as_view(), name = 'help'),
 	path(URL(''), views.Index.as_view(), name = 'help-index'),
 ]
