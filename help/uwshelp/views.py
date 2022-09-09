@@ -4,17 +4,26 @@
 from django.conf          import settings
 from django.views.generic import TemplateView
 
+from django.utils.decorators       import method_decorator
+from django.views.decorators.cache import cache_control
+
 from markdown2 import markdown_path # type: ignore
 
 from uwsapp import log
+
+@method_decorator(
+	cache_control(max_age = 5, must_revalidate = True, private = True, stale_if_error = True),
+	name = 'dispatch',
+)
+class HelpView(TemplateView):
+	http_method_names = ['get', 'head']
 
 #
 # Index
 #
 
-class Index(TemplateView):
+class Index(HelpView):
 	template_name = 'uwshelp/index.html'
-	http_method_names = ['get', 'head']
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -31,9 +40,8 @@ def _docslist(section: str) -> list[str]:
 # Help
 #
 
-class Help(TemplateView):
+class Help(HelpView):
 	template_name = 'uwshelp/doc.html'
-	http_method_names = ['get', 'head']
 	__path = ''
 
 	def dispatch(v, req, *args, **kwargs):
