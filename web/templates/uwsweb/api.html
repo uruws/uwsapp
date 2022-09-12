@@ -4,17 +4,24 @@
 
 {% if api_response %}
 <p class="w3-center"><b>Response</b></p>
-<pre class="w3-container w3-text-green">
-{{ api_response.url }}
+<div class="w3-container w3-black w3-text-green">
+
+<pre>{{ api_response.url }}
 
 {{ api_response.protocol }} {{ api_response.status }}
 Date: {{ api_response.date }}
 Content-Type: {{ api_response.content_type }}
-
-{{ api_response.content }}
-
-Took: {{ api_response.took }}s
 </pre>
+
+<textarea class="w3-black w3-text-green w3-border-0"
+	rows="{{ api_response_rows }}" style="display:block;width:100%;"
+	wrap="hard" readonly
+>{{ api_response.content }}
+</textarea>
+
+<pre>Took: {{ api_response.took }}s</pre>
+
+</div>
 <hr class="w3-border-dark-grey">
 {% endif %}
 
@@ -33,7 +40,7 @@ Took: {{ api_response.took }}s
 	<label>POST data in json format</label>
 	<textarea
 		class="w3-padding w3-black w3-border w3-border-green w3-text-green"
-		style="display:block;width:100%;height:300px"
+		style="display:block;width:100%" rows="3" wrap="hard"
 		name="api_params">{{ api_params }}</textarea>
 	<span>* session value will be added automatically</span><br>
 

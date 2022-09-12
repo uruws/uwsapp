@@ -31,6 +31,11 @@ class Api(WebView):
 		d['api_params']   = v.__params.strip()
 		v.__params = '{}'
 		d['api_response'] = v.__resp.copy()
+		try:
+			d['api_response_rows'] = d['api_response']['content'].count('\n')
+			d['api_response_rows'] *= 2
+		except KeyError:
+			d['api_response_rows'] = 0
 		v.__resp.clear()
 		return v.uwsweb_data(d)
 
