@@ -94,6 +94,14 @@ def API_KEYPASS() -> str:
 		k = ''
 	return k.strip()
 
+_apiurl: dict[str, str] = {
+	'apps':      '/apps/',
+	'apps-info': '/apps/{name}/info',
+}
+
+def apiurl(name, default = '') -> str:
+	return _apiurl.get(name, default).strip()
+
 # cli
 
 def CLI_HOST() -> str:

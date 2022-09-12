@@ -4,6 +4,7 @@
 from uwsweb.views import ApiError
 from uwsweb.views import WebView
 
+from uwsapp import config
 from uwsapp import log
 
 #
@@ -25,7 +26,7 @@ class Apps(WebView):
 		return v.uwsweb_data(d)
 
 	def _apps(v): # pragma: no cover
-		resp = v.uwsapi_post('/apps/', {})
+		resp = v.uwsapi_post(config.apiurl('apps', '/apps/'), {})
 		return v.uwsapi_parse_response(resp)
 
 #
@@ -48,7 +49,7 @@ class AppsBuild(WebView):
 		return v.uwsweb_data(d)
 
 	def _apps(v): # pragma: no cover
-		resp = v.uwsapi_post('/apps/', {})
+		resp = v.uwsapi_post(config.apiurl('apps', '/apps/'), {})
 		return v.uwsapi_parse_response(resp)
 
 #
@@ -74,7 +75,8 @@ class AppBuild(WebView):
 class AppView(WebView):
 
 	def __app(v, name): # pragma: no cover
-		resp = v.uwsapi_post(f"/apps/{name}/info", {})
+		url = config.apiurl('apps-info', '/apps/{name}/info')
+		resp = v.uwsapi_post(url.format(name = name), {})
 		return v.uwsapi_parse_response(resp)
 
 	def uwsapp_data(v, d, appname, action):
