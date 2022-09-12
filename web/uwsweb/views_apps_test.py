@@ -48,7 +48,7 @@ class WebAppsViewsTest(AuthViewTestCase):
 		t.assertEqual(resp.status_code,                HTTPStatus.OK)
 		t.assertEqual(resp.template_name[0],           'uwsapps/build.html')
 		t.assertEqual(resp.headers['content-type'],    'text/html; charset=utf-8')
-		t.assertEqual(resp.context_data['title'],      'app build: testing')
+		t.assertEqual(resp.context_data['title'],      'app-build testing')
 		t.assertEqual(resp.context_data['title_desc'], 'App Build: testing')
 
 	#
@@ -76,5 +76,5 @@ class WebAppsViewsTest(AuthViewTestCase):
 		t.assertEqual(resp.status_code,                HTTPStatus.OK)
 		t.assertEqual(resp.template_name[0],           'uwsapps/home.html')
 		t.assertEqual(resp.headers['content-type'],    'text/html; charset=utf-8')
-		t.assertEqual(resp.context_data['title'],      'app: testing')
+		t.assertEqual(resp.context_data['title'],      'testing')
 		t.assertEqual(resp.context_data['title_desc'], 'App: testing')

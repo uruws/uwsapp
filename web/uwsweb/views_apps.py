@@ -64,7 +64,7 @@ class AppBuild(WebView):
 		log.debug('app build:', appname)
 		d = super().get_context_data(**kwargs)
 		d['navbar_id']  = 'build'
-		d['title']      = f"app build: {appname}"
+		d['title']      = f"app-build {appname}"
 		d['title_desc'] = f"App Build: {appname}"
 		return v.uwsweb_data(d)
 
@@ -100,7 +100,7 @@ class AppHome(AppView):
 		appname = kwargs.get('name', '')
 		log.debug('app:', appname)
 		d = super().get_context_data(**kwargs)
-		d['title'] = f"app: {appname}"
+		d['title'] = f"{appname}"
 		d['title_desc'] = f"App: {appname}"
 		return v.uwsapp_data(d, appname, 'home')
 
