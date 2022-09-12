@@ -5,6 +5,7 @@ from os         import environ
 from pathlib    import Path
 from subprocess import CalledProcessError
 from subprocess import check_output
+from subprocess import STDOUT
 
 from uwsapp import config
 from uwsapp import log
@@ -33,7 +34,8 @@ def _setenv(user: str) -> dict[str, str]:
 def _check_output(user: str, cmd: str) -> tuple[str, str]:
 	st = 'ok'
 	try:
-		out = check_output(cmd, shell = True, env = _setenv(user)).decode('utf-8').strip()
+		out = check_output(cmd, stderr = STDOUT, shell = True,
+			env = _setenv(user)).decode('utf-8').strip()
 	except CalledProcessError as err:
 		log.error(err)
 		st = 'error'

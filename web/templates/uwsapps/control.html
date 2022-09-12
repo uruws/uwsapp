@@ -2,5 +2,16 @@
 {% block content %}
 <!-- uwsapps/control.html -->
 {% include "uwsapps/header.html" %}
+{% if app_action_response %}
+<div class="w3-container">
+{% if app_action_response.status == 'error' %}
+<p class="w3-center w3-red"><b>ERROR</b></p>
+<pre class="w3-text-red">{{ app_action_response.output }}</pre>
+{% else %}
+<pre class="w3-text-green">{{ app_action_response.output }}</pre>
+{% endif %}
+</div>
+{% endif %}
+
 <!-- uwsapps/control.html -->
 {% endblock %}

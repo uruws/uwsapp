@@ -8,6 +8,26 @@ from uwsapp import config
 from uwsapp import log
 
 #
+# utils
+#
+
+_apicmd_url  = config.apiurl('exec', '/exec/')
+
+def _apicmd(v, d, name, app):
+	url = _apicmd_url.format(name = app, command = name)
+	d['app_action'] = name
+	try:
+		args = {
+			'app':     app,
+			'command': name,
+		}
+		resp = v.uwsapi_post(url, args)
+		d['app_action_response'] = v.uwsapi_parse_response(resp)
+	except ApiError as err:
+		v.uwsweb_msg_error(str(err))
+		d['app_action_response'] = {}
+
+#
 # Apps
 #
 
@@ -120,4 +140,5 @@ class AppControl(AppView):
 		log.debug(f"app-{action}", appname)
 		d['title']      = f"app-{action} {appname}"
 		d['title_desc'] = f"App {action.title()}: {appname}"
+		_apicmd(v, d, action, appname)
 		return v.uwsapp_data(d, appname, action)

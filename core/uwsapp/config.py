@@ -97,6 +97,7 @@ def API_KEYPASS() -> str:
 _apiurl: dict[str, str] = {
 	'apps':               '/apps/',
 	'apps-info':          '/apps/{name}/info',
+	'exec':               '/exec/',
 	'logs-app-ctl':       '/logs/app-ctl',
 	'logs-nq-index':      '/logs/nq/index',
 	'logs-uwsq':          '/logs/uwsq',
