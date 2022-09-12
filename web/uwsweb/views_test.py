@@ -109,29 +109,37 @@ class WebViewsTest(WebViewTestCase):
 			v.uwsweb_msg_error('testing_error')
 			m.mock.error.assert_called_once_with(None, 'testing_error')
 
+	def test_cache_control(t):
+		with t.uwsweb_user():
+			resp = t.client.get('/')
+			t.assertEqual(resp.status_code,              HTTPStatus.FOUND)
+			t.assertEqual(resp.headers['content-type'],  'text/html; charset=utf-8')
+			t.assertEqual(resp.headers['cache-control'],
+				'max-age=5, must-revalidate, private, stale-if-error')
+
 	def test_index_nologin(t):
 		resp = t.client.get('/')
-		t.assertEqual(resp.status_code, HTTPStatus.FOUND)
+		t.assertEqual(resp.status_code,             HTTPStatus.FOUND)
 		t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
-		t.assertEqual(resp.headers['location'], "/%s?next=/" % config.URL('auth/login'))
+		t.assertEqual(resp.headers['location'],     "/%s?next=/" % config.URL('auth/login'))
 
 	def test_index_redirect(t):
 		with t.uwsweb_user():
 			resp = t.client.get('/')
-			t.assertEqual(resp.status_code, HTTPStatus.FOUND)
+			t.assertEqual(resp.status_code,             HTTPStatus.FOUND)
 			t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
-			t.assertEqual(resp.headers['location'], '/logs/nq')
+			t.assertEqual(resp.headers['location'],     '/logs/nq')
 
 	def test_invalid_method(t):
 		with t.uwsweb_user():
 			resp = t.client.post('/', {})
-			t.assertEqual(resp.status_code, HTTPStatus.METHOD_NOT_ALLOWED)
+			t.assertEqual(resp.status_code,             HTTPStatus.METHOD_NOT_ALLOWED)
 			t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
 
 	def test_user(t):
 		with t.uwsweb_user():
 			resp = t.client.get('/user')
-			t.assertEqual(resp.status_code, HTTPStatus.OK)
+			t.assertEqual(resp.status_code,             HTTPStatus.OK)
 			t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
-			t.assertEqual(resp.template_name[0], 'uwsweb/user.html')
-			t.assertEqual(resp.context_data['title'], 'user')
+			t.assertEqual(resp.template_name[0],        'uwsweb/user.html')
+			t.assertEqual(resp.context_data['title'],   'user')

@@ -15,6 +15,13 @@ class HelpViewsTests(TestCase):
 	def tearDown(t):
 		log_test.mock_teardown()
 
+	def test_cache_control(t):
+		resp = t.client.get('/')
+		t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.assertEqual(resp.headers['content-type'],  'text/html; charset=utf-8')
+		t.assertEqual(resp.headers['cache-control'],
+			'max-age=5, must-revalidate, private, stale-if-error')
+
 	def test_index(t):
 		resp = t.client.get('/')
 		t.assertEqual(resp.status_code, HTTPStatus.OK)

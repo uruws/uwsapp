@@ -17,6 +17,12 @@ class Test(unittest.TestCase):
 		t.assertEqual(config.DBDIR().as_posix(), '/var/opt/uwsapp')
 		t.assertEqual(config.DBNAME(), 'app.db')
 		t.assertEqual(config._url_base, '')
+		t.assertDictEqual(config.CACHE_CONTROL(), {
+			'max_age':         5,
+			'must_revalidate': True,
+			'private':         True,
+			'stale_if_error':  True,
+		})
 
 	def test_secrets(t):
 		t.assertEqual(len(config.SECRET_KEY()), 64)

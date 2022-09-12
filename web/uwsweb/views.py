@@ -7,6 +7,9 @@ from django.contrib       import messages
 from django.shortcuts     import redirect
 from django.views.generic import TemplateView
 
+from django.utils.decorators       import method_decorator
+from django.views.decorators.cache import cache_control
+
 from base64  import b64encode
 from pathlib import Path
 from time    import time
@@ -16,6 +19,10 @@ from uwsapp import log
 
 from uwsapp.api import ApiClient
 from uwsapp.api import ApiError
+
+#
+# navbar
+#
 
 _navbar = [
 	# title   url name
@@ -31,6 +38,10 @@ _navbar = [
 # WebView
 #
 
+@method_decorator(
+	cache_control(**config.CACHE_CONTROL()),
+	name = 'dispatch',
+)
 class WebView(TemplateView):
 	http_method_names           = ['get', 'head']
 	__start                     = None
