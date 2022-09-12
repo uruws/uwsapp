@@ -13,6 +13,7 @@ from uwsapp import log
 
 class Apps(WebView):
 	template_name = 'uwsapps/index.html'
+	__url         = config.apiurl('apps', '/apps/')
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -26,7 +27,7 @@ class Apps(WebView):
 		return v.uwsweb_data(d)
 
 	def _apps(v): # pragma: no cover
-		resp = v.uwsapi_post(config.apiurl('apps', '/apps/'), {})
+		resp = v.uwsapi_post(v.__url, {})
 		return v.uwsapi_parse_response(resp)
 
 #
@@ -35,6 +36,7 @@ class Apps(WebView):
 
 class AppsBuild(WebView):
 	template_name = 'uwsapps/build-index.html'
+	__url         = config.apiurl('apps', '/apps/')
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -49,7 +51,7 @@ class AppsBuild(WebView):
 		return v.uwsweb_data(d)
 
 	def _apps(v): # pragma: no cover
-		resp = v.uwsapi_post(config.apiurl('apps', '/apps/'), {})
+		resp = v.uwsapi_post(v.__url, {})
 		return v.uwsapi_parse_response(resp)
 
 #
@@ -60,9 +62,9 @@ class AppBuild(WebView):
 	template_name = 'uwsapps/build.html'
 
 	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
 		appname = kwargs.get('name', '')
 		log.debug('app build:', appname)
-		d = super().get_context_data(**kwargs)
 		d['navbar_id']  = 'build'
 		d['title']      = f"app-build {appname}"
 		d['title_desc'] = f"App Build: {appname}"
@@ -73,10 +75,10 @@ class AppBuild(WebView):
 #
 
 class AppView(WebView):
+	__url = config.apiurl('apps-info', '/apps/{name}/info')
 
 	def __app(v, name): # pragma: no cover
-		url = config.apiurl('apps-info', '/apps/{name}/info')
-		resp = v.uwsapi_post(url.format(name = name), {})
+		resp = v.uwsapi_post(v.__url.format(name = name), {})
 		return v.uwsapi_parse_response(resp)
 
 	def uwsapp_data(v, d, appname, action):
@@ -97,9 +99,9 @@ class AppHome(AppView):
 	template_name = 'uwsapps/home.html'
 
 	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
 		appname = kwargs.get('name', '')
 		log.debug('app:', appname)
-		d = super().get_context_data(**kwargs)
 		d['title'] = f"{appname}"
 		d['title_desc'] = f"App: {appname}"
 		return v.uwsapp_data(d, appname, 'home')
@@ -112,10 +114,10 @@ class AppControl(AppView):
 	template_name = 'uwsapps/control.html'
 
 	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
 		appname = kwargs.get('name', '')
 		action = kwargs.get('action', '')
-		log.debug('app:', appname, '- action:', action)
-		d = super().get_context_data(**kwargs)
+		log.debug(f"app-{action}", appname)
 		d['title']      = f"app-{action} {appname}"
 		d['title_desc'] = f"App {action.title()}: {appname}"
 		return v.uwsapp_data(d, appname, action)
