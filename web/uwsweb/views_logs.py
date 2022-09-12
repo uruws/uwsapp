@@ -1,11 +1,14 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+from uwsapp import config
+
 from uwsweb.views import ApiError
 from uwsweb.views import WebView
 
 class NQ(WebView):
 	template_name = 'uwslogs/nq.html'
+	__url         = config.apiurl('logs-nq-index', '/logs/nq/index')
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -19,11 +22,12 @@ class NQ(WebView):
 		return v.uwsweb_data(d)
 
 	def _jobs(v): # pragma: no cover
-		resp = v.uwsapi_post('/logs/nq/index', {})
+		resp = v.uwsapi_post(v.__url, {})
 		return v.uwsapi_parse_response(resp)
 
 class AppCtl(WebView):
 	template_name = 'uwslogs/index.html'
+	__url         = config.apiurl('logs-app-ctl', '/logs/app-ctl')
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -38,11 +42,12 @@ class AppCtl(WebView):
 		return v.uwsweb_data(d)
 
 	def _app_ctl(v): # pragma: no cover
-		resp = v.uwsapi_post('/logs/app-ctl', {})
+		resp = v.uwsapi_post(v.__url, {})
 		return v.uwsapi_parse_response(resp)
 
 class Uwsq(WebView):
 	template_name = 'uwslogs/index.html'
+	__url         = config.apiurl('logs-uwsq', '/logs/uwsq')
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -56,5 +61,5 @@ class Uwsq(WebView):
 		return v.uwsweb_data(d)
 
 	def _uwsq(v): # pragma: no cover
-		resp = v.uwsapi_post('/logs/uwsq', {})
+		resp = v.uwsapi_post(v.__url, {})
 		return v.uwsapi_parse_response(resp)

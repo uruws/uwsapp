@@ -95,8 +95,12 @@ def API_KEYPASS() -> str:
 	return k.strip()
 
 _apiurl: dict[str, str] = {
-	'apps':      '/apps/',
-	'apps-info': '/apps/{name}/info',
+	'apps':               '/apps/',
+	'apps-info':          '/apps/{name}/info',
+	'logs-app-ctl':       '/logs/app-ctl',
+	'logs-nq-index':      '/logs/nq/index',
+	'logs-uwsq':          '/logs/uwsq',
+	'ping':               '/ping',
 }
 
 def apiurl(name, default = '') -> str:

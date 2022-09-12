@@ -7,16 +7,19 @@ from base64 import b64decode
 from http   import HTTPStatus
 from time   import time
 
+from uwsapp import config
 from uwsapp import log
 
 from .views import ApiError
 from .views import WebView
 
+_endpoint_default = '/api%s' % config.apiurl('ping', '/ping')
+
 class Api(WebView):
 	http_method_names      = ['get', 'head', 'post']
 	template_name          = 'uwsweb/api.html'
 	uwsapi_calls           = False
-	__endpoint             = '/api/ping'
+	__endpoint             = _endpoint_default
 	__params               = '{"session": "XXXXXXX"}'
 	__resp: dict[str, str] = {}
 
@@ -33,10 +36,10 @@ class Api(WebView):
 
 	def post(v, req):
 		# load params
-		v.__endpoint = req.POST.get('api_endpoint',   '/api/ping')
-		log.debug(v.__endpoint)
+		v.__endpoint = req.POST.get('api_endpoint',   _endpoint_default)
 		v.__params   = req.POST.get('api_params',     '{}')
 		params_b64   = req.POST.get('api_params_b64', '')
+		log.debug(v.__endpoint)
 		if v.__params == '{}' and params_b64 != '':
 			log.debug('params_b64:', params_b64)
 			v.__params = b64decode(params_b64).decode()
