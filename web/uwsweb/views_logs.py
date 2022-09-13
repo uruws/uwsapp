@@ -30,6 +30,34 @@ class NQ(WebView):
 		return v.uwsapi_parse_response(resp)
 
 #
+# nq tail
+#
+
+class NQTail(WebView):
+	template_name = 'uwslogs/nq-tail.html'
+	__url         = config.apiurl('logs-nq-tail', '/logs/nq/{jobid}/tail')
+
+	def get_context_data(v, **kwargs):
+		d = super().get_context_data(**kwargs)
+		jobid = kwargs.get('jobid', '')
+		if jobid == '':
+			log.error('no jobid')
+			return v.uwsapi_bad_request({})
+		d['navbar_id']  = 'jobs'
+		d['title']      = f"job {jobid}"
+		d['title_desc'] = f"Job: {jobid}"
+		try:
+			d['nqlog'] = v._jobs(jobid)
+		except ApiError as err:
+			v.uwsweb_msg_error(str(err))
+			d['nqlog'] = {}
+		return v.uwsweb_data(d)
+
+	def _jobs(v, jobid): # pragma: no cover
+		resp = v.uwsapi_post(v.__url.format(jobid = jobid), {})
+		return v.uwsapi_parse_response(resp)
+
+#
 # app-ctl
 #
 

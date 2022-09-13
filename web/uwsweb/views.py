@@ -26,9 +26,9 @@ from uwsapp.api import ApiError
 
 _navbar = [
 	# title   url name
-	('jobs',  'nq_logs'),
-	('ctl',   'appctl_logs'),
-	('uwsq',  'uwsq_logs'),
+	('jobs',  'nq-logs'),
+	('ctl',   'appctl-logs'),
+	('uwsq',  'uwsq-logs'),
 	('apps',  'apps'),
 	('build', 'apps-build'),
 	('api',   'api'),

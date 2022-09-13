@@ -100,6 +100,7 @@ _apiurl: dict[str, str] = {
 	'exec':               '/exec/',
 	'logs-app-ctl':       '/logs/app-ctl',
 	'logs-nq-index':      '/logs/nq/index',
+	'logs-nq-tail':       '/logs/nq/{jobid}/tail',
 	'logs-uwsq':          '/logs/uwsq',
 	'ping':               '/ping',
 }

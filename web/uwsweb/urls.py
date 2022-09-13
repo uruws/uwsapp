@@ -36,20 +36,24 @@ from .views_apps import AppHome
 
 from .views_logs import AppCtl
 from .views_logs import NQ
+from .views_logs import NQTail
 from .views_logs import Uwsq
 
 from django.contrib.auth.views import LoginView
 
 urlpatterns = [
+	# auth
 	path(URL('auth/login'),
 		LoginView.as_view(template_name = 'uwsweb/auth/login.html'),
 		name = 'login'),
 
+	# apps
 	path(URL('apps/build'),
 		AppsBuild.as_view(), name = 'apps-build'),
 	path(URL('apps'),
 		Apps.as_view(), name = 'apps'),
 
+	# app
 	path(URL('app/<slug:name>/build'),
 		AppBuild.as_view(), name = 'app-build'),
 	path(URL('app/<slug:name>/<slug:action>'),
@@ -57,9 +61,11 @@ urlpatterns = [
 	path(URL('app/<slug:name>'),
 		AppHome.as_view(), name = 'app-home'),
 
-	path(URL('logs/nq'),      NQ.as_view(),     name = 'nq_logs'),
-	path(URL('logs/uwsq'),    Uwsq.as_view(),   name = 'uwsq_logs'),
-	path(URL('logs/app-ctl'), AppCtl.as_view(), name = 'appctl_logs'),
+	# logs
+	path(URL('logs/nq/<jobid>/tail'), NQTail.as_view(), name = 'nq-logs-tail'),
+	path(URL('logs/nq'),              NQ.as_view(),     name = 'nq-logs'),
+	path(URL('logs/uwsq'),            Uwsq.as_view(),   name = 'uwsq-logs'),
+	path(URL('logs/app-ctl'),         AppCtl.as_view(), name = 'appctl-logs'),
 
 	path(URL('user'), User.as_view(), name = 'user'),
 	path(URL('api'),  Api.as_view(),  name = 'api'),
