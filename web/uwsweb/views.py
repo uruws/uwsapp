@@ -149,7 +149,7 @@ class Index(WebView):
 		# ~ return v.uwsweb_data(d)
 
 	def get(v, *args, **kwargs):
-		return v.uwsweb_redirect('nq_logs')
+		return v.uwsweb_redirect('nq-logs')
 
 #
 # User
