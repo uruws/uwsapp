@@ -10,6 +10,10 @@ from uwsapp import log
 from . import nqlog
 from . import syslog
 
+#
+# Index
+#
+
 class Index(ApiView):
 
 	def post(v, req, name = '') -> JsonResponse:
@@ -23,7 +27,25 @@ class Index(ApiView):
 			return v.uwsapi_internal_error()
 		return v.uwsapi_bad_request()
 
+#
+# NQ
+#
+
 class NQ(ApiView):
+
+	def post(v, req) -> JsonResponse:
+		try:
+			return v.uwsapi_resp(nqlog.jobs().all())
+		except Exception as err:
+			log.error(err)
+			return v.uwsapi_internal_error()
+		return v.uwsapi_bad_request()
+
+#
+# NQTail
+#
+
+class NQTail(ApiView):
 
 	def post(v, req, jobid = '') -> JsonResponse:
 		try:

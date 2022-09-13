@@ -6,6 +6,10 @@ from uwsapp import config
 from uwsweb.views import ApiError
 from uwsweb.views import WebView
 
+#
+# nq
+#
+
 class NQ(WebView):
 	template_name = 'uwslogs/nq.html'
 	__url         = config.apiurl('logs-nq-index', '/logs/nq/index')
@@ -24,6 +28,10 @@ class NQ(WebView):
 	def _jobs(v): # pragma: no cover
 		resp = v.uwsapi_post(v.__url, {})
 		return v.uwsapi_parse_response(resp)
+
+#
+# app-ctl
+#
 
 class AppCtl(WebView):
 	template_name = 'uwslogs/index.html'
@@ -44,6 +52,10 @@ class AppCtl(WebView):
 	def _app_ctl(v): # pragma: no cover
 		resp = v.uwsapi_post(v.__url, {})
 		return v.uwsapi_parse_response(resp)
+
+#
+# uwsq
+#
 
 class Uwsq(WebView):
 	template_name = 'uwslogs/index.html'
