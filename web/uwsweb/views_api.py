@@ -33,7 +33,7 @@ class Api(WebView):
 		d['api_response'] = v.__resp.copy()
 		try:
 			d['api_response_rows'] = d['api_response']['content'].count('\n')
-			d['api_response_rows'] *= 2
+			d['api_response_rows'] += 3 # pragma: no cover
 		except KeyError:
 			d['api_response_rows'] = 0
 		v.__resp.clear()

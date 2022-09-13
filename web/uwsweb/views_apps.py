@@ -23,9 +23,15 @@ def _apicmd(v, d, name, app):
 		}
 		resp = v.uwsapi_post(url, args)
 		d['app_action_response'] = v.uwsapi_parse_response(resp)
+		d['app_action_response_lines'] = d['app_action_response']['output'].count('\n')
+		d['app_action_response_lines'] += 3
 	except ApiError as err:
 		v.uwsweb_msg_error(str(err))
 		d['app_action_response'] = {}
+		d['app_action_response_lines'] = 0
+	except KeyError as err:
+		log.debug(err)
+		d['app_action_response_lines'] = 0
 
 #
 # Apps
