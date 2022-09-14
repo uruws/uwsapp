@@ -46,6 +46,11 @@ class ApiView(View):
 		resp.status_code = status
 		return resp
 
+	def uwsapi_not_found(v, data = {}) -> JsonResponse:
+		resp = JsonResponse(data)
+		resp.status_code = HTTPStatus.NOT_FOUND
+		return resp
+
 	def uwsapi_bad_request(v, data = {}) -> JsonResponse:
 		resp = JsonResponse(data)
 		resp.status_code = HTTPStatus.BAD_REQUEST
