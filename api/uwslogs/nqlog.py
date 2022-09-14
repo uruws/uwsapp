@@ -164,4 +164,4 @@ def tail(jobid: str, lines: int) -> JobTail:
 	log.debug(lines, p)
 	if not (p.is_file() and not p.is_symlink()):
 		raise NotFound(p.as_posix())
-	return JobTail(p, lines)
+	return JobTail(p.as_posix(), lines)
