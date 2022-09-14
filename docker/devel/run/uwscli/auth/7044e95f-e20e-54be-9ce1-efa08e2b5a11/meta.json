@@ -2,6 +2,6 @@
   "uid": "7044e95f-e20e-54be-9ce1-efa08e2b5a11",
   "name": "uwsdev",
   "username": "uwsdev@uwsapp.local",
-  "is_operator": false,
+  "is_operator": true,
   "is_admin": true
 }
