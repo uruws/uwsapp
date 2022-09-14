@@ -4,8 +4,8 @@
 import os
 
 from collections import deque
-from subprocess  import getstatusoutput
 from datetime    import datetime
+from subprocess  import getstatusoutput
 from time        import time
 
 from django.utils.timezone import make_aware
@@ -140,19 +140,28 @@ class NotFound(Exception):
 		return f"{e.__fn}: file not found"
 
 class JobTail(object):
-	__id: str
-	__fn: str = ''
+	__fn:    str = ''
+	__lines: int = 0
 
-	def __init__(j, jid: str):
-		j.__id = jid.strip()
-		p = config.CLI_NQDIR() / str(',%s' % j.__id)
-		j.__fn = p.as_posix()
-		log.debug(j.__fn)
-		if not (p.is_file() and not p.is_symlink()):
-			raise NotFound(j.__fn)
+	def __init__(j, fn: str, lines: int):
+		j.__fn    = fn
+		j.__lines = lines
 
 	def __str__(j):
 		return f"{j.__fn}"
 
-def tail(jobid: str) -> JobTail:
-	return JobTail(jobid)
+	def tail(j) -> str:
+		log.debug(j.__lines, j.__fn)
+		cmd = f"/usr/bin/tail -n {j.__lines} {j.__fn}"
+		st, out = _run(cmd)
+		if st != 0:
+			log.error(cmd, st, out)
+			return 'INTERNAL ERROR [%d]: %s' % (st, out.strip())
+		return out.strip()
+
+def tail(jobid: str, lines: int) -> JobTail:
+	p = config.CLI_NQDIR() / str(',%s' % jobid)
+	log.debug(lines, p)
+	if not (p.is_file() and not p.is_symlink()):
+		raise NotFound(p.as_posix())
+	return JobTail(p, lines)

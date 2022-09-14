@@ -48,13 +48,22 @@ class NQTail(ApiView):
 
 	def post(v, req, jobid = '') -> JsonResponse:
 		try:
-			job = nqlog.tail(jobid)
+			lines = int(req.POST.get('lines', '100'))
+		except ValueError as err:
+			log.debug(err)
+			lines = 100
+		try:
+			job = nqlog.tail(jobid, lines)
 		except nqlog.NotFound as err:
 			log.error(err)
 			return v.uwsapi_not_found()
 		except Exception as err:
 			log.error(err)
 			return v.uwsapi_internal_error()
-		d = v.uwsapi_resp({})
-		d['job'] = job
-		return d
+		t = job.tail()
+		return v.uwsapi_resp({
+			'jid':   jobid,
+			'tail':  t,
+			'rows':  t.count('\n') + 3,
+			'lines': str(lines),
+		})

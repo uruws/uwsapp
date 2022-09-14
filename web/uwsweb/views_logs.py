@@ -36,6 +36,11 @@ class NQ(WebView):
 class NQTail(WebView):
 	template_name = 'uwslogs/nq-tail.html'
 	__url         = config.apiurl('logs-nq-tail', '/logs/nq/{jobid}/tail')
+	__lines       = '100'
+
+	def dispatch(v, req, *args, **kwargs):
+		v.__lines = req.GET.get('lines', '100')
+		return super().dispatch(req, *args, **kwargs)
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
@@ -47,14 +52,14 @@ class NQTail(WebView):
 		d['title']      = f"job {jobid}"
 		d['title_desc'] = f"Job: {jobid}"
 		try:
-			d['nqlog'] = v._jobs(jobid)
+			d['job'] = v._job(jobid, v.__lines)
 		except ApiError as err:
 			v.uwsweb_msg_error(str(err))
-			d['nqlog'] = {}
+			d['job'] = {}
 		return v.uwsweb_data(d)
 
-	def _jobs(v, jobid): # pragma: no cover
-		resp = v.uwsapi_post(v.__url.format(jobid = jobid), {})
+	def _job(v, jobid, lines): # pragma: no cover
+		resp = v.uwsapi_post(v.__url.format(jobid = jobid), {'lines': lines})
 		return v.uwsapi_parse_response(resp)
 
 #
