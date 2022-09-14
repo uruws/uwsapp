@@ -48,9 +48,7 @@ class NQTail(ApiView):
 
 	def post(v, req, jobid = '') -> JsonResponse:
 		try:
-			if jobid == 'index':
-				return v.uwsapi_resp(nqlog.jobs().all())
+			return v.uwsapi_resp(nqlog.jobs().all())
 		except Exception as err:
 			log.error(err)
-			return v.uwsapi_internal_error()
-		return v.uwsapi_bad_request()
+		return v.uwsapi_internal_error()

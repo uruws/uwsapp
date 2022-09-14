@@ -88,6 +88,7 @@ class WebView(TemplateView):
 			v.__api_calls[cid] = {
 				'uri':  f"/api{uri}",
 				'data': b64encode(json.dumps(data).encode()).decode(),
+				'took': 0,
 			}
 			v.__next_call += 1
 		if session:
