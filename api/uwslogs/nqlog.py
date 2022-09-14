@@ -139,6 +139,8 @@ class NotFound(Exception):
 	def __str__(e):
 		return f"{e.__fn}: file not found"
 
+_tail_cmd = '/usr/bin/tail'
+
 class JobTail(object):
 	__fn:    str = ''
 	__lines: int = 0
@@ -152,7 +154,7 @@ class JobTail(object):
 
 	def tail(j) -> str:
 		log.debug(j.__lines, j.__fn)
-		cmd = f"/usr/bin/tail -n {j.__lines} {j.__fn}"
+		cmd = f"{_tail_cmd} -n {j.__lines} {j.__fn}"
 		st, out = _run(cmd)
 		if st != 0:
 			log.error(cmd, st, out)

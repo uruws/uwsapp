@@ -62,3 +62,15 @@ class NqlogTailTest(ApiViewTestCase):
 		resp = t.uwsapi_post('/logs/nq/invalid/tail', {})
 		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
 		t.assertDictEqual(resp.json(), {})
+
+	def test_job_tail_string(t):
+		j = nqlog.JobTail('testing.fn', 999)
+		t.assertEqual(str(j), 'testing.fn')
+
+	def test_job_tail_error(t):
+		try:
+			nqlog._tail_cmd = '/bin/false'
+			j = nqlog.JobTail('testing.fn', 999)
+			t.assertEqual(j.tail(), 'INTERNAL ERROR [1]: ')
+		finally:
+			nqlog._tail_cmd = '/usr/bin/tail'
