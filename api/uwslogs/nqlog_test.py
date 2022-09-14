@@ -57,3 +57,8 @@ class NqlogTailTest(ApiViewTestCase):
 			'rows':  3,
 			'tail':  'exec nq -c sleep 60',
 		})
+
+	def test_not_found(t):
+		resp = t.uwsapi_post('/logs/nq/invalid/tail', {})
+		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
+		t.assertDictEqual(resp.json(), {})
