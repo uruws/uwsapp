@@ -48,7 +48,13 @@ class NQTail(ApiView):
 
 	def post(v, req, jobid = '') -> JsonResponse:
 		try:
-			return v.uwsapi_resp(nqlog.jobs().all())
+			job = nqlog.tail(jobid)
+		except nqlog.NotFound as err:
+			log.error(err)
+			return v.uwsapi_not_found()
 		except Exception as err:
 			log.error(err)
-		return v.uwsapi_internal_error()
+			return v.uwsapi_internal_error()
+		d = v.uwsapi_resp({})
+		d['job'] = job
+		return d

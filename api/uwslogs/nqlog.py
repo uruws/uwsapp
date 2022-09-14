@@ -128,3 +128,31 @@ def jobs(nqdir: str = '') -> JobsInfo:
 		return i
 	_jobs(i, heads.splitlines())
 	return i
+
+class NotFound(Exception):
+	__fn = ''
+
+	def __init__(e, fn):
+		super().__init__(fn)
+		e.__fn = fn
+
+	def __str__(e):
+		return f"{e.__fn}: file not found"
+
+class JobTail(object):
+	__id: str
+	__fn: str = ''
+
+	def __init__(j, jid: str):
+		j.__id = jid.strip()
+		p = config.CLI_NQDIR() / str(',%s' % j.__id)
+		j.__fn = p.as_posix()
+		log.debug(j.__fn)
+		if not (p.is_file() and not p.is_symlink()):
+			raise NotFound(j.__fn)
+
+	def __str__(j):
+		return f"{j.__fn}"
+
+def tail(jobid: str) -> JobTail:
+	return JobTail(jobid)
