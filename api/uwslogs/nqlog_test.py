@@ -45,3 +45,15 @@ class NqlogTest(ApiViewTestCase):
 	def test_jobs_chdir_error(t):
 		i = nqlog.jobs(nqdir = '/not.found')
 		t.assertEqual(len(i), 0)
+
+class NqlogTailTest(ApiViewTestCase):
+
+	def test_index(t):
+		resp = t.uwsapi_post('/logs/nq/1823af52426.17746/tail', {})
+		t.assertEqual(resp.status_code, HTTPStatus.OK)
+		t.assertDictEqual(resp.json(), {
+			'jid':   '1823af52426.17746',
+			'lines': '100',
+			'rows':  3,
+			'tail':  'exec nq -c sleep 60',
+		})
