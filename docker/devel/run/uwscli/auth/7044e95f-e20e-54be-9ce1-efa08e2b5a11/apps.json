@@ -24,8 +24,12 @@
   },
   "build_command": "app-build",
   "commands": [
+    "app-deploy",
     "app-events",
     "app-logs",
+    "app-restart",
+    "app-rollin",
+    "app-scale",
     "app-status",
     "app-top"
   ],
