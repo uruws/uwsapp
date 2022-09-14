@@ -81,6 +81,11 @@ class ApiViewTest(ApiViewTestCase):
 		t.assertEqual(resp.status_code, HTTPStatus.OK)
 		t.assertDictEqual(resp.json(), {'ping': 'pong'})
 
+	def test_not_found(t):
+		v = ApiView()
+		resp = v.uwsapi_not_found({})
+		t.assertEqual(resp.status_code, HTTPStatus.NOT_FOUND)
+
 	def test_bad_request(t):
 		v = ApiView()
 		resp = v.uwsapi_bad_request({})
