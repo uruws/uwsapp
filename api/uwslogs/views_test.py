@@ -44,11 +44,6 @@ class LogsViewsTest(ApiViewTestCase):
 		t.assertEqual(resp.status_code, HTTPStatus.OK)
 		t.assertIsInstance(resp.json(), dict)
 
-	def test_nq_bad_request(t):
-		resp = t.uwsapi_post('/logs/nq/invalid', {})
-		t.assertEqual(resp.status_code, HTTPStatus.BAD_REQUEST)
-		t.assertIsInstance(resp.json(), dict)
-
 	def test_nq_error(t):
 		bup = views.nqlog
 		try:
