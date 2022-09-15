@@ -1,8 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+import sys
 import json
 
+from django               import VERSION as django_version
 from django.contrib       import messages
 from django.shortcuts     import redirect
 from django.views.generic import TemplateView
@@ -161,4 +163,12 @@ class User(WebView):
 
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
+		d['python'] = {
+			'version': sys.version.strip(),
+		}
+		dv = '.'.join([str(x) for x in django_version[0:3]])
+		dv = '%s-%s' % (dv, '-'.join([str(x) for x in django_version[3:]]))
+		d['django'] = {
+			'version': dv,
+		}
 		return v.uwsweb_data(d)

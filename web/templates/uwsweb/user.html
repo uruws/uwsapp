@@ -16,9 +16,11 @@
 {% if debug %}
 <hr class="w3-border-dark-grey">
 <table class="w3-table">
-	<tr><td>UID</td><td>{{ user.uid }}</td></tr>
-	<tr><td>Session</td><td>{{ user.web.session_key }}</td></tr>
-	<tr><td>Api Session</td><td>{{ user.session }}</td></tr>
+	<tr><td>UID</td>            <td>{{ user.uid }}</td></tr>
+	<tr><td>Session</td>        <td>{{ user.web.session_key }}</td></tr>
+	<tr><td>Api Session</td>    <td>{{ user.session }}</td></tr>
+	<tr><td>Python Version</td> <td>{{ python.version }}</td></tr>
+	<tr><td>Django Version</td> <td>{{ django.version }}</td></tr>
 </table>
 {% endif %}
 
