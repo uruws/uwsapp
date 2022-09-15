@@ -72,6 +72,7 @@ class WebView(TemplateView):
 		d['debug']         = config.DEBUG()
 		d['template_name'] = v.template_name.strip()
 		d['navbar']        = _navbar
+		d['favicon']       = 'icons8/bull-64.png'
 		return d
 
 	def uwsapi_session(v):

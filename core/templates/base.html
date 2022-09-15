@@ -3,6 +3,9 @@
 <head>{% load static %}
 <title>{% block title %}{{ title }}{% endblock %} - {{ appname }}</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+{% if favicon %}
+<link rel="icon" type="image/x-icon" href="{% static favicon %}">
+{% endif %}
 <link rel="stylesheet" href="{% static 'w3css/4/w3.css' %}">
 <link rel="stylesheet" href="{% static 'w3css/default.css' %}">
 <link rel="stylesheet" href="{% static 'default.css' %}">
