@@ -1,13 +1,15 @@
 FROM uwsapp/core
 
 LABEL mantainer="Jeremías Casteglione <jeremias@talkingpts.org>"
-LABEL version="220617"
+LABEL version="220915"
 
 USER root:root
 WORKDIR /root
 
 ENV USER root
 ENV HOME /root
+
+RUN /root/bin/apt-install.sh openssh-client
 
 RUN install -v -d -o uws -g uwsapp -m 0750 /run/uwsapi \
 	&& install -v -d -o uws -g uwsapp -m 0750 /run/uwscli \
