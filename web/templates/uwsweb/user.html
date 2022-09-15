@@ -2,16 +2,25 @@
 {% block content %}
 <!-- uwsweb/user.html -->
 
-<table class="w3-table w3-margin-top">
-	<tr><td>Username</td><td>{{ user.username }}</td></tr>
-
+<div class="w3-margin-top w3-small">
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">Username</span>
+			<span class="w3-threequarter">{{ user.username }}</span>
+		</div>
+	</div>
 	{% if user.is_admin or user.is_operator %}
-	<tr>
-		<td class="w3-text-green">{% if user.is_admin %}Admin{% endif %}</td>
-		<td class="w3-text-green">{% if user.is_operator %}Operator{% endif %}</td>
-	</tr>
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">Profile</span>
+			<span class="w3-threequarter w3-text-green">
+				{% if user.is_admin %}Admin{% endif %}
+				{% if user.is_operator %}Operator{% endif %}
+			</span>
+		</div>
+	</div>
 	{% endif %}
-</table>
+</div>
 
 {% if debug %}
 <hr class="w3-border-dark-grey">
