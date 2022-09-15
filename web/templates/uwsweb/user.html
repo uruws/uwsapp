@@ -15,15 +15,50 @@
 
 {% if debug %}
 <hr class="w3-border-dark-grey">
-<table class="w3-table">
-	<tr><td>UID</td>         <td>{{ user.uid }}</td></tr>
-	<tr><td>Session</td>     <td>{{ user.web.session_key }}</td></tr>
-	<tr><td>Api Session</td> <td>{{ user.session }}</td></tr>
-	<tr><td>Python</td>      <td>{{ python.version }}</td></tr>
-	<tr><td>django</td>      <td>{{ django.version }}</td></tr>
-	<tr><td>uwsgi</td>       <td>{{ uwsgi.version }}</td></tr>
-	<tr><td>Debian</td>      <td>{{ debian.version }}</td></tr>
-</table>
+<div class="w3-small">
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">UID</span>
+			<span class="w3-threequarter">{{ user.uid }}</span>
+		</div>
+	</div>
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">Session</span>
+			<span class="w3-threequarter">{{ user.web.session_key }}</span>
+		</div>
+	</div>
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">API Session</span>
+			<span class="w3-threequarter">{{ user.session }}</span>
+		</div>
+	</div>
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">Python</span>
+			<span class="w3-threequarter">{{ python.version }}</span>
+		</div>
+	</div>
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">django</span>
+			<span class="w3-threequarter">{{ django.version }}</span>
+		</div>
+	</div>
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">uwsgi</span>
+			<span class="w3-threequarter">{{ uwsgi.version }}</span>
+		</div>
+	</div>
+	<div class="w3-row w3-round-xlarge uws-hover-grey">
+		<div class="w3-margin-left w3-margin-right">
+			<span class="w3-quarter">Debian</span>
+			<span class="w3-threequarter">{{ debian.version }}</span>
+		</div>
+	</div>
+</div>
 {% endif %}
 
 <!-- uwsweb/user.html -->
