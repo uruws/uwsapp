@@ -67,20 +67,23 @@ ${surun} rsync -vax --chown=root:www-data --delete-before \
 
 export UWSAPP_ENV=${appenv}
 export UWSAPP_VERSION=${appver}
-export UWSAPP_HOST='ops.uws.talkingpts.org'
-export UWSAPP_API_PORT=5600
-export UWSAPP_WEB_PORT=5500
-export UWSAPP_HELP_PORT=5501
 
-if test "X${appenv}" = 'Xtest'; then
-	export UWSAPP_HOST='opstest.uws.talkingpts.org'
-	export UWSAPP_API_PORT=5610
-	export UWSAPP_WEB_PORT=5510
-	export UWSAPP_HELP_PORT=5511
+export UWSAPP_HOST='opstest.uws.talkingpts.org'
+export UWSAPP_API_PORT=5610
+export UWSAPP_WEB_PORT=5510
+export UWSAPP_HELP_PORT=5511
+export UWSAPP_CLI_SSHPORT=333
 
-	${surun} install -v -o root -g www-data -m 0640 \
-		./VERSION /srv/www/uwsapp/${appenv}/static/version.txt
+if test "X${appenv}" = 'Xprod'; then
+	export UWSAPP_HOST='ops.uws.talkingpts.org'
+	export UWSAPP_API_PORT=5600
+	export UWSAPP_WEB_PORT=5500
+	export UWSAPP_HELP_PORT=5501
+	export UWSAPP_CLI_SSHPORT=222
 fi
+
+${surun} install -v -o root -g www-data -m 0640 \
+	./VERSION /srv/www/uwsapp/${appenv}/static/version.txt
 
 # nginx snippet
 
