@@ -9,7 +9,7 @@ install -v -d -m 0750 ${PWD}/run/uwsapp
 echo 'supersecret' >${PWD}/run/uwsapp/api_keypass
 
 exec docker run --rm --name uwsapp-check \
-	--hostname check.uwsapp.local \
+	--hostname devel.uwsapp.local \
 	--read-only \
 	-v ${PWD}/docker/devel/run/uwscli:/run/uwscli:ro \
 	-v ${PWD}:/opt/uwsapp \
