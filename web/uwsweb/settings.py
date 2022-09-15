@@ -119,6 +119,7 @@ LOGIN_REDIRECT_URL = '/%s' % config.URL('')
 
 SESSION_ENGINE          = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Strict'
 SESSION_COOKIE_NAME     = config.SESSION_NAME()
 SESSION_COOKIE_AGE      = config.SESSION_AGE()
 
