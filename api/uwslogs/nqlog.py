@@ -129,15 +129,8 @@ def jobs(nqdir: str = '') -> JobsInfo:
 	_jobs(i, heads.splitlines())
 	return i
 
-class NotFound(Exception):
-	__fn = ''
-
-	def __init__(e, fn):
-		super().__init__(fn)
-		e.__fn = fn
-
-	def __str__(e):
-		return f"{e.__fn}: file not found"
+class JobNotFound(Exception):
+	pass
 
 _tail_cmd = '/usr/bin/tail'
 
@@ -165,5 +158,5 @@ def tail(jobid: str, lines: int) -> JobTail:
 	p = config.CLI_NQDIR() / str(',%s' % jobid)
 	log.debug(lines, p)
 	if not (p.is_file() and not p.is_symlink()):
-		raise NotFound(p.as_posix())
+		raise JobNotFound(p.as_posix())
 	return JobTail(p.as_posix(), lines)

@@ -54,7 +54,7 @@ class NQTail(ApiView):
 			lines = 100
 		try:
 			job = nqlog.tail(jobid, lines)
-		except nqlog.NotFound as err:
+		except nqlog.JobNotFound as err:
 			log.error(err)
 			return v.uwsapi_not_found()
 		except Exception as err:
