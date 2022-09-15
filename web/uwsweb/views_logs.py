@@ -45,7 +45,7 @@ class NQTail(WebView):
 	def get_context_data(v, **kwargs):
 		d = super().get_context_data(**kwargs)
 		jobid = kwargs.get('jobid', '')
-		if jobid == '':
+		if jobid == '': # pragma: no cover
 			log.error('no jobid')
 			return v.uwsapi_bad_request({})
 		d['navbar_id']  = 'jobs'

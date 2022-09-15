@@ -17,6 +17,16 @@ class WebLogsViewsTest(AuthViewTestCase):
 		t.assertEqual(resp.context_data['title'], 'jobs')
 		t.assertDictEqual(resp.context_data['nqlog'], {})
 
+	def test_nq_tail(t):
+		resp = None
+		with t.uwsapi_user():
+			resp = t.client.get('/logs/nq/1823af52426.17746/tail')
+		t.assertEqual(resp.status_code,             HTTPStatus.OK)
+		t.assertEqual(resp.template_name[0],        'uwslogs/nq-tail.html')
+		t.assertEqual(resp.headers['content-type'], 'text/html; charset=utf-8')
+		t.assertEqual(resp.context_data['title'],   'job 1823af52426.17746')
+		t.assertDictEqual(resp.context_data['job'], {})
+
 	def test_appctl_index(t):
 		resp = None
 		with t.uwsapi_user():
