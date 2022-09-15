@@ -11,7 +11,7 @@ class CmdViewsTest(ApiViewTestCase):
 		resp = t.uwsapi_post('/exec/', {'command': 'testing', 'app': 'apptest'})
 		t.assertEqual(resp.status_code, HTTPStatus.OK)
 		t.assertEqual(resp.json(), {
-			'command': '/opt/uwsapp/api/libexec/apicmd.sh uwstest testing apptest',
+			'command': '/opt/uwsapp/api/libexec/apicmd.sh uwstest /srv/home/uwscli/bin/app-testing apptest',
 			'output': '',
 			'status': 'ok',
 		})
