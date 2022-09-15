@@ -15,7 +15,7 @@ fi
 sshopts="${sshopts} -n -x"
 
 sshuser=${1:?'ssh user?'}
-app_action=${2:?'app action?'}
+app_cmd=${2:?'app command?'}
 app_name=${3:?'app name?'}
 
 exec "${sshcmd}" ${sshopts} \
@@ -24,4 +24,4 @@ exec "${sshcmd}" ${sshopts} \
 	-p "${sshport}" \
 	-l "${sshuser}" \
 	"${UWSAPP_CLI_HOST}" \
-	"app-${app_action}" "${app_name}"
+	"${app_cmd}" "${app_name}"

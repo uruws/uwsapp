@@ -45,7 +45,9 @@ def _check_output(user: str, cmd: str) -> tuple[str, str]:
 
 def execute(user: str, action: str, app: str, command: str = '') -> dict[str, str]:
 	log.debug('user:', user, 'action:', action, 'app:', app)
-	cmd = f"/opt/uwsapp/api/libexec/apicmd.sh {user} {action} {app}"
+	action_cmd = config.CLI_BINDIR() / str('app-%s' % action)
+	x = action_cmd.as_posix()
+	cmd = f"/opt/uwsapp/api/libexec/apicmd.sh {user} {x} {app}"
 	if command != '':
 		cmd = command
 	log.debug('cmd:', cmd)

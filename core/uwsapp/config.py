@@ -131,3 +131,6 @@ def CLI_SSHCMD() -> str:
 
 def CLI_SSHPORT() -> int:
 	return int(_getenv('UWSAPP_CLI_SSHPORT', '22'))
+
+def CLI_BINDIR() -> Path:
+	return Path(_getenv('UWSAPP_CLI_BINDIR', '/srv/home/uwscli/bin'))
