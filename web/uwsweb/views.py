@@ -12,9 +12,10 @@ from django.views.generic import TemplateView
 from django.utils.decorators       import method_decorator
 from django.views.decorators.cache import cache_control
 
-from base64  import b64encode
-from pathlib import Path
-from time    import time
+from base64     import b64encode
+from pathlib    import Path
+from subprocess import getstatusoutput
+from time       import time
 
 from uwsapp import config
 from uwsapp import log
@@ -166,9 +167,17 @@ class User(WebView):
 		d['python'] = {
 			'version': sys.version.strip(),
 		}
-		dv = '.'.join([str(x) for x in django_version[0:3]])
-		dv = '%s-%s' % (dv, '-'.join([str(x) for x in django_version[3:]]))
+		vs = '.'.join([str(x) for x in django_version[0:3]])
+		vs = '%s-%s' % (vs, '-'.join([str(x) for x in django_version[3:]]))
 		d['django'] = {
-			'version': dv,
+			'version': vs.strip(),
+		}
+		__, vs = getstatusoutput('/usr/bin/uwsgi --version')
+		d['uwsgi'] = {
+			'version': vs.strip(),
+		}
+		__, vs = getstatusoutput('/bin/cat /etc/debian_version')
+		d['debian'] = {
+			'version': vs.strip(),
 		}
 		return v.uwsweb_data(d)
