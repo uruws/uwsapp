@@ -1,13 +1,61 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
-from http import HTTPStatus
+from http          import HTTPStatus
+from unittest.mock import MagicMock
 
 from uwsweb.auth_test import AuthViewTestCase
 
-from uwsweb import views_api
+from uwsweb import views_apps
+
+def mock_apicmd_view(resp = {}, fail = False):
+	def _fail(*args, **kwargs):
+		raise views_apps.ApiError('mock_api_error')
+	v = MagicMock()
+	v._resp = MagicMock()
+	if fail:
+		v.uwsapi_post = MagicMock(side_effect = _fail)
+	else:
+		v.uwsapi_post = MagicMock(return_value = v._resp)
+	v.uwsapi_parse_response = MagicMock(return_value = resp)
+	v.uwsweb_msg_error = MagicMock()
+	return v
 
 class WebAppsViewsTest(AuthViewTestCase):
+
+	#
+	# utils
+	#
+
+	def test_apicmd(t):
+		d = {}
+		v = mock_apicmd_view({'output': 'testing'})
+		views_apps._apicmd(v, d, 'status', 'testing')
+		t.assertDictEqual(d, {
+			'app_action':                'status',
+			'app_action_response':       {'output': 'testing'},
+			'app_action_response_lines': 3,
+		})
+
+	def test_apicmd_output_error(t):
+		d = {}
+		v = mock_apicmd_view()
+		views_apps._apicmd(v, d, 'status', 'testing')
+		t.assertDictEqual(d, {
+			'app_action':                'status',
+			'app_action_response':       {},
+			'app_action_response_lines': 0,
+		})
+
+	def test_apicmd_api_error(t):
+		d = {}
+		v = mock_apicmd_view({'output': 'testing'}, fail = True)
+		views_apps._apicmd(v, d, 'status', 'testing')
+		t.assertDictEqual(d, {
+			'app_action':                'status',
+			'app_action_response':       {},
+			'app_action_response_lines': 0,
+		})
 
 	#
 	# Apps
