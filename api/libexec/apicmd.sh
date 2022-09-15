@@ -22,4 +22,4 @@ exec "${sshcmd}" ${sshopts} \
 	-i /run/uwscli/auth/ssh/id_ed25519 \
 	-l "${sshuser}" \
 	"${UWSAPP_CLI_HOST}" \
-	"${app_action}" "${app_name}"
+	"app-${app_action}" "${app_name}"
