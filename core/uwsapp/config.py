@@ -67,6 +67,13 @@ def CACHE_CONTROL() -> dict[str, Union[bool, int]]:
 		'stale_if_error':  _getenv('UWSAPP_CACHE_ERROR_STALE', 'on') == 'on',
 	}
 
+def SESSION_NAME() -> str:
+	default = '%s_sessionid' % APPNAME.strip()
+	return _getenv('UWSAPP_SESSION_NAME', default)
+
+def SESSION_AGE() -> int:
+	return int(_getenv('UWSAPP_SESSION_AGE', '3600'))
+
 # api
 
 def API_HOST() -> str:
