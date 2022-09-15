@@ -36,17 +36,18 @@ class ApiCmdTest(TestCase):
 		if not config.DEBUG():
 			dbg = 'off'
 		t.assertDictEqual(cmd._setenv('testing'), {
-			'HOME':              '/home/uws',
-			'HOSTNAME':          'devel.uwsapp.local',
-			'PATH':              '/usr/bin:/bin:/usr/local/bin',
-			'TZ':                'UTC',
-			'USER':              'uws',
-			'UWSAPP_DEBUG':      dbg,
-			'UWSAPP_CLI_HOST':   'localhost',
-			'UWSAPP_CLI_SSHCMD': '/usr/bin/ssh',
-			'UWSAPP_HOME':       '/opt/uwsapp',
-			'UWSAPP_LOG':        '',
-			'UWSAPP_USER':       'testing',
+			'HOME':               '/home/uws',
+			'HOSTNAME':           'devel.uwsapp.local',
+			'PATH':               '/usr/bin:/bin:/usr/local/bin',
+			'TZ':                 'UTC',
+			'USER':               'uws',
+			'UWSAPP_DEBUG':       dbg,
+			'UWSAPP_CLI_HOST':    'localhost',
+			'UWSAPP_CLI_SSHCMD':  '/usr/bin/ssh',
+			'UWSAPP_CLI_SSHPORT': '22',
+			'UWSAPP_HOME':        '/opt/uwsapp',
+			'UWSAPP_LOG':         '',
+			'UWSAPP_USER':        'testing',
 		})
 
 	def test_check_output(t):
