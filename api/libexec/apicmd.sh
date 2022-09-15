@@ -18,6 +18,8 @@ app_action=${2:?'app action?'}
 app_name=${3:?'app name?'}
 
 exec "${sshcmd}" ${sshopts} \
+	-F /run/uwscli/auth/ssh/config \
+	-i /run/uwscli/auth/ssh/id_ed25519 \
 	-l "${sshuser}" \
 	"${UWSAPP_CLI_HOST}" \
 	"${app_action}" "${app_name}"
