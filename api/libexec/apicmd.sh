@@ -6,6 +6,7 @@ if test "X${UWSAPP_DEBUG}" = 'Xon'; then
 fi
 
 sshcmd="${UWSAPP_CLI_SSHCMD}"
+sshport="${UWSAPP_CLI_SSHPORT}"
 sshopts='-q'
 
 if test "X${UWSAPP_DEBUG}" = 'Xon'; then
@@ -20,6 +21,7 @@ app_name=${3:?'app name?'}
 exec "${sshcmd}" ${sshopts} \
 	-F /run/uwscli/auth/ssh/config \
 	-i /run/uwscli/auth/ssh/id_ed25519 \
+	-p "${sshport}" \
 	-l "${sshuser}" \
 	"${UWSAPP_CLI_HOST}" \
 	"app-${app_action}" "${app_name}"

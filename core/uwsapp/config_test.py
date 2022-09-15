@@ -57,6 +57,7 @@ class Test(unittest.TestCase):
 		t.assertEqual(config.CLI_LOGSDIR().as_posix(), '/run/uwscli/logs')
 		t.assertEqual(config.CLI_NQDIR().as_posix(),   '/run/uwscli/nq')
 		t.assertEqual(config.CLI_SSHCMD(),             '/usr/bin/ssh')
+		t.assertEqual(config.CLI_SSHPORT(),            22)
 
 	def test_apiurl(t):
 		t.assertEqual(config.apiurl('ping'), '/ping')

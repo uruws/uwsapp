@@ -26,9 +26,10 @@ def _sshcmd() -> str:
 
 def _setenv(user: str) -> dict[str, str]:
 	e = __env.copy()
-	e['UWSAPP_CLI_HOST']   = config.CLI_HOST()
-	e['UWSAPP_CLI_SSHCMD'] = _sshcmd()
-	e['UWSAPP_USER']       = user
+	e['UWSAPP_CLI_HOST']    = config.CLI_HOST()
+	e['UWSAPP_CLI_SSHCMD']  = _sshcmd()
+	e['UWSAPP_CLI_SSHPORT'] = config.CLI_PORT()
+	e['UWSAPP_USER']        = user
 	return e
 
 def _check_output(user: str, cmd: str) -> tuple[str, str]:

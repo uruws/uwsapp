@@ -128,3 +128,6 @@ def CLI_NQDIR() -> Path:
 
 def CLI_SSHCMD() -> str:
 	return _getenv('UWSAPP_CLI_SSHCMD', '/usr/bin/ssh')
+
+def CLI_SSHPORT() -> int:
+	return int(_getenv('UWSAPP_CLI_SSHPORT', '22'))
