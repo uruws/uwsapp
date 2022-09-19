@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jeremias@talkingpts.org>
 # See LICENSE file.
 
+import HTTPStatus
+
 from django.test import TestCase
 
 from uwsapp import config
