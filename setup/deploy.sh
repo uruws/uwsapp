@@ -26,6 +26,7 @@ ${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/data
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/api
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/web
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/help
+${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/data/wb
 ${surun} install -v -d -o root -g 3000 -m 0750 /srv/uwsapp/${appenv}/run
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/run/uwsapi
 ${surun} install -v -d -o root -g 3000 -m 0770 /srv/uwsapp/${appenv}/run/uwsweb
@@ -71,15 +72,18 @@ export UWSAPP_VERSION=${appver}
 export UWSAPP_HOST='opstest.uws.talkingpts.org'
 export UWSAPP_API_PORT=5610
 export UWSAPP_WEB_PORT=5510
-export UWSAPP_HELP_PORT=5511
 export UWSAPP_CLI_SSHPORT=333
+export UWSAPP_WB_HOST="${UWSAPP_HOST}"
+export UWSAPP_HELP_PORT=5512
 
 if test "X${appenv}" = 'Xprod'; then
 	export UWSAPP_HOST='ops.uws.talkingpts.org'
 	export UWSAPP_API_PORT=5600
 	export UWSAPP_WEB_PORT=5500
-	export UWSAPP_HELP_PORT=5501
 	export UWSAPP_CLI_SSHPORT=222
+	export UWSAPP_HELP_PORT=5501
+	export UWSAPP_WB_HOST='public.uws.talkingpts.org'
+	export UWSAPP_WB_PORT=5502
 fi
 
 ${surun} install -v -o root -g www-data -m 0640 \

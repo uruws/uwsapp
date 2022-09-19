@@ -27,6 +27,6 @@ class WBMiddleware:
 			resp = mw.get_resp(req)
 		# auth the rest
 		else:
-			resp = mw.__auth(req)
+			resp = mw.get_resp(req)
 		resp.headers['Server'] = 'uwswb'
 		return resp

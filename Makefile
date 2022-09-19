@@ -9,6 +9,7 @@ build:
 	@./api/build.sh
 	@./web/build.sh
 	@./help/build.sh
+	@./wb/build.sh
 #~ 	@./pop/build.sh
 
 .PHONY: devel
@@ -40,8 +41,10 @@ UWSAPP_VERSION != cat ./VERSION
 publish:
 	@cd /srv/uws/deploy && ./docker/ecr-login.sh us-west-1
 	@cd /srv/uws/deploy && ./cluster/ecr-push.sh us-west-1 \
-		uwsapp/api uws:uwsapi-$(UWSAPP_VERSION)
+		uwsapp/api    uws:uwsapi-$(UWSAPP_VERSION)
 	@cd /srv/uws/deploy && ./cluster/ecr-push.sh us-west-1 \
-		uwsapp/web uws:uwsweb-$(UWSAPP_VERSION)
+		uwsapp/web    uws:uwsweb-$(UWSAPP_VERSION)
 	@cd /srv/uws/deploy && ./cluster/ecr-push.sh us-west-1 \
-		uwsapp/help uws:uwshelp-$(UWSAPP_VERSION)
+		uwsapp/help   uws:uwshelp-$(UWSAPP_VERSION)
+	@cd /srv/uws/deploy && ./cluster/ecr-push.sh us-west-1 \
+		uwsapp/wb     uws:uwswb-$(UWSAPP_VERSION)

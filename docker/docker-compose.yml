@@ -70,3 +70,20 @@ services:
       - "127.0.0.1:${UWSAPP_HELP_PORT}:${UWSAPP_HELP_PORT}"
     networks:
       - uwsapp-${UWSAPP_ENV}
+
+  uwswb:
+    image: 789470191893.dkr.ecr.us-west-1.amazonaws.com/uws:uwswb-${UWSAPP_VERSION}
+    container_name: uwswb-${UWSAPP_ENV}-${UWSAPP_VERSION}
+    hostname: uwswb-${UWSAPP_ENV}
+    volumes:
+      - /srv/uwsapp/${UWSAPP_ENV}/data/wb:/var/opt/uwsapp
+    environment:
+      - UWSAPP_DEBUG=off
+      - UWSAPP_HOST=${UWSAPP_WB_HOST}
+      - UWSAPP_PORT=${UWSAPP_WB_PORT}
+    read_only: true
+    restart: on-failure
+    ports:
+      - "127.0.0.1:${UWSAPP_HELP_PORT}:${UWSAPP_HELP_PORT}"
+    networks:
+      - uwsapp-${UWSAPP_ENV}
