@@ -38,6 +38,7 @@ services:
       - /srv/uwsapp/${UWSAPP_ENV}/data/web:/var/opt/uwsapp
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsweb:/run/uwsweb:ro
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsapi:/run/uwsapi:ro
+      - /srv/uwscli/${UWSAPP_ENV}/run/syslog:/run/uwscli/syslog:ro
     environment:
       - UWSAPP_DEBUG=off
       - UWSAPP_HOST=${UWSAPP_HOST}
