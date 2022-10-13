@@ -73,8 +73,9 @@ export UWSAPP_HOST='opstest.uws.talkingpts.org'
 export UWSAPP_API_PORT=5610
 export UWSAPP_WEB_PORT=5510
 export UWSAPP_CLI_SSHPORT=333
+export UWSAPP_HELP_PORT=5511
 export UWSAPP_WB_HOST="${UWSAPP_HOST}"
-export UWSAPP_HELP_PORT=5512
+export UWSAPP_WB_PORT=5512
 
 if test "X${appenv}" = 'Xprod'; then
 	export UWSAPP_HOST='ops.uws.talkingpts.org'
