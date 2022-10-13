@@ -17,6 +17,7 @@ services:
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsapi:/run/uwsapi
       - /srv/uwscli/${UWSAPP_ENV}/logs:/run/uwscli/logs:ro
       - /srv/uwscli/${UWSAPP_ENV}/run/auth:/run/uwscli/auth:ro
+      - /srv/uwscli/${UWSAPP_ENV}/run/nq:/run/uwscli/nq:ro
     environment:
       - UWSAPP_DEBUG=off
       - UWSAPP_HOST=${UWSAPP_HOST}
