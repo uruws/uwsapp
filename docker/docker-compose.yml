@@ -85,6 +85,6 @@ services:
     read_only: true
     restart: on-failure
     ports:
-      - "127.0.0.1:${UWSAPP_HELP_PORT}:${UWSAPP_HELP_PORT}"
+      - "127.0.0.1:${UWSAPP_WB_PORT}:${UWSAPP_WB_PORT}"
     networks:
       - uwsapp-${UWSAPP_ENV}
