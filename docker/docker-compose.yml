@@ -19,7 +19,7 @@ services:
       - /srv/uwscli/${UWSAPP_ENV}/run/auth:/run/uwscli/auth:ro
       - /srv/uwscli/${UWSAPP_ENV}/run/nq:/run/uwscli/nq:ro
     environment:
-      - UWSAPP_DEBUG=off
+      - UWSAPP_DEBUG=${UWSAPP_DEBUG}
       - UWSAPP_HOST=${UWSAPP_HOST}
       - UWSAPP_PORT=${UWSAPP_API_PORT}
       - UWSAPP_CLI_HOST=${UWSAPP_HOST}
@@ -41,7 +41,7 @@ services:
       - /srv/uwsapp/${UWSAPP_ENV}/run/uwsapi:/run/uwsapi:ro
       - /srv/uwscli/${UWSAPP_ENV}/syslog:/run/uwscli/syslog:ro
     environment:
-      - UWSAPP_DEBUG=off
+      - UWSAPP_DEBUG=${UWSAPP_DEBUG}
       - UWSAPP_HOST=${UWSAPP_HOST}
       - UWSAPP_PORT=${UWSAPP_WEB_PORT}
       - UWSAPP_API_HOST=${UWSAPP_HOST}
@@ -63,7 +63,7 @@ services:
     volumes:
       - /srv/uwsapp/${UWSAPP_ENV}/data/help:/var/opt/uwsapp
     environment:
-      - UWSAPP_DEBUG=off
+      - UWSAPP_DEBUG=${UWSAPP_DEBUG}
       - UWSAPP_HOST=${UWSAPP_HOST}
       - UWSAPP_PORT=${UWSAPP_HELP_PORT}
     read_only: true
@@ -80,7 +80,7 @@ services:
     volumes:
       - /srv/uwsapp/${UWSAPP_ENV}/data/wb:/var/opt/uwsapp
     environment:
-      - UWSAPP_DEBUG=off
+      - UWSAPP_DEBUG=${UWSAPP_DEBUG}
       - UWSAPP_HOST=${UWSAPP_WB_HOST}
       - UWSAPP_PORT=${UWSAPP_WB_PORT}
     read_only: true
