@@ -89,9 +89,6 @@ if test "X${appenv}" = 'Xprod'; then
 	export UWSAPP_WB_PORT=5502
 fi
 
-${surun} install -v -o root -g www-data -m 0640 \
-	./VERSION /srv/www/uwsapp/${appenv}/static/version.txt
-
 # nginx snippet
 
 envsubst <./setup/nginx.conf | sed 's/__URI__/\$uri/g' |
@@ -110,6 +107,10 @@ ${surun} chmod -v 0640 /srv/uwsapp/${appenv}/docker-compose.yml
 
 envsubst <./setup/uwsapp.service |
 	${surun} tee "/etc/systemd/system/uwsapp-${appenv}.service" >/dev/null
+
+# copy version file as last step
+${surun} install -v -o root -g www-data -m 0640 \
+	./VERSION /srv/www/uwsapp/${appenv}/static/version.txt
 
 # systemd reload
 
