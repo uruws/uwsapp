@@ -19,7 +19,7 @@ services:
       - ../../data:/var/opt/uwsapp
       - ../../run:/run/uwsapp
       - ./run/uwscli:/run/uwscli:ro
-    entrypoint: /opt/uwsapp/_devel/run.sh api
+    entrypoint: /opt/uwsapp/_devel/${UWSAPP_RUN} api
     environment:
       - UWSAPP_SECRET=${UWSAPP_SECRET}
       - UWSAPP_AUTH_SECRET=supersecret
@@ -43,7 +43,7 @@ services:
       - ../../tmp:/opt/uwsapp/tmp
       - ../../data:/var/opt/uwsapp
       - ../../run/uwsapp:/run/uwsapp
-    entrypoint: /opt/uwsapp/_devel/run.sh web
+    entrypoint: /opt/uwsapp/_devel/${UWSAPP_RUN} web
     environment:
       - UWSAPP_SECRET=${UWSAPP_SECRET}
       - UWSAPP_PORT=5000
@@ -72,7 +72,7 @@ services:
       - ../../:/opt/uwsapp
       - ../../tmp:/opt/uwsapp/tmp
       - ../../data:/var/opt/uwsapp
-    entrypoint: /opt/uwsapp/_devel/run.sh help
+    entrypoint: /opt/uwsapp/_devel/${UWSAPP_RUN} help
     environment:
       - UWSAPP_PORT=5001
       - UWSAPP_URL=help/
@@ -92,7 +92,7 @@ services:
       - ../../:/opt/uwsapp
       - ../../tmp:/opt/uwsapp/tmp
       - ../../data:/var/opt/uwsapp
-    entrypoint: /opt/uwsapp/_devel/run.sh wb
+    entrypoint: /opt/uwsapp/_devel/${UWSAPP_RUN} wb
     environment:
       - UWSAPP_PORT=5002
       - UWSAPP_URL=wb/
