@@ -35,6 +35,9 @@ RUN touch /usr/local/etc/ca/index.txt.attr
 RUN HOME=/usr/local/etc /usr/local/bin/ca-client.sh devel@uwsapp.local
 RUN HOME=/usr/local/etc /usr/local/bin/ca-cert.sh uwsapp.local
 
+# add www-data user to uws group so it can read static files
+RUN adduser www-data uws
+
 COPY --chown=root:root ./etc/uwscache.conf /etc/nginx/snippets/uwscache.conf
 COPY --chown=root:root ./etc/devel-ssl.conf /etc/nginx/sites-enabled/default-ssl
 
