@@ -31,6 +31,12 @@ ENV UWSAPP_HOME /opt/uwsapp
 ENV UWSAPP_PORT 3000
 ENV UWSAPP_WORKERS 3
 ENV PYTHONPATH /opt/uwsapp/core
+ENV LANG es_US.UTF-8
+ENV LANGUAGE es_US.UTF-8
+ENV LC_ALL es_US.UTF-8
+ENV LC_CTYPE UTF-8
+ENV PYTHONUTF8 1
+ENV PYTHONIOENCODING utf-8
 
 USER uws:uws
 WORKDIR /home/uws
@@ -42,6 +48,12 @@ ENV UWSAPP_HOME /opt/uwsapp
 ENV UWSAPP_PORT 3000
 ENV UWSAPP_WORKERS 3
 ENV PYTHONPATH /opt/uwsapp/core
+ENV LANG es_US.UTF-8
+ENV LANGUAGE es_US.UTF-8
+ENV LC_ALL es_US.UTF-8
+ENV LC_CTYPE UTF-8
+ENV PYTHONUTF8 1
+ENV PYTHONIOENCODING utf-8
 
 COPY --chown=uws:uwsapp ./bin/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod -v 0750  /usr/local/bin/entrypoint.sh

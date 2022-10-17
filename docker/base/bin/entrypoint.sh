@@ -32,6 +32,11 @@ exec uwsgi \
 	--module				"${appmod}.wsgi:application" \
 	--env					"DJANGO_SETTINGS_MODULE=${appmod}.settings" \
 	--env					LANG=es_US.UTF-8 \
+	--env					LANGUAGE=es_US.UTF-8 \
+	--env					LC_ALL=es_US.UTF-8 \
+	--env					LC_CTYPE=UTF-8 \
+	--env					PYTHONUTF8=1 \
+	--env					PYTHONIOENCODING=utf-8 \
 	--workers				"${UWSAPP_WORKERS}" \
 	--http11-socket			"0.0.0.0:${UWSAPP_PORT}" \
 	--chdir					"${UWSAPP_HOME}/${UWSAPP_NAME}"
