@@ -5,7 +5,9 @@ import os
 
 from collections import deque
 from datetime    import datetime
-from subprocess  import getstatusoutput
+from subprocess  import check_output
+from subprocess  import STDOUT
+from subprocess  import CalledProcessError
 from time        import time
 
 from django.utils.timezone import make_aware
@@ -41,7 +43,16 @@ class JobsInfo(deque):
 		return d
 
 def _run(cmd) -> tuple[int, str]:
-	return getstatusoutput(cmd)
+	st = -128
+	out = b''
+	try:
+		out = check_output(cmd, shell = True, text = False, stderr = STDOUT)
+		st = 0
+	except CalledProcessError as err:
+		log.error(err)
+		st = err.returncode
+		out = err.output
+	return (st, out.decode('utf-8'))
 
 def _jobdate(jid: str) -> str:
 	# this is kind of ugly, truncating the string and all that...
@@ -150,7 +161,7 @@ class JobTail(object):
 		cmd = f"{_tail_cmd} -n {j.__lines} {j.__fn}"
 		st, out = _run(cmd)
 		if st != 0:
-			log.error(cmd, st, out)
+			log.error(cmd, '[%d]' % st)
 			return 'INTERNAL ERROR [%d]: %s' % (st, out.strip())
 		return out.strip()
 

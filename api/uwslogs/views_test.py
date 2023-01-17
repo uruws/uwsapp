@@ -64,7 +64,7 @@ class LogsViewsTest(ApiViewTestCase):
 			'jid':   '1823af52426.17746',
 			'lines': '100',
 			'rows':  3,
-			'tail':  'exec nq -c sleep 60',
+			'tail':  'INTERNAL ERROR [-128]: exec nq -c sleep 60',
 		})
 
 	def test_nq_tail_not_found(t):

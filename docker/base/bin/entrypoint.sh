@@ -31,9 +31,9 @@ exec uwsgi \
 	--evil-reload-on-rss	1024 \
 	--module				"${appmod}.wsgi:application" \
 	--env					"DJANGO_SETTINGS_MODULE=${appmod}.settings" \
-	--env					LANG=es_US.UTF-8 \
-	--env					LANGUAGE=es_US.UTF-8 \
-	--env					LC_ALL=es_US.UTF-8 \
+	--env					LANG=en_US.UTF-8 \
+	--env					LANGUAGE=en_US.UTF-8 \
+	--env					LC_ALL=en_US.UTF-8 \
 	--env					LC_CTYPE=UTF-8 \
 	--env					PYTHONUTF8=1 \
 	--env					PYTHONIOENCODING=utf-8 \
